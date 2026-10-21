@@ -1,0 +1,65 @@
+:root{--ink:#102a43;--muted:#61758a;--brand:#006b54;--brand2:#0b8f70;--pale:#eaf5f1;--line:#dce6e3;--paper:#fff;--bg:#f5f8f7;--red:#a63838}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Segoe UI",Arial,sans-serif}a{color:var(--brand);text-decoration:none}a:hover{text-decoration:underline}.top{min-height:72px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(calc((100vw - 1180px)/2),24px);gap:24px}.brand{font-weight:750;color:var(--ink);font-size:1.05rem}.top nav{display:flex;gap:22px;flex-wrap:wrap}.top nav a{font-size:.91rem;color:#365065}.wrap{width:min(1180px,calc(100% - 40px));margin:40px auto 72px;min-height:65vh}.hero{background:linear-gradient(120deg,#073f37,#08785e);color:#fff;border-radius:18px;padding:clamp(32px,6vw,72px);margin-bottom:38px;box-shadow:0 12px 35px #073f371a}.hero h1{font-size:clamp(2rem,5vw,3.6rem);line-height:1.08;max-width:850px;margin:10px 0 16px}.hero p{max-width:690px;color:#e1f1eb;font-size:1.1rem}.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:750;color:var(--brand2)}.hero .eyebrow{color:#a9e4d2}.search{display:flex;max-width:640px;margin-top:28px}.search input{flex:1;border-radius:8px 0 0 8px;border:0}.search button{border-radius:0 8px 8px 0}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.card,.panel,.stat{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}.card{box-shadow:0 5px 20px #183a3010}.card>img{width:100%;height:190px;object-fit:cover;background:var(--pale)}.card-in{padding:22px}.card h2{font-size:1.2rem;line-height:1.3;margin:8px 0}.card p{color:#536a7d}.meta,.muted{color:var(--muted);font-size:.85rem}.section-head{display:flex;align-items:center;justify-content:space-between;margin:36px 0 18px}.section-head h2{margin:0}.empty{padding:30px;background:#fff;border-radius:10px;color:var(--muted)}.article{max-width:850px;margin:auto;background:#fff;padding:clamp(24px,6vw,64px);border-radius:14px}.article h1{font-size:clamp(2rem,5vw,3.3rem);line-height:1.1}.cover{display:block;width:100%;max-height:490px;object-fit:cover;border-radius:10px;margin:28px 0}.prose{font-size:1.08rem;line-height:1.85;margin:32px 0}.footer{text-align:center;background:#102f2a;color:#d4e5df;padding:26px}.form{padding:26px}.narrow{max-width:540px;margin:auto}.form label{display:block;font-size:.9rem;font-weight:650;margin:0 0 16px}.form input,.form select,.form textarea,.search input{width:100%;font:inherit;color:var(--ink);padding:12px 13px;background:#fff;border:1px solid #cbd9d5;border-radius:7px;margin-top:6px}.form input[type=file]{font-size:.87rem}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}.form-grid .full{grid-column:1/-1}button,.button{display:inline-block;border:0;background:var(--brand);color:#fff;font:inherit;font-weight:650;padding:11px 18px;border-radius:7px;cursor:pointer}button:hover,.button:hover{background:var(--brand2);color:white;text-decoration:none}.button.secondary{background:#edf4f1;color:var(--ink)}.notice{background:#e4f5ec;border:1px solid #b9e1cc;color:#165c3c;padding:14px 18px;border-radius:8px;margin:18px 0}.notice.error{background:#fff0ed;border-color:#f0c5be;color:#8c2e25}.admin-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}.admin-top h1{margin:6px 0}.admin-top p{margin:0;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:20px 0 30px}.stat{padding:18px 22px;display:flex;justify-content:space-between;align-items:center}.stat span{color:var(--muted)}.stat strong{font-size:1.7rem}.admin-layout{display:grid;grid-template-columns:225px minmax(0,1fr);gap:28px}.side{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px;height:max-content;display:flex;flex-direction:column}.side a{padding:9px 12px;border-radius:6px;color:#365065;font-size:.9rem}.side a.active{background:var(--pale);color:var(--brand);font-weight:700}.admin-main{min-width:0}.table-wrap{overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:10px}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;vertical-align:top;padding:13px 15px;border-bottom:1px solid #e9efed}th{background:#f7faf9;color:#52687a;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}tr:last-child td{border-bottom:0}.pill{font-size:.77rem;padding:4px 8px;border-radius:20px;background:#edf0f2}.pill.published{background:#dff4e8;color:#17613d}.actions{white-space:nowrap}.actions form{display:inline}.link{background:none;color:var(--brand);padding:0;font-size:.9rem}.link.danger{color:var(--red)}.small{padding:5px 8px;font-size:.78rem;margin-top:6px}.admin-main>.panel{margin-bottom:34px}@media(max-width:850px){.top{align-items:flex-start;flex-direction:column;padding:16px 22px;gap:12px}.top nav{gap:8px 16px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.wrap{width:calc(100% - 24px);margin:20px auto 44px}.cards{grid-template-columns:1fr}.hero{padding:28px 22px}.form-grid{grid-template-columns:1fr}.form-grid .full{grid-column:auto}.stats{gap:8px}.stat{padding:12px;display:block}.stat strong{display:block}.admin-top{align-items:flex-start}.side{grid-template-columns:1fr 1fr}}
+
+/* PSU visual identity */
+:root{--ink:#10224f;--muted:#68758e;--brand:#1239a5;--brand2:#0a2d83;--pale:#eef2ff;--line:#d9dfec;--paper:#fff;--bg:#f6f7fb;--red:#a63838}
+.top{min-height:82px;border-top:5px solid #f1c928;padding-top:5px;padding-bottom:5px}
+.brand{display:flex;align-items:center;gap:13px;color:#10224f;line-height:1.15}
+.psu-logo{width:58px;height:58px;object-fit:contain;border-radius:50%;background:white;flex:none}
+.brand-copy{display:flex;flex-direction:column;gap:5px}
+.brand-copy strong{font-size:.88rem;letter-spacing:.055em;color:#102d85}
+.brand-copy small{font-size:.76rem;font-weight:500;color:#66728b}
+.top nav a{color:#26385e}
+.top nav a:hover,.side a:hover{color:#1239a5}
+.hero{background:linear-gradient(120deg,#091d61 0%,#1741ae 76%,#d2a812 160%);box-shadow:0 12px 35px #132e751f}
+.hero .eyebrow{color:#ffdf51}
+.hero p{color:#e7ebf8}
+.eyebrow{color:#1239a5}
+button,.button{background:#1239a5}
+button:hover,.button:hover{background:#092878}
+.side a.active{background:#edf1ff;color:#1239a5}
+.footer{background:#0b1d57;color:#e4e9fb;border-top:4px solid #edc52b}
+.pill.published{background:#e5f4e9;color:#17613d}
+@media(max-width:850px){.top{align-items:center}.psu-logo{width:50px;height:50px}}
+
+/* Current location and PSU portal-inspired admin sign-in */
+.top nav a.current{color:#1239a5;font-weight:750;text-decoration:underline;text-decoration-color:#edc52b;text-decoration-thickness:3px;text-underline-offset:8px}
+.top nav a.current:hover{text-decoration-color:#1239a5}
+.portal-hero{position:relative;overflow:hidden;background:linear-gradient(112deg,#18245f 0%,#3d4f91 100%);border-radius:14px;border-bottom:5px solid #edc52b;box-shadow:0 12px 35px #16235e2b}
+.portal-hero:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.42;background:repeating-radial-gradient(ellipse at 68% 140%,transparent 0 17px,rgba(255,255,255,.24) 18px 19px,transparent 20px 30px)}
+.portal-hero>*{position:relative}
+.portal-hero .eyebrow{color:#ffdc3f}
+.login-panel{margin-top:-18px;box-shadow:0 12px 34px #17265d18;border-color:#e3e7f1}
+.login-panel button{min-width:150px}
+
+/* PSU portal reference: wave masthead, gold divider, white login area */
+.top{display:block;min-height:0;padding:0;background:#fff;border:0;border-top:0;box-shadow:0 3px 8px #111a3b18}
+.portal-masthead{height:clamp(112px,13vw,190px);margin-bottom:18px;position:relative;display:flex;align-items:flex-start;overflow:visible;padding:clamp(14px,2.2vw,30px) max(calc((100vw - 1180px)/2),24px);background-color:#35477f;background-image:repeating-radial-gradient(ellipse at 62% 180%,transparent 0 13px,rgba(152,174,234,.27) 14px 15px,transparent 16px 24px),repeating-radial-gradient(ellipse at 108% 200%,transparent 0 19px,rgba(152,174,234,.22) 20px 21px,transparent 22px 31px),linear-gradient(115deg,#46578c,#263b79 62%,#4a5889)}
+.portal-masthead:after{content:"";position:absolute;z-index:2;left:0;right:0;bottom:-8px;height:8px;background:#edc52b;box-shadow:0 5px 8px #0005}
+.portal-masthead .brand{position:relative;z-index:3;gap:16px;color:#fff;font-family:Georgia,"Times New Roman",serif;font-weight:400}
+.portal-masthead .psu-logo{width:clamp(52px,8vw,116px);height:clamp(52px,8vw,116px);border:2px solid #fff;box-shadow:0 0 10px #fff9}
+.portal-masthead .brand-copy{gap:4px}
+.portal-masthead .brand-copy strong{font-family:Georgia,"Times New Roman",serif;color:#fff;font-size:clamp(.92rem,2.25vw,2.55rem);font-weight:400;letter-spacing:.01em}
+.portal-masthead .brand-copy small{color:#e5e9f7;font-size:clamp(.7rem,1vw,1rem)}
+.portal-title{position:absolute;z-index:3;right:max(calc((100vw - 1180px)/2),24px);bottom:-17px;color:#ffd326;font-size:clamp(1.7rem,4.2vw,4.35rem);font-weight:850;line-height:1;text-shadow:2px 4px 3px #1b245d,0 1px 0 #fff;letter-spacing:.015em}
+.top nav{min-height:48px;padding:12px max(calc((100vw - 1180px)/2),24px) 8px;gap:22px;background:#fff}
+.top nav a{font-size:.9rem}
+.top nav a.current{text-decoration-color:#edc52b;text-underline-offset:7px}
+.portal-login-page{min-height:100vh;display:flex;flex-direction:column;background:#fff}
+.portal-login-page .top nav{display:none}
+.portal-login-page .portal-masthead{height:clamp(112px,13vw,190px)}
+.portal-login-page .wrap{width:min(1100px,calc(100% - 40px));flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr;column-gap:54px;align-content:start;margin:clamp(28px,5vw,72px) auto 35px;min-height:0}
+.portal-login-page .portal-hero{grid-column:2;grid-row:1;background:transparent;color:#1239a5;border:0;border-bottom:1px solid #edc52b;border-radius:0;box-shadow:none;padding:0 0 8px;margin:0 0 0 auto;width:min(100%,410px);text-align:right}
+.portal-login-page .portal-hero:before{display:none}
+.portal-login-page .portal-hero .eyebrow{display:none}
+.portal-login-page .portal-hero h1{font-size:clamp(1.2rem,2vw,1.6rem);line-height:1.25;margin:0 0 5px;color:#1239a5}
+.portal-login-page .portal-hero p{font-size:1rem;line-height:1.4;color:#1239a5;margin:0}
+.portal-login-page .login-panel{grid-column:1;grid-row:1;align-self:center;justify-self:end;width:min(100%,460px);max-width:none;margin:122px 0 0;padding:12px 0;background:transparent;border:0;border-radius:0;box-shadow:none}
+.portal-login-page .login-panel label{display:grid;grid-template-columns:132px minmax(0,1fr);align-items:center;gap:10px;color:#111;font-size:.96rem;margin-bottom:7px}
+.portal-login-page .login-panel input{margin:0;border:1px solid #777;border-radius:0;padding:5px 8px;height:32px;background:#fffef0}
+.portal-login-page .login-panel label:nth-of-type(2) input{background:#fff}
+.portal-login-page .login-panel button{margin-left:142px;min-width:0;padding:5px 14px;border-radius:3px;background:#eee;color:#111;border:1px solid #888;font-weight:400;line-height:1.2}
+.portal-login-page .login-panel button:hover{background:#e3e3e3;color:#111}
+.portal-login-page .login-panel p{margin:20px 0 0 142px;font-weight:700}
+.portal-login-page .footer{margin-top:auto;min-height:68px;padding:17px 20px 14px;font-size:.75rem;line-height:1.35}
+@media(max-width:700px){.portal-masthead{height:112px;padding:14px 18px}.portal-masthead .psu-logo{width:54px;height:54px}.portal-masthead .brand{gap:9px}.portal-title{right:18px;bottom:-13px;font-size:1.45rem}.portal-masthead .brand-copy strong{font-size:.92rem;max-width:230px}.portal-masthead .brand-copy small{font-size:.7rem}.top nav{padding:12px 18px 8px;gap:8px 17px}.portal-login-page .wrap{width:min(500px,calc(100% - 32px));display:flex;flex-direction:column;gap:24px;margin:38px auto 28px}.portal-login-page .portal-hero{width:100%;order:0}.portal-login-page .login-panel{width:100%;margin:0;order:1}.portal-login-page .login-panel label{grid-template-columns:120px minmax(0,1fr)}.portal-login-page .login-panel button,.portal-login-page .login-panel p{margin-left:130px}}
+@media(max-width:420px){.portal-login-page .login-panel label{grid-template-columns:1fr;gap:3px}.portal-login-page .login-panel button,.portal-login-page .login-panel p{margin-left:0}.portal-title{font-size:1.2rem}}
