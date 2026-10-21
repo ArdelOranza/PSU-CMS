@@ -1,4 +1,11 @@
 Options -Indexes
-<FilesMatch "^(config\.php|config\.sample\.php|schema\.sql|bootstrap\.php)$">
+# Block direct access to sensitive files
+<FilesMatch "^(config\.php|config\.sample\.php|schema\.sql|bootstrap\.php|\.gitignore)$">
   Require all denied
 </FilesMatch>
+# Block setup.php once an admin account exists — enforced in PHP too,
+# but this provides defence-in-depth on Apache.
+# To re-run setup, temporarily comment out the next two lines.
+<Files "setup.php">
+  Require all denied
+</Files>
