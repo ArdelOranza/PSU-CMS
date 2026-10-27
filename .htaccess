@@ -1,10 +1,10 @@
 Options -Indexes
 
-<FilesMatch "^(config\.php|config\.sample\.php|schema\.sql|bootstrap\.php|README\.md|composer\.(json|lock))$">
+<FilesMatch "^(?i:config\.php|config\.sample\.php|schema\.sql|bootstrap\.php|README\.md|composer\.(?:json|lock))$">
   Require all denied
 </FilesMatch>
 
-<FilesMatch "\.(sql|log|lock|bak|ini|env|md)$">
+<FilesMatch "\.(?i:sql|log|lock|bak|old|orig|save|swp|tmp|ini|env|md)$">
   Require all denied
 </FilesMatch>
 

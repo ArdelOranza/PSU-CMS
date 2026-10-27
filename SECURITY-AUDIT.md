@@ -9,7 +9,7 @@
 The initial code had several exploitable or deployment-critical weaknesses. The high and medium findings below were fixed in this working tree and are covered by `tests/security_test.php`.
 
 ```text
-33 passed, 0 failed
+44 passed, 0 failed
 ```
 
 The main remaining risk is operational: `setup.php` must be removed or blocked after the first administrator is created, and the web server must enforce the same file protections as the supplied `.htaccess` files.
@@ -37,6 +37,9 @@ The main remaining risk is operational: `setup.php` must be removed or blocked a
 | SEC-17 | Low | Unbounded search input and feedback spam/DoS | `index.php` | Fixed |
 | SEC-18 | Low | No security event logging | `bootstrap.php`, `admin.php`, `setup.php` | Partially fixed |
 | SEC-19 | Low | Installer lacked server-side email/password bounds | `setup.php` | Fixed |
+| SEC-20 | Medium | Feedback rate limit lived in the visitor session; a fresh session reset it | `index.php` | Fixed |
+| SEC-21 | Low | Apache file blocklists matched backup extensions case-sensitively; `config.php.BAK` was servable | `.htaccess`, `uploads/.htaccess` | Fixed |
+| SEC-22 | Medium (deployment) | `trust_proxy_headers` trust was safe only if clients cannot reach the origin directly; direct access allows X-Forwarded-For spoofing that bypasses IP throttles | `bootstrap.php`, README | Documented |
 
 ### SEC-01 — CSRF empty-token bypass
 
@@ -141,9 +144,9 @@ Deleting content or replacing an attachment left the old file in `uploads/`. The
 
 The feedback endpoint accepted unlimited, unbounded submissions and relied on client-side `maxlength` and `type=email`. Invalid or oversized data could produce database errors; automated submissions could fill the inbox.
 
-**Fix:** The server now validates name, email, subject, and message lengths and uses `filter_var()` for the email. It returns HTTP 422 for validation errors and 429 after one submission per minute or five per hour per session. Database failures return a generic error.
+**Fix:** The server now validates name, email, subject, and message lengths and uses `filter_var()` for the email. It returns HTTP 422 for validation errors. Submissions are rate limited from persistent server-side storage: the `feedback_attempts` table records the requester IP for every accepted submission and blocks submissions once `feedback_limit` (config, default 5) is reached within 15 minutes. The limit therefore survives fresh sessions; dropping cookies does not reset it. The table self-heals if missing. Database failures return a generic error.
 
-**Residual risk:** The throttle is session-based. An attacker who discards cookies can bypass it. Add a CAPTCHA, WAF rule, or IP-based throttle if spam persists.
+**Residual risk:** The limit is keyed by requester IP — REMOTE_ADDR when `trust_proxy_headers` is off, so it cannot be forged; behind a trusted proxy it depends on the proxy isolation requirement in the README (clients must not reach the origin directly). Visitors sharing one NAT address share the budget; CAPTCHA remains an option for heavier abuse.
 
 ### SEC-09 — Error disclosure
 
@@ -246,6 +249,35 @@ The installer accepted names and emails without server-side length or format che
 
 **Fix:** Name, email, and password are validated before insertion; the password is capped at 1,024 bytes.
 
+### SEC-20 — Session-resident feedback rate limit
+
+**Severity:** Medium
+**CWE:** CWE-770, CWE-602
+
+The public feedback throttle counted submissions in `$_SESSION`. A new session (fresh cookies) started with an empty counter, so a sender could fetch a new public token and submit repeatedly. The dashboard feedback view was also unpaginated, amplifying the review burden.
+
+**Fix:** Accepted submissions are recorded in the `feedback_attempts` table keyed by requester IP. The check is server-side and persistent: once `feedback_limit` (config, default 5) submissions occur within 15 minutes, the request is rejected with HTTP 429 and logged (`feedback_throttled`). New sessions cannot reset the counter. The admin feedback view is paginated (25 per page). The table self-heals if the migration was not applied. Validation failures do not consume the budget.
+
+**Residual risk:** Keying by REMOTE_ADDR (default) is not forgeable; behind `trust_proxy_headers` the identity depends on the proxy isolation requirement (SEC-22). Shared NAT addresses share one budget.
+
+### SEC-21 — Case-sensitive backup-extension blocklists
+
+**Severity:** Low
+**CWE:** CWE-434, CWE-693
+
+`<FilesMatch "\.(sql|log|lock|bak|ini|env|md)$">` is case-sensitive under Apache PCRE. `config.php.BAK` held database credentials and was not matched, so Apache served it as plain text.
+
+**Fix:** All `FilesMatch` patterns in the root and `uploads/.htaccess` now use inline case-insensitivity (`(?i:...)`), and common backup extensions (`old`, `orig`, `save`, `swp`, `tmp`) were added to the root blocklist. Uploads `FilesMatch` for script extensions is also case-insensitive.
+
+### SEC-22 — Trusted-proxy trust requires origin isolation
+
+**Severity:** Medium (deployment)
+**CWE:** CWE-290, CWE-348
+
+`client_ip()` honors `X-Forwarded-For` only when `trust_proxy_headers` is enabled, but enabling it is safe only if clients cannot reach the origin directly. With direct origin access, the client controls `X-Forwarded-For`, bypassing the IP-keyed login and feedback throttles and falsifying logged IPs.
+
+**Fix:** This is a deployment prerequisite and cannot be enforced by the application alone. The README now requires network controls (firewall/ACL) that allow only the trusted proxy to reach the application when `trust_proxy_headers` is enabled, and `config.sample.php` documents the same requirement. Default `trust_proxy_headers => false` uses `REMOTE_ADDR`, which cannot be spoofed by the client.
+
 ## Verified-safe areas
 
 The following areas were checked and did not show exploitable issues in the reviewed paths:
@@ -264,12 +296,12 @@ The following areas were checked and did not show exploitable issues in the revi
 1. **Remove `setup.php` after setup.** The atomic guard fixes the race, but the first visitor to an unconfigured deployment can still become the administrator.
 2. **No MFA, password reset, role separation, or audit-log UI.** These are product-level features, not blockers for the current single-admin MVP.
 3. **Login throttle can be abused for temporary lockout.** Monitor logs and consider notifying the administrator or adding a CAPTCHA.
-4. **Feedback throttle is session-based.** Add an IP/network throttle or CAPTCHA if spam continues.
+4. **Feedback limiter is IP-keyed.** It is persistent and server-enforced, but visitors behind one NAT address share the budget; tune `feedback_limit` or add a CAPTCHA if abuse continues.
 5. **Uploads live under the web root.** Move them outside the document root and serve through an authenticated proxy for stronger isolation.
 6. **No malware scanning.** Uploaded PDFs and ZIPs are not scanned. Only administrators can upload, but consider antivirus scanning if that changes.
-7. **No server-side image re-encoding.** Image bombs or polyglot files are mitigated by MIME checks and non-executable extensions, but re-encoding would be stronger.
+7. **GD re-encoding has its own limits.** Images are re-encoded server-side (strips EXIF metadata and polyglot payloads) and uploads fail closed if GD is unavailable, but decoded images still occupy memory during processing; `memory_limit` binding applies. Malware scanning is still not performed.
 8. **`.htaccess` is Apache-specific.** Configure equivalent deny rules and `uploads/` script protection on Nginx or another server.
-9. **HSTS depends on HTTPS detection.** Set `trust_proxy_headers` only behind a trusted proxy that overwrites the forwarded headers.
+9. **HSTS depends on HTTPS detection.** Set `trust_proxy_headers` only behind a trusted proxy that overwrites the forwarded headers **and only when network controls prevent clients from reaching the origin directly** — otherwise `X-Forwarded-For` is client-controlled and IP throttles are bypassable (see SEC-22).
 10. **No dependency scanner.** The application has no Composer dependencies, but PHP/MySQL versions should still be patched and monitored.
 11. **No CSP reporting.** Add `report-uri`/`report-to` if you want visibility into CSP violations.
 12. **No search rate limit.** Search is capped and indexed, but a public site may still benefit from a WAF rate limit.
@@ -277,8 +309,8 @@ The following areas were checked and did not show exploitable issues in the revi
 ## Verification
 
 - `php -l` passed for every PHP file.
-- `tests/security_test.php`: **33 passed, 0 failed**.
-- The suite covers: setup CSRF rejection and success, security headers, array-parameter rejection, admin cache/frame headers, login/logout, login throttling, upload-path validation, valid upload and delete cleanup, failed-save upload cleanup, feedback CSRF/email/length/rate limits, and LIKE escaping.
+- `tests/security_test.php`: **44 passed, 0 failed**.
+- The suite covers: setup CSRF rejection and success, security headers, array-parameter rejection, admin cache/frame headers, login/logout, login throttling, upload-path validation, valid upload and delete cleanup, GD re-encoding, failed-save upload cleanup, feedback CSRF/email/length/rate limits (including persistence across sessions via the `feedback_attempts` table), dashboard pagination, the admin password-change flow, and LIKE escaping.
 - Not covered dynamically: Apache `.htaccess` enforcement, Nginx rules, HSTS over a real HTTPS proxy, concurrent installer requests, session timeout expiry, and malware scanning.
 
 ## References

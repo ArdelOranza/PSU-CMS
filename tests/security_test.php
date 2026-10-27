@@ -402,9 +402,24 @@ $data = [
     'message' => 'Rate test',
 ];
 $first = $client->request('POST', '/index.php', $data);
-$second = $client->request('POST', '/index.php', $data);
 check('first feedback submission succeeds', $first['status'] === 302, 'got ' . $first['status']);
-check('second feedback submission is rate limited', $second['status'] === 429 || str_contains(strtolower($second['body']), 'too many'), 'got ' . $second['status']);
+$repeat = $client->request('POST', '/index.php', $data);
+$repeat = $client->request('POST', '/index.php', $data);
+$repeat = $client->request('POST', '/index.php', $data);
+$repeat = $client->request('POST', '/index.php', $data);
+check('feedback submissions two to five succeed', $repeat['status'] === 302, 'got ' . $repeat['status']);
+$fresh = new Client();
+$freshPage = $fresh->request('GET', '/index.php?contact=1');
+$freshData = [
+    'csrf' => (string) csrf_from($freshPage['body']),
+    'feedback' => '1',
+    'name' => 'Rate Test',
+    'email' => 'rate@example.test',
+    'subject' => 'Rate test',
+    'message' => 'Rate test',
+];
+$sixth = $fresh->request('POST', '/index.php', $freshData);
+check('feedback rate limit persists across sessions', $sixth['status'] === 429 || str_contains(strtolower($sixth['body']), 'too many'), 'got ' . $sixth['status']);
 
 $client = new Client();
 $response = $client->request('GET', '/admin.php');

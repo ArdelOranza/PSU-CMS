@@ -17,20 +17,37 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['feedback'])) {
         http_response_code(422);
         $feedbackError=implode(' ',$errors);
     } else {
-        $now=time();
-        $times=$_SESSION['feedback_times']??[];
-        if(!is_array($times)) $times=[];
-        $times=array_values(array_filter($times,fn($t)=>is_int($t)&&$t>$now-3600));
-        $last=$times?max($times):0;
-        if($last>$now-60||count($times)>=5) {
-            http_response_code(429);
-            $feedbackError='Too many feedback submissions. Please wait and try again.';
-        } else {
+        // Persistent, server-enforced rate limit keyed by requester IP. Session
+        // state cannot reset this; REMOTE_ADDR is only overridden when the
+        // deployment really does sit behind a trusted proxy (see README).
+        $feedbackLimit=max(1,(int)($config['feedback_limit']??5));
+        $ip=client_ip();
+        $allowed=true;
+        try {
+            $q=$pdo->prepare('SELECT COUNT(*) FROM feedback_attempts WHERE ip = ? AND attempted_at >= (NOW() - INTERVAL 15 MINUTE)');
+            $q->execute([$ip]);
+            if((int)$q->fetchColumn()>=$feedbackLimit) {
+                $allowed=false;
+                http_response_code(429);
+                $feedbackError='Too many feedback submissions. Please wait and try again.';
+                security_log('feedback_throttled',['ip'=>$ip]);
+            }
+        } catch(Throwable $e) {
+            error_log('Feedback throttle unavailable: '.$e->getMessage());
+            ensure_feedback_attempts_table($pdo);
+            // Limiter storage unavailable: fail open and log loudly.
+        }
+        if($allowed) {
             try {
                 $q=$pdo->prepare('INSERT INTO feedback(name,email,subject,message) VALUES(?,?,?,?)');
                 $q->execute([$name,$email,$subject,$message]);
-                $times[]=$now;
-                $_SESSION['feedback_times']=$times;
+                try {
+                    $a=$pdo->prepare('INSERT INTO feedback_attempts(ip) VALUES (?)');
+                    $a->execute([$ip]);
+                } catch(Throwable $e) {
+                    error_log('Could not record feedback attempt: '.$e->getMessage());
+                    ensure_feedback_attempts_table($pdo);
+                }
                 header('Location: index.php?contact=1&sent=1');
                 exit;
             } catch(PDOException $e) {

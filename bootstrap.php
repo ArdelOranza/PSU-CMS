@@ -299,6 +299,16 @@ function ensure_login_attempts_table(PDO $pdo): void
     }
 }
 
+function ensure_feedback_attempts_table(PDO $pdo): void
+{
+    // Self-heals installs that missed migrations/2026-10-27-feedback-throttle.sql.
+    try {
+        $pdo->exec("CREATE TABLE IF NOT EXISTS feedback_attempts (id INT AUTO_INCREMENT PRIMARY KEY, ip VARCHAR(45) NOT NULL, attempted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, KEY ip_time (ip, attempted_at))");
+    } catch (Throwable $e) {
+        error_log('Could not create feedback_attempts table: ' . $e->getMessage());
+    }
+}
+
 function record_login_failure(PDO $pdo, string $email, string $ip): void
 {
     try {
@@ -307,6 +317,7 @@ function record_login_failure(PDO $pdo, string $email, string $ip): void
         $pdo->exec('DELETE FROM login_attempts WHERE attempted_at < (NOW() - INTERVAL 1 DAY)');
     } catch (Throwable $e) {
         error_log('Could not record login failure: ' . $e->getMessage());
+        ensure_login_attempts_table($pdo);
     }
 }
 
