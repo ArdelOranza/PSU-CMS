@@ -1,4 +1,24 @@
 Options -Indexes
-<FilesMatch "^(config\.php|config\.sample\.php|schema\.sql|bootstrap\.php)$">
+
+<FilesMatch "^(config\.php|config\.sample\.php|schema\.sql|bootstrap\.php|README\.md|composer\.(json|lock))$">
   Require all denied
 </FilesMatch>
+
+<FilesMatch "\.(sql|log|lock|bak|ini|env|md)$">
+  Require all denied
+</FilesMatch>
+
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule "(^|/)\.(?!well-known/)" - [F,L]
+  RewriteRule "^(tests|migrations)/" - [F,L]
+</IfModule>
+
+<IfModule mod_alias.c>
+  RedirectMatch 404 "(?i)/\.(git|opencode|env)(/|$)"
+  RedirectMatch 404 "(?i)/(tests|migrations)(/|$)"
+</IfModule>

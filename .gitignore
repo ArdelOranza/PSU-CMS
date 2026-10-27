@@ -1,0 +1,14 @@
+# Local configuration
+config.php
+
+# Runtime uploads (keep the directory protection file)
+uploads/*
+!uploads/.htaccess
+
+# Logs and OS files
+*.log
+.DS_Store
+Thumbs.db
+
+# OpenCode workspace tooling
+.opencode/

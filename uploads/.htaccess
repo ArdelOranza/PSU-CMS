@@ -1,4 +1,12 @@
 # Upload directories must never execute scripts.
-<FilesMatch "\.(php|phtml|phar)$">
+Options -Indexes -ExecCGI
+<FilesMatch "\.(php|phtml|phar|php[0-9]|pht|shtml|cgi|pl|py|rb|sh|asp|aspx|jsp)$">
   Require all denied
 </FilesMatch>
+
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  <FilesMatch "\.(pdf|doc|docx|txt|zip)$">
+    Header set Content-Disposition "attachment"
+  </FilesMatch>
+</IfModule>

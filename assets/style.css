@@ -63,3 +63,7 @@ button:hover,.button:hover{background:#092878}
 .portal-login-page .footer{margin-top:auto;min-height:68px;padding:17px 20px 14px;font-size:.75rem;line-height:1.35}
 @media(max-width:700px){.portal-masthead{height:112px;padding:14px 18px}.portal-masthead .psu-logo{width:54px;height:54px}.portal-masthead .brand{gap:9px}.portal-title{right:18px;bottom:-13px;font-size:1.45rem}.portal-masthead .brand-copy strong{font-size:.92rem;max-width:230px}.portal-masthead .brand-copy small{font-size:.7rem}.top nav{padding:12px 18px 8px;gap:8px 17px}.portal-login-page .wrap{width:min(500px,calc(100% - 32px));display:flex;flex-direction:column;gap:24px;margin:38px auto 28px}.portal-login-page .portal-hero{width:100%;order:0}.portal-login-page .login-panel{width:100%;margin:0;order:1}.portal-login-page .login-panel label{grid-template-columns:120px minmax(0,1fr)}.portal-login-page .login-panel button,.portal-login-page .login-panel p{margin-left:130px}}
 @media(max-width:420px){.portal-login-page .login-panel label{grid-template-columns:1fr;gap:3px}.portal-login-page .login-panel button,.portal-login-page .login-panel p{margin-left:0}.portal-title{font-size:1.2rem}}
+
+/* Preserve the existing dashboard header layout after moving sign-out to a POST form. */
+.admin-top .logout-form{display:inline;margin:0}
+.admin-top .logout-form button{font:inherit}
