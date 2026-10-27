@@ -320,6 +320,7 @@ check('uploaded image gets a safe random name', $upload && preg_match('#^uploads
 if ($upload) {
     $uploadFull = dirname(__DIR__) . '/' . $uploadPath;
     check('uploaded image exists on disk', is_file($uploadFull), 'missing file');
+    check('uploaded image is re-encoded by GD', is_file($uploadFull) && sha1_file($uploadFull) !== sha1_file($png), 'stored bytes identical to fixture');
     $response = $client->request('POST', '/admin.php', ['csrf' => $csrf, 'delete' => '1', 'id' => $upload['id'], 'type' => 'media']);
     $deadline = microtime(true) + 2;
     clearstatcache(true, $uploadFull);
@@ -422,6 +423,62 @@ check('repeated failed logins are throttled', $last['status'] === 429 || str_con
 $client = new Client();
 $response = login($client);
 check('valid admin login still works after throttle test', $response['status'] === 302, 'got ' . $response['status']);
+
+/* ── Dashboard pagination ────────────────────────────────────────────── */
+$pdo = db();
+$pdo->exec('USE `' . DB_NAME . '`');
+$stmt = $pdo->prepare("INSERT INTO content (type,title,slug,body,summary,status) VALUES ('news',?,?,'Body','Summary','published')");
+for ($i = 1; $i <= 26; $i++) {
+    $stmt->execute(['Pagination Test ' . $i, 'pagination-test-' . $i]);
+}
+$response = $client->request('GET', '/admin.php?type=news&ctp=2');
+check('content list paginates', $response['status'] === 200 && str_contains($response['body'], 'pagination'), 'missing pager');
+$pdo->exec("DELETE FROM content WHERE slug LIKE 'pagination-test-%'");
+
+$stmt = $pdo->prepare("INSERT INTO feedback (name,email,subject,message) VALUES (?,?,?,?)");
+for ($i = 1; $i <= 26; $i++) {
+    $stmt->execute(['Paged ' . $i, 'paged' . $i . '@example.test', 'Subject', 'Message']);
+}
+$response = $client->request('GET', '/admin.php?view=feedback&fbp=2');
+check('feedback view paginates', $response['status'] === 200 && str_contains($response['body'], 'pagination'), 'missing pager');
+$pdo->exec("DELETE FROM feedback WHERE email LIKE 'paged%@example.test'");
+
+/* ── Password change ─────────────────────────────────────────────────── */
+$passClient = new Client();
+login($passClient);
+$response = $passClient->request('GET', '/admin.php?view=password');
+check('password view is reachable', $response['status'] === 200 && str_contains($response['body'], 'Change password'), 'status ' . $response['status']);
+$pwCsrf = admin_csrf($passClient);
+$response = $passClient->request('POST', '/admin.php', [
+    'csrf' => $pwCsrf,
+    'change_password' => '1',
+    'current_password' => 'WrongPassword',
+    'new_password' => 'NewSecurePassphrase77',
+]);
+check('password change rejects wrong current password', $response['status'] === 200 && str_contains($response['body'], 'Current password is incorrect'), 'got ' . $response['status']);
+$response = $passClient->request('POST', '/admin.php', [
+    'csrf' => $pwCsrf,
+    'change_password' => '1',
+    'current_password' => ADMIN_PASSWORD,
+    'new_password' => 'NewSecurePassphrase77',
+]);
+check('password change succeeds', $response['status'] === 302, 'got ' . $response['status']);
+$hashRow = $pdo->query("SELECT password_hash FROM admins WHERE email='" . ADMIN_EMAIL . "'")->fetch();
+check('password change updates the hash', is_array($hashRow) && password_verify('NewSecurePassphrase77', (string) $hashRow['password_hash']), 'hash unchanged');
+$newClient = new Client();
+$response = login($newClient, ADMIN_EMAIL, 'NewSecurePassphrase77');
+check('login with new password works', $response['status'] === 302, 'got ' . $response['status']);
+$oldClient = new Client();
+$response = login($oldClient, ADMIN_EMAIL, ADMIN_PASSWORD);
+check('old password is rejected', $response['status'] !== 302, 'still accepted');
+$pwCsrf = admin_csrf($newClient);
+$response = $newClient->request('POST', '/admin.php', [
+    'csrf' => $pwCsrf,
+    'change_password' => '1',
+    'current_password' => 'NewSecurePassphrase77',
+    'new_password' => ADMIN_PASSWORD,
+]);
+check('password restored for remaining tests', $response['status'] === 302, 'got ' . $response['status']);
 
 echo "\n$passes passed, $failures failed\n";
 exit($failures === 0 ? 0 : 1);

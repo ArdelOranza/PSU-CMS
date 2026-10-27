@@ -17,7 +17,7 @@ A feature-focused PHP 8+ and MySQL CMS based on the system features in `teams-an
 
 ## Requirements
 
-PHP 8.0+ with PDO MySQL, Fileinfo, and mbstring extensions; MySQL 5.7+ or MariaDB 10.3+; Apache with `mod_rewrite`/`.htaccess` support or equivalent server rules.
+PHP 8.0+ with PDO MySQL, Fileinfo, mbstring, and GD extensions; MySQL 5.7+ or MariaDB 10.3+; Apache with `mod_rewrite`/`.htaccess` support or equivalent server rules. GD is required for image uploads: uploaded images are re-encoded server-side (strips EXIF metadata and polyglot payloads), and image uploads fail safely if GD is not available.
 
 ## Install
 

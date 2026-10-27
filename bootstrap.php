@@ -72,6 +72,7 @@ try {
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES => false,
+        PDO::MYSQL_ATTR_FOUND_ROWS => true, // rowCount() counts matched rows, so a no-op UPDATE isn't mistaken for a miss
     ]);
 } catch (Throwable $e) {
     http_response_code(503);
@@ -180,7 +181,29 @@ function upload_file(string $key, string $folder, array $types): ?array
         throw new RuntimeException('Could not create the upload directory.');
     }
     $name = bin2hex(random_bytes(16)) . '.' . $types[$mime];
-    if (!move_uploaded_file($f['tmp_name'], $dir . '/' . $name)) {
+    if ($folder === 'images') {
+        if (!function_exists('imagecreatefromstring')) {
+            throw new RuntimeException('Image uploads require the PHP GD extension, which is not enabled on this server.');
+        }
+        $raw = file_get_contents($f['tmp_name']);
+        if ($raw === false) {
+            throw new RuntimeException('Could not read the uploaded file.');
+        }
+        $img = @imagecreatefromstring($raw);
+        if ($img === false) {
+            throw new RuntimeException('The image could not be decoded.');
+        }
+        $saved = match ($types[$mime]) {
+            'jpg' => imagejpeg($img, $dir . '/' . $name, 85),
+            'png' => imagepng($img, $dir . '/' . $name, 6),
+            'gif' => imagegif($img, $dir . '/' . $name),
+            'webp' => imagewebp($img, $dir . '/' . $name, 85),
+        };
+        imagedestroy($img);
+        if (!$saved) {
+            throw new RuntimeException('Could not save the uploaded image.');
+        }
+    } elseif (!move_uploaded_file($f['tmp_name'], $dir . '/' . $name)) {
         throw new RuntimeException('Could not save uploaded file.');
     }
     $original = preg_replace('/[\x00-\x1F\x7F]/u', '', basename($f['name'])) ?? 'file';
@@ -260,7 +283,19 @@ function login_is_throttled(PDO $pdo, string $email, string $ip): bool
         return ((int) ($row['email_count'] ?? 0) >= 5) || ((int) ($row['ip_count'] ?? 0) >= 20);
     } catch (Throwable $e) {
         error_log('Login throttle unavailable: ' . $e->getMessage());
+        ensure_login_attempts_table($pdo);
         return false;
+    }
+}
+
+function ensure_login_attempts_table(PDO $pdo): void
+{
+    // Self-heals installs that missed migrations/2026-10-21-security-hardening.sql
+    // so brute-force protection is not silently disabled. Requires CREATE privilege.
+    try {
+        $pdo->exec("CREATE TABLE IF NOT EXISTS login_attempts (id INT AUTO_INCREMENT PRIMARY KEY, email VARCHAR(190) NOT NULL, ip VARCHAR(45) NOT NULL, attempted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, KEY email_time (email, attempted_at), KEY ip_time (ip, attempted_at))");
+    } catch (Throwable $e) {
+        error_log('Could not create login_attempts table: ' . $e->getMessage());
     }
 }
 

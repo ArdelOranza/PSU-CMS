@@ -67,3 +67,6 @@ button:hover,.button:hover{background:#092878}
 /* Preserve the existing dashboard header layout after moving sign-out to a POST form. */
 .admin-top .logout-form{display:inline;margin:0}
 .admin-top .logout-form button{font:inherit}
+
+/* Admin list pagination */
+.pagination{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0}.pagination a{padding:6px 12px;border:1px solid var(--line);border-radius:6px;font-size:.85rem;background:#fff}.pagination a.active{background:#1239a5;border-color:#1239a5;color:#fff;font-weight:700}.pagination a:hover{border-color:#1239a5;text-decoration:none}
