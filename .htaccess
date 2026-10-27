@@ -1,11 +1,24 @@
 Options -Indexes
-# Block direct access to sensitive files
-<FilesMatch "^(config\.php|config\.sample\.php|schema\.sql|bootstrap\.php|\.gitignore)$">
+
+<FilesMatch "^(?i:config\.php|config\.sample\.php|schema\.sql|bootstrap\.php|README\.md|composer\.(?:json|lock))$">
   Require all denied
 </FilesMatch>
-# Block setup.php once an admin account exists — enforced in PHP too,
-# but this provides defence-in-depth on Apache.
-# To re-run setup, temporarily comment out the next two lines.
-<Files "setup.php">
+
+<FilesMatch "\.(?i:sql|log|lock|bak|old|orig|save|swp|tmp|ini|env|md)$">
   Require all denied
-</Files>
+</FilesMatch>
+
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule "(^|/)\.(?!well-known/)" - [F,L]
+  RewriteRule "^(tests|migrations)/" - [F,L]
+</IfModule>
+
+<IfModule mod_alias.c>
+  RedirectMatch 404 "(?i)/\.(git|opencode|env)(/|$)"
+  RedirectMatch 404 "(?i)/(tests|migrations)(/|$)"
+</IfModule>
