@@ -58,10 +58,6 @@ php tests/security_test.php
 
 Do not point `PSU_TEST_DSN` at a database you care about.
 
-## Security audit agent
-
-This repository includes a read-only OpenCode agent at `.opencode/agent/security-auditor.md` and a `/security-audit` command. The agent reviews authentication, CSRF, injection, uploads, sessions, headers, and deployment configuration without editing files. Restart OpenCode after changing files under `.opencode/`.
-
 ## Notes
 
 - The homepage uses a published `Pages` item with slug `homepage` when available; otherwise it shows built-in welcome copy.
