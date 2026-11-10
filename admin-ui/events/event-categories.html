@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Event Categories | PSU CMS</title>
+  <link rel="stylesheet" href="../vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="../vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../css/cms-base.css">
+  <link rel="stylesheet" href="../css/cms-layout.css">
+  <link rel="stylesheet" href="../css/cms-components.css">
+  <link rel="stylesheet" href="../css/events.css">
+</head>
+<body class="cms-body" data-page="event-categories">
+<div class="cms-shell">
+<!-- BEGIN SHARED: sidebar (PHP: move into partials/sidebar.php and include it) -->
+<aside class="cms-sidebar" id="cmsSidebar" aria-label="Sidebar">
+  <a class="cms-brand" href="../index.html">
+    <img class="cms-brand-logo" src="../assets/images/psu-logo.png" alt="">
+    <span class="cms-brand-text"><strong>PSU CMS</strong><small>Administration Panel</small></span>
+  </a>
+  <nav aria-label="Main navigation">
+    <p class="cms-nav-label">Main</p>
+    <a class="cms-nav-link" href="#" data-nav="dashboard" data-pending="Dashboard"><i class="bi bi-columns-gap" aria-hidden="true"></i><span class="cms-nav-text">Dashboard</span></a>
+    <p class="cms-nav-label">Website content</p>
+    <a class="cms-nav-link" href="#" data-nav="homepage" data-pending="Homepage Management"><i class="bi bi-house" aria-hidden="true"></i><span class="cms-nav-text">Homepage Management</span></a>
+    <div class="cms-nav-group" data-group="news">
+      <button type="button" class="cms-nav-link cms-nav-toggle" aria-expanded="false" aria-controls="subnav-news"><i class="bi bi-journal-text" aria-hidden="true"></i><span class="cms-nav-text">News &amp; Announcements</span><span class="cms-nav-caret" aria-hidden="true"></span></button>
+      <div class="cms-subnav" id="subnav-news">
+        <a class="cms-nav-link" href="../news/all-news.html" data-nav="all-news"><span class="cms-nav-text">All News</span></a>
+        <a class="cms-nav-link" href="../news/add-news.html" data-nav="add-news"><span class="cms-nav-text">Add New News</span></a>
+        <a class="cms-nav-link" href="../announcements/all-announcements.html" data-nav="all-announcements"><span class="cms-nav-text">All Announcements</span></a>
+        <a class="cms-nav-link" href="../announcements/add-announcement.html" data-nav="add-announcement"><span class="cms-nav-text">Add New Announcement</span></a>
+      </div>
+    </div>
+    <div class="cms-nav-group" data-group="events">
+      <button type="button" class="cms-nav-link cms-nav-toggle" aria-expanded="false" aria-controls="subnav-events"><i class="bi bi-calendar" aria-hidden="true"></i><span class="cms-nav-text">Events Management</span><span class="cms-nav-caret" aria-hidden="true"></span></button>
+      <div class="cms-subnav" id="subnav-events">
+        <a class="cms-nav-link" href="../events/all-events.html" data-nav="all-events"><span class="cms-nav-text">All Events</span></a>
+        <a class="cms-nav-link" href="../events/add-event.html" data-nav="add-event"><span class="cms-nav-text">Add New Event</span></a>
+        <a class="cms-nav-link" href="../events/event-categories.html" data-nav="event-categories"><span class="cms-nav-text">Event Categories</span></a>
+      </div>
+    </div>
+    <a class="cms-nav-link" href="#" data-nav="university" data-pending="University Structure"><i class="bi bi-bank" aria-hidden="true"></i><span class="cms-nav-text">University Structure</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
+    <a class="cms-nav-link" href="#" data-nav="faculty" data-pending="Faculty &amp; Staff Directory"><i class="bi bi-people" aria-hidden="true"></i><span class="cms-nav-text">Faculty &amp; Staff Directory</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
+    <p class="cms-nav-label">Resources</p>
+    <a class="cms-nav-link" href="#" data-nav="documents" data-pending="Document Library"><i class="bi bi-file-earmark-text" aria-hidden="true"></i><span class="cms-nav-text">Document Library</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
+    <a class="cms-nav-link" href="#" data-nav="media" data-pending="Media Library"><i class="bi bi-image" aria-hidden="true"></i><span class="cms-nav-text">Media Library</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
+    <p class="cms-nav-label">Communication</p>
+    <a class="cms-nav-link" href="#" data-nav="contact" data-pending="Contact &amp; Feedback"><i class="bi bi-envelope" aria-hidden="true"></i><span class="cms-nav-text">Contact &amp; Feedback</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
+    <a class="cms-nav-link" href="../search/search-results.html" data-nav="search"><i class="bi bi-search" aria-hidden="true"></i><span class="cms-nav-text">Search</span></a>
+    <p class="cms-nav-label">System</p>
+    <a class="cms-nav-link" href="#" data-nav="users" data-pending="User Management"><i class="bi bi-person" aria-hidden="true"></i><span class="cms-nav-text">User Management</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
+    <a class="cms-nav-link" href="#" data-nav="settings" data-pending="Settings"><i class="bi bi-sliders" aria-hidden="true"></i><span class="cms-nav-text">Settings</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
+    <a class="cms-nav-link" href="#" data-nav="appearance" data-pending="Appearance"><i class="bi bi-palette" aria-hidden="true"></i><span class="cms-nav-text">Appearance</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
+  </nav>
+</aside>
+<div class="cms-backdrop"></div>
+<!-- END SHARED: sidebar -->
+
+  <div class="cms-main">
+<!-- BEGIN SHARED: header (PHP: move into partials/header.php; breadcrumb changes per page) -->
+<header class="cms-topbar">
+  <button type="button" class="cms-menu-toggle" aria-label="Open menu" aria-controls="cmsSidebar" aria-expanded="false"><i class="bi bi-list" aria-hidden="true"></i></button>
+  <nav class="cms-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li>Website content</li><li aria-current="page">Event Categories</li></ol></nav>
+  <div class="cms-topbar-right">
+    <button type="button" class="cms-search-toggle" aria-label="Search" aria-expanded="false"><i class="bi bi-search" aria-hidden="true"></i></button>
+    <!-- PHP: this GET form can stay as is; the search page reads ?q= -->
+    <form class="cms-search" role="search" action="../search/search-results.html" method="get">
+      <label class="cms-visually-hidden" for="cmsGlobalSearch">Search the website</label>
+      <input type="search" id="cmsGlobalSearch" name="q" placeholder="Search..." autocomplete="off">
+      <button type="submit" class="cms-search-btn" aria-label="Search"><i class="bi bi-search" aria-hidden="true"></i></button>
+    </form>
+    <button type="button" class="cms-notif" data-pending="Notifications" aria-label="Notifications"><i class="bi bi-bell" aria-hidden="true"></i><span class="cms-notif-text">Notifications</span> <span class="cms-badge-count">3</span></button>
+    <a class="cms-btn cms-btn-outline" href="../../index.php" target="_blank" rel="noopener"><span class="cms-view-site-text">View Website</span><i class="bi bi-box-arrow-up-right cms-view-site-icon" aria-hidden="true"></i></a>
+    <button type="button" class="cms-user" data-pending="The account menu"><span class="cms-avatar" aria-hidden="true"></span><span class="cms-user-name">Admin User</span><span class="cms-user-caret" aria-hidden="true"></span></button>
+  </div>
+</header>
+<!-- END SHARED: header -->
+
+    <main class="cms-content" id="main">
+      <div class="cms-page-head">
+        <div>
+          <h1 class="cms-page-title">Event Categories</h1>
+          <p class="cms-page-sub">Organize events by category.</p>
+        </div>
+        <button type="button" class="cms-btn cms-btn-primary" id="categoryAdd">+ Add Category</button>
+      </div>
+
+      <section class="cms-card" aria-label="Event categories">
+        <div class="cms-filters">
+          <div class="cms-filter-search">
+            <label class="cms-visually-hidden" for="categorySearch">Search categories</label>
+            <input class="cms-input" id="categorySearch" type="search" placeholder="Search..." autocomplete="off">
+          </div>
+        </div>
+
+        <!-- PHP: replace the JS-rendered rows with a foreach over the categories query (with COUNT of events) -->
+        <div class="cms-table-wrap" id="categoryTableWrap">
+          <table class="cms-table event-category-table">
+            <thead>
+              <tr>
+                <th scope="col">Category Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Number of Events</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="categoryTableBody"></tbody>
+          </table>
+        </div>
+        <div id="categoryEmpty" hidden></div>
+        <div class="cms-table-footer" id="categoryFooter"></div>
+      </section>
+    </main>
+  </div>
+</div>
+
+  <script src="../vendor/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="../js/config.js"></script>
+  <script src="../js/seed-data.js"></script>
+  <script src="../js/sanitize.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/layout.js"></script>
+  <script src="../js/categories.js"></script>
+</body>
+</html>

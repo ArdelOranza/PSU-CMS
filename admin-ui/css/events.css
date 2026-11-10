@@ -1,0 +1,19 @@
+/* events.css — styles specific to the Events screens */
+.event-table{table-layout:fixed;min-width:900px}
+.event-table th:nth-child(1){width:16%}
+.event-table th:nth-child(2){width:13%}
+.event-table th:nth-child(3){width:15%}
+.event-table th:nth-child(4){width:14%}
+.event-table th:nth-child(5){width:14%}
+.event-table th:nth-child(6){width:11%}
+.event-table th:nth-child(7){width:17%}
+.event-table td{overflow-wrap:anywhere}
+.event-category-table{table-layout:fixed;min-width:700px}
+.event-category-table th:nth-child(1){width:24%}
+.event-category-table th:nth-child(2){width:36%}
+.event-category-table th:nth-child(3){width:20%}
+.event-category-table th:nth-child(4){width:20%}
+.event-category-table td{overflow-wrap:anywhere}
+/* "List View" is a static label for now (waiting on the UI team): looks like the design, does nothing */
+.event-view-label{cursor:default;user-select:none}
+.event-view-label:hover{background:#fff}

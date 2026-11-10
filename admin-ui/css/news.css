@@ -1,0 +1,12 @@
+/* news.css — styles specific to the News Management screens */
+.news-table{table-layout:fixed;min-width:900px}
+.news-table th:nth-child(1){width:5.5%}
+.news-table th:nth-child(2){width:17%}
+.news-table th:nth-child(3){width:13%}
+.news-table th:nth-child(4){width:14%}
+.news-table th:nth-child(5){width:14%}
+.news-table th:nth-child(6){width:14%}
+.news-table th:nth-child(7){width:22.5%}
+.news-table td{overflow-wrap:anywhere}
+.news-campus{font-weight:400}
+.news-form .cms-upload-preview span{pointer-events:none}

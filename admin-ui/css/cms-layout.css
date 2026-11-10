@@ -1,0 +1,117 @@
+/* ==========================================================================
+   cms-layout.css — sidebar, top bar, page frame (shared by every CMS page)
+   ========================================================================== */
+
+.cms-shell{display:flex;min-height:100vh}
+
+/* ---------- Sidebar ---------- */
+.cms-sidebar{
+  width:var(--cms-sidebar-w);flex:0 0 var(--cms-sidebar-w);
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:linear-gradient(180deg,var(--cms-sidebar-top) 0%,var(--cms-sidebar-bottom) 100%);
+  color:#fff;z-index:1040;
+  scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.25) transparent;
+}
+.cms-brand{display:flex;align-items:center;gap:11px;height:72px;padding:0 16px}
+.cms-brand-logo{width:44px;height:44px;border-radius:50%;object-fit:cover;background:#fff;flex:none}
+.cms-brand-text{display:flex;flex-direction:column;line-height:1.2}
+.cms-brand-text strong{font-size:15px;font-weight:700;letter-spacing:.01em}
+.cms-brand-text small{font-size:12px;font-weight:400;color:#c3cde0}
+
+.cms-nav-label{
+  padding:10px 16px 3px;font-size:11px;line-height:15px;font-weight:500;
+  letter-spacing:.04em;text-transform:uppercase;color:var(--cms-sidebar-label);
+}
+.cms-nav-link{
+  display:flex;align-items:center;gap:12px;width:100%;
+  position:relative;padding:10px 12px 10px 18px;border:0;background:none;text-align:left;
+  font-size:14px;line-height:15.5px;font-weight:500;color:#fff;cursor:pointer;
+  transition:background-color .15s;
+}
+.cms-nav-link:hover{background:rgba(255,255,255,.08)}
+.cms-nav-link .bi{font-size:16px;width:16px;flex:none;line-height:1}
+.cms-nav-text{flex:1;min-width:0}
+/* the small solid arrow shown at the right of expandable items */
+.cms-nav-caret{position:absolute;right:12px;top:50%;margin-top:-2px;width:0;height:0;border-left:2.5px solid transparent;border-right:2.5px solid transparent;border-top:3.5px solid #fff;flex:none}
+
+.cms-subnav{display:none}
+.cms-nav-group.is-open .cms-subnav{display:block}
+.cms-subnav .cms-nav-link{padding:9px 48px 9px 46px;font-weight:500}
+.cms-nav-link.active,.cms-nav-link.active:hover{background:rgba(255,255,255,.18);font-weight:600}
+
+/* ---------- Main column ---------- */
+.cms-main{flex:1;min-width:0;display:flex;flex-direction:column}
+
+.cms-topbar{
+  height:var(--cms-topbar-h);flex:none;display:flex;align-items:center;gap:14px;
+  padding:0 28px 0 24px;background:var(--cms-surface);border-bottom:1px solid var(--cms-border);
+  position:sticky;top:0;z-index:1030;
+}
+.cms-menu-toggle{display:none;border:1px solid var(--cms-border-strong);background:#fff;border-radius:var(--cms-radius);width:38px;height:38px;align-items:center;justify-content:center;font-size:20px;color:var(--cms-text)}
+
+.cms-breadcrumb{flex:1;min-width:0}
+.cms-breadcrumb ol{display:flex;flex-wrap:nowrap;align-items:center;list-style:none;margin:0;padding:0;font-size:13px;color:var(--cms-muted);white-space:nowrap;overflow:hidden}
+.cms-breadcrumb li+li::before{content:"/";margin:0 8px;color:var(--cms-muted)}
+.cms-breadcrumb a:hover{color:var(--cms-text)}
+.cms-breadcrumb li:last-child{overflow:hidden;text-overflow:ellipsis}
+
+.cms-topbar-right{display:flex;align-items:center;gap:14px;flex:none}
+
+/* header search (works as a plain GET form — easy to convert to PHP) */
+.cms-search{position:relative;width:219px}
+.cms-search input{
+  width:100%;height:37px;padding:0 36px 0 13px;font:inherit;font-size:14px;color:var(--cms-text);
+  background:#fff;border:1px solid var(--cms-border-strong);border-radius:var(--cms-radius);
+}
+.cms-search input::placeholder{color:var(--cms-placeholder)}
+.cms-search input:focus{outline:none;border-color:var(--cms-primary);box-shadow:0 0 0 3px rgba(30,79,163,.15)}
+.cms-search-btn{position:absolute;right:2px;top:2px;width:33px;height:33px;border:0;background:none;color:var(--cms-muted);border-radius:6px;font-size:14px}
+.cms-search-btn:hover{color:var(--cms-primary)}
+.cms-search-toggle{display:none;width:38px;height:38px;border:1px solid var(--cms-border-strong);background:#fff;border-radius:var(--cms-radius);align-items:center;justify-content:center;color:var(--cms-text)}
+
+.cms-notif{display:inline-flex;align-items:center;gap:7px;border:0;background:none;padding:0;font-size:13px;color:#4b5563}
+.cms-notif .bi{display:none;font-size:18px}
+.cms-badge-count{display:inline-block;min-width:19px;padding:1px 6px;border-radius:999px;background:#dc2626;color:#fff;font-size:12px;font-weight:600;line-height:16px;text-align:center}
+
+.cms-view-site-icon{display:none}
+.cms-user{display:inline-flex;align-items:center;gap:9px;border:0;background:none;padding:0;font-size:14px;font-weight:500;color:var(--cms-text)}
+.cms-avatar{width:32px;height:32px;border-radius:50%;background:var(--cms-thumb);flex:none}
+.cms-user-caret{width:0;height:0;border-left:2.5px solid transparent;border-right:2.5px solid transparent;border-top:3.5px solid #374151}
+
+/* ---------- Page content ---------- */
+.cms-content{flex:1;padding:28px 28px 40px}
+.cms-page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:19px}
+.cms-page-title{font-size:24px;line-height:28px;font-weight:700;color:var(--cms-text);letter-spacing:-.005em}
+.cms-page-sub{margin-top:2px;font-size:14px;line-height:20px;color:var(--cms-muted)}
+.cms-page-actions{flex:none;display:flex;gap:10px}
+
+/* ---------- Mobile drawer ---------- */
+.cms-backdrop{display:none}
+
+@media (max-width:991.98px){
+  .cms-sidebar{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);transition:transform .22s ease;box-shadow:none}
+  .cms-sidebar-open .cms-sidebar{transform:none;box-shadow:0 0 30px rgba(0,0,0,.35)}
+  .cms-sidebar-open .cms-backdrop{display:block;position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:1035}
+  .cms-menu-toggle{display:inline-flex}
+  .cms-topbar{padding:0 16px;gap:10px}
+  .cms-content{padding:20px 16px 32px}
+}
+@media (max-width:767.98px){
+  .cms-search{display:none;position:absolute;left:12px;right:12px;top:calc(var(--cms-topbar-h) - 6px);width:auto;z-index:5;background:#fff;padding:8px;border:1px solid var(--cms-border);border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.12)}
+  .cms-search.is-open{display:block}
+  .cms-search input{height:40px}
+  .cms-search-btn{right:10px;top:10px}
+  .cms-search-toggle{display:inline-flex}
+  .cms-notif-text{display:none}
+  .cms-notif .bi{display:inline}
+  .cms-view-site-text{display:none}
+  .cms-view-site-icon{display:inline}
+  .cms-topbar-right .cms-btn{padding:0 11px}
+  .cms-page-head{flex-wrap:wrap}
+}
+@media (max-width:575.98px){
+  .cms-user-name,.cms-user-caret{display:none}
+  .cms-breadcrumb ol li:not(:last-child){display:none}
+  .cms-breadcrumb li+li::before{content:none}
+  .cms-page-title{font-size:21px}
+}

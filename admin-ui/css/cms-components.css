@@ -1,0 +1,194 @@
+/* ==========================================================================
+   cms-components.css — reusable pieces: buttons, cards, filters, tables,
+   badges, pagination, forms, rich-text box, upload, empty state, toasts.
+   Module-specific styles live in news.css / announcements.css / events.css /
+   search.css and use their own prefixes.
+   ========================================================================== */
+
+/* ---------- Buttons ---------- */
+.cms-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  height:37px;padding:0 15px;border:1px solid transparent;border-radius:var(--cms-radius);
+  font-size:14px;font-weight:500;line-height:1;white-space:nowrap;cursor:pointer;
+  transition:background-color .15s,border-color .15s,color .15s;
+}
+.cms-btn-primary{background:var(--cms-primary);color:#fff}
+.cms-btn-primary:hover{background:var(--cms-primary-dark);color:#fff}
+.cms-btn-outline{background:#fff;color:var(--cms-text);border-color:var(--cms-border-strong)}
+.cms-btn-outline:hover{background:#f9fafb}
+.cms-btn-soft{background:var(--cms-primary-soft);color:var(--cms-primary)}
+.cms-btn-soft:hover{background:#dbe5f8}
+.cms-btn-danger{background:var(--cms-red);color:#fff}
+.cms-btn-danger:hover{background:#b91c1c;color:#fff}
+.cms-btn[disabled],.cms-btn.disabled{opacity:.55;pointer-events:none}
+
+/* small table action buttons: View / Edit / Delete */
+.cms-action{
+  display:inline-flex;align-items:center;justify-content:center;height:25px;padding:0 10px;
+  border:1px solid var(--cms-border);border-radius:6px;background:#fff;
+  font-size:12px;font-weight:500;line-height:1;color:var(--cms-text);cursor:pointer;white-space:nowrap;flex:none;
+}
+.cms-action:hover{background:#f9fafb}
+.cms-action-danger{color:var(--cms-red);border-color:var(--cms-red-border)}
+.cms-action-danger:hover{background:#fef2f2}
+.cms-actions{display:flex;gap:5px;flex-wrap:nowrap}
+
+/* ---------- Card ---------- */
+.cms-card{background:var(--cms-surface);border:1px solid var(--cms-border);border-radius:var(--cms-radius-lg);box-shadow:0 1px 2px rgba(16,24,40,.05);padding:18px}
+
+/* ---------- Filter bar + custom select ---------- */
+.cms-filters{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:22px}
+.cms-filter-search{position:relative;flex:0 1 300px;min-width:180px}
+.cms-input,.cms-textarea{
+  display:block;width:100%;font:inherit;font-size:14px;color:var(--cms-text);background:#fff;
+  border:1px solid var(--cms-border-strong);border-radius:var(--cms-radius);
+}
+.cms-input{height:36px;padding:0 13px}
+.cms-textarea{padding:9px 13px;resize:vertical;line-height:1.45}
+.cms-input::placeholder,.cms-textarea::placeholder{color:var(--cms-placeholder)}
+.cms-input:focus,.cms-textarea:focus{outline:none;border-color:var(--cms-primary);box-shadow:0 0 0 3px rgba(30,79,163,.15)}
+.cms-input[type=date],.cms-input[type=time]{color:var(--cms-text)}
+.cms-input.is-invalid,.cms-textarea.is-invalid,.cms-select-btn.is-invalid,.cms-richtext.is-invalid{border-color:var(--cms-red);box-shadow:0 0 0 3px rgba(220,38,38,.12)}
+
+/* enhanced select: native <select> stays in the DOM (hidden) so forms still work */
+.cms-select{position:relative;display:inline-block}
+.cms-select-native{position:absolute!important;opacity:0;pointer-events:none;width:1px;height:1px;overflow:hidden}
+.cms-select-btn{
+  display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 12px;
+  border:1px solid var(--cms-border-strong);border-radius:var(--cms-radius);background:#fff;
+  font-size:14px;color:var(--cms-text);cursor:pointer;white-space:nowrap;
+}
+.cms-select-btn:hover{background:#fcfcfd}
+.cms-select-btn::after{content:"";width:0;height:0;border-left:2.5px solid transparent;border-right:2.5px solid transparent;border-top:3.5px solid #374151;flex:none}
+.cms-select-block{display:block}
+.cms-select-block .cms-select-btn{width:100%}
+.cms-select-menu{
+  position:absolute;left:0;top:calc(100% + 4px);min-width:100%;max-height:260px;overflow-y:auto;z-index:1050;
+  margin:0;padding:4px;list-style:none;background:#fff;border:1px solid var(--cms-border);border-radius:10px;
+  box-shadow:0 10px 28px rgba(15,23,42,.14);
+}
+.cms-select-menu[hidden]{display:none}
+.cms-select-option{padding:7px 10px;border-radius:6px;font-size:14px;white-space:nowrap;cursor:pointer}
+.cms-select-option:hover,.cms-select-option.is-focus{background:#f3f4f6}
+.cms-select-option[aria-selected=true]{background:var(--cms-primary-soft);color:var(--cms-primary);font-weight:500}
+
+/* ---------- Table ---------- */
+.cms-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.cms-table{width:100%;border-collapse:collapse;font-size:14px;min-width:760px}
+.cms-table th{
+  padding:0 0 9px;text-align:left;font-size:12px;font-weight:500;letter-spacing:.03em;
+  text-transform:uppercase;color:var(--cms-muted);white-space:nowrap;
+}
+.cms-table td{padding:9px 12px 9px 0;vertical-align:middle;border-top:1px solid var(--cms-border);line-height:17px}
+.cms-table tbody tr:last-child td{border-bottom:1px solid var(--cms-border)}
+.cms-thumb{display:block;width:40px;height:28px;border-radius:6px;background:var(--cms-thumb);object-fit:cover}
+.cms-cell-title{font-weight:400;color:var(--cms-text);max-width:100%}
+.cms-cell-sub{display:block;margin-top:2px;font-size:12px;color:var(--cms-muted)}
+
+/* ---------- Status badges ---------- */
+.cms-status{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:500;line-height:16px;white-space:nowrap}
+.cms-status-green{background:var(--cms-green-bg);color:var(--cms-green)}
+.cms-status-amber{background:var(--cms-amber-bg);color:var(--cms-amber)}
+.cms-status-blue{background:var(--cms-blue-bg);color:var(--cms-blue)}
+.cms-status-gray{background:var(--cms-gray-bg);color:var(--cms-gray)}
+.cms-status-red{background:var(--cms-red-bg);color:var(--cms-red)}
+
+/* ---------- Table footer / pagination ---------- */
+.cms-table-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px;font-size:13px;color:var(--cms-muted)}
+.cms-pager{display:flex;gap:5px;align-items:center}
+.cms-page-btn{
+  min-width:27px;height:27px;padding:0 6px;border:1px solid var(--cms-border);border-radius:6px;background:#fff;
+  font-size:12px;font-weight:500;color:var(--cms-text);cursor:pointer;line-height:1;
+}
+.cms-page-btn:hover:not([disabled]){background:#f9fafb}
+.cms-page-btn.is-active{background:var(--cms-primary);border-color:var(--cms-primary);color:#fff}
+.cms-page-btn[disabled]{opacity:.45;cursor:default}
+
+/* ---------- Empty state ---------- */
+.cms-empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:34px 16px 38px}
+.cms-empty img{width:106px;height:auto;margin-bottom:14px}
+.cms-empty-title{font-size:15px;line-height:20px;font-weight:600;color:var(--cms-text)}
+.cms-empty-text{margin-top:3px;font-size:13px;line-height:18px;color:var(--cms-muted)}
+.cms-empty .cms-btn{margin-top:16px}
+
+/* ---------- Forms ---------- */
+.cms-form-card{padding:18px 18px 20px}
+.cms-field{margin-bottom:15px}
+.cms-label{display:block;margin-bottom:6px;font-size:13px;line-height:18px;font-weight:600;color:var(--cms-text)}
+.cms-required::after{content:" *";color:var(--cms-red)}
+.cms-form-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 15px}
+.cms-form-row>:only-child{grid-column:1/-1}
+.cms-field-error{display:none;margin-top:5px;font-size:12px;color:var(--cms-red)}
+.cms-field.has-error .cms-field-error{display:block}
+.cms-field-hint{margin-top:5px;font-size:12px;color:var(--cms-muted)}
+.cms-form-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px;flex-wrap:wrap}
+
+/* upload row (image preview + button) */
+.cms-upload{display:flex;align-items:center;gap:13px;flex-wrap:wrap}
+.cms-upload-preview{width:200px;height:112px;border-radius:var(--cms-radius);background:var(--cms-thumb);overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--cms-muted);font-size:12px;flex:none}
+.cms-upload-preview img{width:100%;height:100%;object-fit:cover;display:block}
+.cms-upload .cms-btn{height:34px}
+
+/* drag & drop zone */
+.cms-dropzone{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:118px;padding:18px;border:1.5px dashed var(--cms-border-strong);border-radius:10px;font-size:13px;color:var(--cms-muted);text-align:center}
+.cms-dropzone.is-over{border-color:var(--cms-primary);background:#f5f8fe}
+.cms-dropzone .cms-btn{height:34px}
+.cms-file-chip{display:inline-flex;align-items:center;gap:8px;max-width:100%;padding:5px 10px;border-radius:999px;background:var(--cms-gray-bg);font-size:12px;color:var(--cms-text)}
+.cms-file-chip button{border:0;background:none;padding:0;color:var(--cms-muted);line-height:1}
+
+/* rich-text box (toolbar is plain text buttons, as in the design) */
+.cms-richtext{border:1px solid var(--cms-border-strong);border-radius:var(--cms-radius);background:#fff;overflow:hidden}
+.cms-richtext:focus-within{border-color:var(--cms-primary);box-shadow:0 0 0 3px rgba(30,79,163,.15)}
+.cms-richtext-toolbar{display:flex;flex-wrap:wrap;gap:2px 4px;padding:6px 8px 0}
+.cms-richtext-toolbar button{border:0;background:none;padding:2px 7px;border-radius:5px;font-size:12px;line-height:18px;color:var(--cms-muted);cursor:pointer}
+.cms-richtext-toolbar button:hover,.cms-richtext-toolbar button.is-on{background:#f3f4f6;color:var(--cms-text)}
+.cms-richtext-area{min-height:108px;padding:5px 13px 10px;font-size:14px;line-height:1.5;outline:none;overflow-wrap:anywhere}
+.cms-richtext-area:empty::before{content:attr(data-placeholder);color:var(--cms-placeholder);pointer-events:none}
+.cms-richtext-area ul,.cms-richtext-area ol{margin:4px 0;padding-left:22px}
+.cms-richtext-area img,.cms-prose img{max-width:100%;height:auto;border-radius:6px}
+.cms-richtext-area a,.cms-prose a{color:var(--cms-primary);text-decoration:underline}
+
+/* rendered (sanitized) rich text */
+.cms-prose{font-size:14px;line-height:1.6;overflow-wrap:anywhere}
+.cms-prose p,.cms-prose div{margin:0 0 8px}
+.cms-prose ul,.cms-prose ol{margin:0 0 8px;padding-left:22px}
+
+/* ---------- Toasts ---------- */
+.cms-toast-stack{position:fixed;right:20px;bottom:20px;z-index:2000;display:flex;flex-direction:column;gap:10px;max-width:calc(100vw - 40px)}
+.cms-toast{
+  display:flex;align-items:flex-start;gap:10px;min-width:260px;max-width:380px;padding:12px 14px;
+  background:#fff;border:1px solid var(--cms-border);border-left:4px solid var(--cms-primary);border-radius:10px;
+  box-shadow:0 10px 30px rgba(15,23,42,.16);font-size:13px;line-height:18px;
+}
+.cms-toast.is-success{border-left-color:var(--cms-green)}
+.cms-toast.is-error{border-left-color:var(--cms-red)}
+.cms-toast .bi{font-size:16px;margin-top:1px}
+.cms-toast.is-success .bi{color:var(--cms-green)}
+.cms-toast.is-error .bi{color:var(--cms-red)}
+.cms-toast button{margin-left:auto;border:0;background:none;color:var(--cms-muted);padding:0;font-size:16px;line-height:1}
+
+/* ---------- Modals (Bootstrap modal, restyled) ---------- */
+.cms-modal .modal-content{border:0;border-radius:var(--cms-radius-lg);box-shadow:0 20px 50px rgba(15,23,42,.25)}
+.cms-modal .modal-header{border-bottom:1px solid var(--cms-border);padding:16px 20px}
+.cms-modal .modal-title{font-size:16px;font-weight:600;color:var(--cms-text)}
+.cms-modal .modal-body{padding:18px 20px;font-size:14px}
+.cms-modal .modal-footer{border-top:1px solid var(--cms-border);padding:12px 20px;gap:8px}
+.cms-modal .btn-close{box-shadow:none}
+.cms-detail-list{display:grid;grid-template-columns:150px minmax(0,1fr);gap:9px 14px;margin:0}
+.cms-detail-list dt{font-size:12px;font-weight:500;letter-spacing:.03em;text-transform:uppercase;color:var(--cms-muted);padding-top:2px}
+.cms-detail-list dd{margin:0;overflow-wrap:anywhere}
+.cms-detail-cover{width:100%;max-height:240px;object-fit:cover;border-radius:var(--cms-radius);margin-bottom:14px}
+@media (max-width:575.98px){.cms-detail-list{grid-template-columns:1fr;gap:2px}.cms-detail-list dd{margin-bottom:8px}}
+
+/* search-term highlight (used by search.js via <mark>) */
+.cms-mark{background:#fef08a;color:inherit;padding:0 1px;border-radius:2px}
+
+/* ---------- Responsive tweaks ---------- */
+@media (max-width:767.98px){
+  .cms-filter-search{flex:1 1 100%}
+  .cms-form-row{grid-template-columns:1fr}
+  .cms-upload-preview{width:100%;max-width:320px}
+  .cms-card{padding:14px}
+  .cms-form-card{padding:14px}
+  .cms-table-footer{justify-content:center}
+}

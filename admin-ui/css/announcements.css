@@ -1,0 +1,15 @@
+/* announcements.css — styles specific to the Announcement screens */
+.announcement-table{table-layout:fixed;min-width:900px}
+.announcement-table th:nth-child(1){width:19%}
+.announcement-table th:nth-child(2){width:13%}
+.announcement-table th:nth-child(3){width:13%}
+.announcement-table th:nth-child(4){width:13%}
+.announcement-table th:nth-child(5){width:13%}
+.announcement-table th:nth-child(6){width:13%}
+.announcement-table th:nth-child(7){width:16%}
+.announcement-table td{overflow-wrap:anywhere}
+.announcement-urgent{margin-left:6px;padding:1px 7px;font-size:11px;vertical-align:1px}
+.announcement-target{margin-top:6px;font-size:12px;line-height:17px;color:var(--cms-muted)}
+.announcement-target .bi{color:var(--cms-primary)}
+.announcement-file-list{margin-top:4px}
+.announcement-file-list:empty{display:none}
