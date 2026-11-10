@@ -1,0 +1,36 @@
+/* search.css — Global Search screens */
+.search-panel{margin-top:45px;padding:18px}
+.search-form{display:flex;gap:10px;align-items:center}
+.search-form .cms-input{height:42px;font-size:15px;flex:1}
+.search-form .cms-btn{height:36px;padding:0 17px;flex:none}
+.search-chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}
+.search-chip{
+  display:inline-flex;align-items:center;height:27px;padding:0 12px;border:1px solid var(--cms-border-strong);border-radius:999px;
+  background:#fff;font-size:13px;line-height:1;color:var(--cms-text);cursor:pointer;white-space:nowrap;
+}
+.search-chip:hover{background:#f9fafb}
+.search-chip.is-active,.search-chip.is-active:hover{background:var(--cms-primary);border-color:var(--cms-primary);color:#fff}
+
+.search-results{margin-top:16px;padding:10px 18px}
+.search-result-list{list-style:none;margin:0;padding:0}
+.search-result{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 0}
+.search-result-info{min-width:0}
+.search-result-title{display:block;max-width:100%;padding:0;border:0;background:none;text-align:left;font-size:14px;font-weight:600;line-height:19px;color:var(--cms-text);cursor:pointer;overflow-wrap:anywhere}
+.search-result-title:hover{color:var(--cms-primary)}
+.search-result-meta{margin-top:1px;font-size:13px;line-height:18px;color:var(--cms-muted)}
+.search-result-snippet{margin-top:3px;font-size:13px;line-height:18px;color:#4b5563;overflow-wrap:anywhere}
+.search-campus-note{margin:4px 0 0;font-size:12px;color:var(--cms-muted)}
+.search-campus-note a{color:var(--cms-primary);text-decoration:underline}
+
+.search-empty{padding:26px 16px 30px}
+.search-tips{margin:12px 0 0;padding:0;list-style:none;font-size:13px;line-height:20px;color:var(--cms-muted)}
+.search-quick{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px;margin-top:14px}
+.search-quick-label{font-size:13px;color:var(--cms-muted)}
+.search-empty .cms-btn{margin-top:16px}
+
+@media (max-width:575.98px){
+  .search-panel{margin-top:20px}
+  .search-form{flex-wrap:wrap}
+  .search-form .cms-input{flex:1 1 100%}
+  .search-result{align-items:flex-start;flex-direction:column;gap:8px}
+}
