@@ -1,0 +1,38 @@
+/* ==========================================================================
+   settings.css — Account, Security and Theme settings screens.
+   Prefixes: account-, security-, theme-.
+   ========================================================================== */
+
+/* ---------- Account ---------- */
+.account-photo{width:56px;height:56px;border-radius:var(--cms-radius);text-align:center;font-size:10px;line-height:1.2;padding:4px}
+.account-photo img{border-radius:var(--cms-radius)}
+
+/* ---------- Password inputs with a show/hide button ---------- */
+.security-pw{position:relative}
+.security-pw .cms-input{padding-right:40px}
+.security-pw-toggle{position:absolute;right:2px;top:2px;width:32px;height:32px;border:0;background:none;border-radius:6px;color:var(--cms-muted);font-size:15px;cursor:pointer}
+.security-pw-toggle:hover{color:var(--cms-primary-text,var(--cms-primary))}
+.security-strength-weak{color:var(--cms-red)}
+.security-strength-fair{color:var(--cms-amber)}
+.security-strength-good{color:var(--cms-green)}
+
+/* ---------- Security ---------- */
+.security-toggle{display:flex;align-items:center;gap:8px;width:100%;text-align:left;cursor:pointer}
+.security-toggle-dot{width:8px;height:8px;border-radius:50%;flex:none;background:var(--cms-placeholder)}
+.security-toggle.is-on .security-toggle-dot{background:var(--cms-text)}
+.security-sessions{min-height:66px;padding:8px 13px;border:1px solid var(--cms-border-strong);border-radius:var(--cms-radius);background:var(--cms-surface);font-size:13px;line-height:18px}
+
+/* ---------- Theme ---------- */
+.theme-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.theme-card{display:block;width:100%;padding:12px;font:inherit;color:inherit;text-align:left;cursor:pointer}
+.theme-card:hover{border-color:var(--cms-border-strong)}
+.theme-card[aria-checked="true"]{border-color:var(--cms-primary);box-shadow:0 0 0 2px var(--cms-primary)}
+.theme-preview{display:flex;align-items:center;justify-content:center;height:86px;border-radius:var(--cms-radius);background:var(--cms-thumb);font-size:11px;color:var(--cms-muted)}
+.theme-card-foot{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13px;font-weight:600;color:var(--cms-text)}
+.theme-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 15px;margin-top:15px;padding:12px 14px 2px}
+.theme-options .cms-field{margin-bottom:12px}
+.theme-options .cms-label{font-size:12px;margin-bottom:4px}
+
+@media (max-width:767.98px){
+  .theme-grid,.theme-options{grid-template-columns:1fr}
+}

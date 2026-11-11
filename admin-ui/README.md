@@ -52,5 +52,30 @@ the layout falls back to the original screenshots.
   "Pending Review"/"Archived" status; the schema will need those columns.
 - Add CSRF tokens to forms (marked with `<!-- PHP: ... -->` comments).
 
+## Messages, Feedback & Settings module
+Branch: `feature/messages-feedback-settings`. Pages: `messages/` (All Messages — including its empty
+state, Unread Messages, Feedback, Message Details), `settings/` (Account, Security, Theme) and the public
+`contact/contact-form.html`.
+
+| File | Purpose |
+|---|---|
+| `js/message-store.js` | One `messages` dataset (`CMS.db.messages`) + `CMS.messages` helpers, used by every message page |
+| `js/settings-store.js` | One-record repos `account`, `security`, `theme` + header name/avatar sync |
+| `js/messages.js`, `js/message-details.js`, `js/contact.js` | List pages, details page + simulated reply, public form |
+| `js/account.js`, `js/security.js`, `js/theme-page.js` | Settings pages |
+| `js/theme.js` | Applies the saved theme; load it in `<head>` (`<script src="../js/theme.js">`) |
+| `js/csv.js` | CSV export (escapes commas/quotes/line breaks; `data:` URL, not `blob:`) |
+| `css/messages.css`, `settings.css`, `contact.css`, `theme.css` | Module styles; `theme.css` holds Modern Light / Campus Dark |
+
+- Status values: `unread`, `read`, `responded`. Feedback shows these as New (unread) / Reviewed (read, responded).
+- Opening a message does **not** mark it read (the design shows Mark as Read on that screen).
+- Everything is a front-end simulation: no email is sent, passwords are validated and discarded (never stored),
+  the honeypot and 5-per-15-minutes throttle only run in this browser.
+- Console helper: `CMS.dev.clearMessages()` then reload All Messages → empty state.
+- **Theme on other pages:** add `<script src="../js/theme.js"></script>` to the `<head>` and
+  `<link rel="stylesheet" href="../css/theme.css">` after the other stylesheets.
+- **PHP schema:** the `feedback` table needs `campus_department`, `type` (`inquiry`/`feedback`), `rating`, `category`,
+  `reply_subject`/`reply_body`/`replied_at`, and status `unread`/`read`/`responded` (currently `new`/`read`).
+
 ## Git
-Never push to `main`. Work on `feature/news-announcements-events-search`, push that branch, and open a pull request.
+Never push to `main`. Work on your own feature branch (e.g. `feature/news-announcements-events-search`), push that branch, and open a pull request.
