@@ -1,0 +1,10 @@
+/* programs.css — Academic Programs screens */
+.program-table{min-width:1020px}
+.program-table th:nth-child(1){width:17%}
+.program-table th:nth-child(2){width:8%}
+.program-table th:nth-child(3){width:9%}
+.program-table th:nth-child(4){width:9%}
+.program-table th:nth-child(5){width:14%}
+.program-table th:nth-child(6){width:16%}
+.program-table th:nth-child(7){width:9%}
+.program-table th:nth-child(8){width:18%}
