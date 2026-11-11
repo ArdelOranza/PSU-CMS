@@ -1,0 +1,9 @@
+/* departments.css — Departments screens */
+.department-table{min-width:980px}
+.department-table th:nth-child(1){width:16%}
+.department-table th:nth-child(2){width:8%}
+.department-table th:nth-child(3){width:9%}
+.department-table th:nth-child(4){width:16%}
+.department-table th:nth-child(5){width:23%}
+.department-table th:nth-child(6){width:10%}
+.department-table th:nth-child(7){width:18%}

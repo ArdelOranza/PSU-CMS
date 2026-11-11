@@ -52,5 +52,33 @@ the layout falls back to the original screenshots.
   "Pending Review"/"Archived" status; the schema will need those columns.
 - Add CSRF tokens to forms (marked with `<!-- PHP: ... -->` comments).
 
+## University Structure & User Management (Member 3)
+Screens: `colleges/`, `departments/`, `programs/`, `users/` (9 screens, matching the Member 3 design document).
+
+| File | Purpose |
+| --- | --- |
+| `js/structure-seed.js` | First-run sample data (colleges, departments, programs, roles, users, extra faculty). |
+| `js/structure-db.js` | Adds `CMS.db.colleges / departments / programs / roles / users` and the shared helpers in `CMS.structure` (lookups, delete rules, generic list page, validation helper). Does **not** edit `storage.js`. |
+| `js/colleges.js`, `departments.js`, `programs.js`, `users.js`, `roles.js` | One script per module (list + add/edit form where both exist). |
+| `js/combobox.js` + `css/cms-combobox.css` | Reusable searchable dropdown (used for Department Head). Any module may reuse it. |
+| `css/structure.css`, `colleges.css`, `departments.css`, `programs.css`, `users.css` | Styles (prefixes `structure-`, `college-`, `department-`, `program-`, `user-`, `role-`). |
+
+How the data connects (all by ID): `department.collegeId` → college, `program.collegeId` + `program.departmentId`,
+`department.headId` → `CMS.db.faculty`, `user.roleId` → role. Dropdowns read these datasets; nothing is hard-coded.
+Rules (front-end only): a college with departments/programs, a department with programs, and a role with users cannot be
+deleted; codes/emails/usernames/role names must be unique; the signed-in demo user cannot be deleted.
+
+Notes for the team:
+- The sidebar groups **University Structure** and **User Management** replaced the two placeholder links in every page.
+- `structure-db.js` adds 4 sample faculty (the department heads shown in the design) to `CMS.db.faculty` once;
+  the existing faculty records are not changed.
+- Passwords on Add New User are validated and then discarded — nothing is stored. There is no real login or permission check.
+- Images are saved as small JPEG data URLs (the site CSP blocks `blob:` URLs).
+- Fields beyond the screenshots (vision, mission, header image, department email/office/hours, campus, accreditation,
+  career prospects, admission criteria, syllabus file name) exist in the data model but have no form inputs yet.
+  They show in the **View** dialogs once filled.
+- PHP: colleges/departments/programs need their own tables (they are not `content` rows with these fields), and users
+  need `username`, `status`, `last_login` and a role reference. Hash passwords with `password_hash()` on the server.
+
 ## Git
 Never push to `main`. Work on `feature/news-announcements-events-search`, push that branch, and open a pull request.

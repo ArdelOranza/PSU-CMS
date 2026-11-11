@@ -1,0 +1,8 @@
+/* structure.css — small styles shared by the University Structure and User Management screens */
+.structure-list{margin:0;padding-left:18px}
+.structure-list li{margin:0 0 2px}
+.structure-none{color:var(--cms-muted)}
+/* tables: fixed layout so long names wrap instead of pushing the Actions column off-screen */
+.structure-table{table-layout:fixed}
+.structure-table td{overflow-wrap:anywhere}
+.structure-table td:last-child,.structure-table th:last-child{overflow-wrap:normal}

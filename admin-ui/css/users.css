@@ -1,0 +1,25 @@
+/* users.css — All Users, Add New User, User Roles */
+.user-table{min-width:980px}
+.user-table th:nth-child(1){width:6%}
+.user-table th:nth-child(2){width:14%}
+.user-table th:nth-child(3){width:10%}
+.user-table th:nth-child(4){width:20%}
+.user-table th:nth-child(5){width:14%}
+.user-table th:nth-child(6){width:9%}
+.user-table th:nth-child(7){width:9%}
+.user-table th:nth-child(8){width:18%}
+
+/* photo column / avatar */
+.user-thumb{display:block;width:28px;height:28px;border-radius:6px;background:var(--cms-thumb);object-fit:cover}
+.user-photo-preview{width:110px;height:110px}
+.user-password-note{margin:-4px 0 15px}
+
+/* role cards (User Roles) */
+.role-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:44px}
+.role-card{display:flex;flex-direction:column;align-items:flex-start;padding:16px 18px}
+.role-name{font-size:15px;line-height:20px;font-weight:600;color:var(--cms-text)}
+.role-tagline{margin-top:5px;font-size:13px;line-height:18px;color:var(--cms-primary)}
+.role-desc{margin-top:5px;font-size:13px;line-height:18px;color:var(--cms-muted)}
+.role-edit{margin-top:12px;height:28px;padding:0 11px;font-size:12px}
+.role-empty{grid-column:1/-1}
+@media (max-width:767.98px){.role-grid{grid-template-columns:1fr;margin-top:24px}}
