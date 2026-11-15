@@ -76,7 +76,7 @@
 <!-- BEGIN SHARED: header (PHP: move into partials/header.php; breadcrumb changes per page) -->
 <header class="cms-topbar">
   <button type="button" class="cms-menu-toggle" aria-label="Open menu" aria-controls="cmsSidebar" aria-expanded="false"><i class="bi bi-list" aria-hidden="true"></i></button>
-  <nav class="cms-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li>Website content</li><li aria-current="page" id="eventCrumb">All Events</li></ol></nav>
+  <nav class="cms-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li>Website content</li><li aria-current="page" id="eventCrumb">All Events</li><li id="eventCrumbView" hidden>Calendar View</li></ol></nav>
   <div class="cms-topbar-right">
     <button type="button" class="cms-search-toggle" aria-label="Search" aria-expanded="false"><i class="bi bi-search" aria-hidden="true"></i></button>
     <!-- PHP: this GET form can stay as is; the search page reads ?q= -->
@@ -108,8 +108,7 @@
             <input class="cms-input" id="eventSearch" type="search" placeholder="Search..." autocomplete="off">
           </div>
           <select id="eventFilterStatus" data-cms-select aria-label="Filter by status"></select>
-          <!-- Static label for now (the UI team has not decided on other views) -->
-          <span class="cms-select-btn event-view-label">List View</span>
+          <select id="eventViewSelect" data-cms-select aria-label="Choose view"></select>
         </div>
 
         <!-- PHP: replace the JS-rendered rows with a foreach over the events query -->
@@ -129,6 +128,36 @@
             <tbody id="eventTableBody"></tbody>
           </table>
         </div>
+        <!-- Calendar View (shown instead of the table when "Calendar View" is chosen) -->
+        <div id="eventCalendarWrap" hidden>
+          <div class="event-calendar-bar">
+            <div class="event-calendar-nav-group">
+              <button type="button" class="event-calendar-nav" data-cal="prev" aria-label="Previous month">&lsaquo;</button>
+              <button type="button" class="event-calendar-nav" data-cal="next" aria-label="Next month">&rsaquo;</button>
+              <h2 class="event-calendar-title" data-cal="title"></h2>
+              <button type="button" class="event-calendar-today" data-cal="today">Today</button>
+            </div>
+            <div class="event-calendar-legend" aria-label="Legend">
+              <span class="event-legend-item"><i class="event-legend-dot event-dot-upcoming"></i>Upcoming</span>
+              <span class="event-legend-item"><i class="event-legend-dot event-dot-ongoing"></i>Ongoing</span>
+              <span class="event-legend-item"><i class="event-legend-dot event-dot-completed"></i>Completed</span>
+            </div>
+          </div>
+          <p class="cms-visually-hidden" data-cal="status" role="status" aria-live="polite"></p>
+          <div class="event-calendar-scroll">
+            <!-- PHP: the weeks/days below can be built with a loop; the markup stays the same -->
+            <table class="event-calendar-table">
+              <thead>
+                <tr>
+                  <th scope="col">SUN</th><th scope="col">MON</th><th scope="col">TUE</th><th scope="col">WED</th>
+                  <th scope="col">THU</th><th scope="col">FRI</th><th scope="col">SAT</th>
+                </tr>
+              </thead>
+              <tbody data-cal="body"></tbody>
+            </table>
+          </div>
+        </div>
+
         <!-- Empty state: shown automatically when there are no events -->
         <div id="eventEmpty" hidden></div>
         <div class="cms-table-footer" id="eventFooter"></div>
@@ -145,6 +174,7 @@
   <script src="../js/ui.js"></script>
   <script src="../js/layout.js"></script>
   <script src="../js/event-rules.js"></script>
+  <script src="../js/event-calendar.js"></script>
   <script src="../js/events.js"></script>
 </body>
 </html>

@@ -1,24 +1,52 @@
 /* ==========================================================================
-   events.js — All Events (list + empty state) and Add / Edit Event.
+   events.js — All Events (list view, calendar view, empty state) and Add / Edit Event.
    <body data-page="all-events"> or "add-event" picks the page.
    ========================================================================== */
 (function () {
   var cfg = CMS.config, ui = CMS.ui, el = ui.el, db = CMS.db.events, cats = CMS.db.eventCategories, rules = CMS.eventRules;
 
-  /* ======================= All Events (list) ======================= */
+  /* ======================= All Events (list + calendar) ======================= */
   function initList() {
-    var state = { q: '', status: '', page: 1 };
+    var VIEW_KEY = cfg.storagePrefix + 'ui.eventsView';      // remembers the last view used
     var body = document.getElementById('eventTableBody');
     var tableWrap = document.getElementById('eventTableWrap');
     var emptyBox = document.getElementById('eventEmpty');
     var footer = document.getElementById('eventFooter');
+    var calWrap = document.getElementById('eventCalendarWrap');
     var searchInput = document.getElementById('eventSearch');
     var statusSel = document.getElementById('eventFilterStatus');
+    var viewSel = document.getElementById('eventViewSelect');
     var crumb = document.getElementById('eventCrumb');
+    var crumbView = document.getElementById('eventCrumbView');
+    var state = { q: '', status: '', page: 1, view: startView() };
+    var calendar = CMS.eventCalendar.init({
+      root: calWrap,
+      /* the calendar shows published events only (drafts are not in its legend) */
+      getEvents: function () { return db.list().filter(function (ev) { return ev.state === 'published' && matches(ev); }); },
+      onOpen: function (ev) { showEvent(ev); },
+      onMore: function (iso, list) { showDay(iso, list); }
+    });
 
-    ui.setOptions(statusSel, [
-      { value: '', label: 'All Status' }, { value: 'upcoming', label: 'Upcoming' }, { value: 'ongoing', label: 'Ongoing' },
-      { value: 'completed', label: 'Completed' }, { value: 'draft', label: 'Draft' }], '');
+    /* ?view=list or ?view=calendar wins; otherwise the last view used */
+    function startView() {
+      var v = ui.getParam('view');
+      if (v === 'list' || v === 'calendar') { saveView(v); return v; }
+      try { if (window.localStorage.getItem(VIEW_KEY) === 'calendar') return 'calendar'; } catch (e) { /* ignore */ }
+      return 'list';
+    }
+    function saveView(v) { try { window.localStorage.setItem(VIEW_KEY, v); } catch (e) { /* ignore */ } }
+    function syncUrl() {
+      try { window.history.replaceState(null, '', window.location.pathname + (state.view === 'calendar' ? '?view=calendar' : '')); } catch (e) { /* file:// in some browsers */ }
+    }
+
+    function setStatusOptions() {
+      var items = [{ value: '', label: 'All Status' }, { value: 'upcoming', label: 'Upcoming' }, { value: 'ongoing', label: 'Ongoing' }, { value: 'completed', label: 'Completed' }];
+      if (state.view === 'list') items.push({ value: 'draft', label: 'Draft' });
+      else if (state.status === 'draft') state.status = '';      // drafts are not shown on the calendar
+      ui.setOptions(statusSel, items, state.status);
+    }
+    ui.setOptions(viewSel, [{ value: 'list', label: 'List View' }, { value: 'calendar', label: 'Calendar View' }], state.view);
+    setStatusOptions();
 
     function matches(ev) {
       if (state.status && rules.effectiveStatus(ev) !== state.status) return false;
@@ -49,15 +77,26 @@
       return tr;
     }
 
-    function render() {
-      var all = db.list();
+    /* Breadcrumb: "All Events" (or "All Events – Empty State"), or "All Events / Calendar View" */
+    function updateCrumb(total) {
+      ui.clear(crumb);
+      if (state.view === 'calendar') {
+        crumb.appendChild(el('a', { href: 'all-events.html?view=list', text: 'All Events' }));
+        crumb.removeAttribute('aria-current');
+        crumbView.hidden = false; crumbView.setAttribute('aria-current', 'page');
+      } else {
+        crumb.textContent = total ? 'All Events' : 'All Events \u2013 Empty State';   // the design labels the empty page
+        crumb.setAttribute('aria-current', 'page');
+        crumbView.hidden = true; crumbView.removeAttribute('aria-current');
+      }
+    }
+
+    function renderList(all) {
       var rows = all.filter(matches);
       var size = cfg.pageSize.events;
       var pages = Math.max(1, Math.ceil(rows.length / size));
       state.page = Math.min(state.page, pages);
       ui.clear(body); ui.clear(footer);
-      /* the design labels the empty page "All Events – Empty State" */
-      crumb.textContent = all.length ? 'All Events' : 'All Events \u2013 Empty State';
       if (!rows.length) {
         tableWrap.hidden = true; emptyBox.hidden = false;
         if (!all.length) ui.renderEmpty(emptyBox, { title: 'No events scheduled', text: 'Items you add will appear here.' });
@@ -67,6 +106,19 @@
       tableWrap.hidden = false; emptyBox.hidden = true;
       rows.slice((state.page - 1) * size, state.page * size).forEach(function (ev) { body.appendChild(buildRow(ev)); });
       ui.renderFooter(footer, { page: state.page, pageSize: size, total: rows.length, onPage: function (p) { state.page = p; render(); } });
+    }
+
+    function render() {
+      var all = db.list();
+      var isCalendar = state.view === 'calendar';
+      updateCrumb(all.length);
+      calWrap.hidden = !isCalendar;
+      if (isCalendar) {
+        tableWrap.hidden = true; emptyBox.hidden = true; ui.clear(footer);
+        calendar.render();
+      } else {
+        renderList(all);
+      }
     }
 
     function showEvent(ev) {
@@ -79,6 +131,22 @@
       });
     }
 
+    /* "+N more": every event of a busy day in one list */
+    function showDay(iso, list) {
+      var pending = null;
+      var ul = el('ul', { class: 'event-day-list' });
+      list.forEach(function (ev) {
+        var status = rules.effectiveStatus(ev), time = rules.timeText(ev);
+        var open = el('button', { type: 'button', class: 'event-day-open', text: ev.title });
+        open.addEventListener('click', function () { pending = ev; modal.hide(); });
+        ul.appendChild(el('li', {}, [open, el('span', { class: 'event-day-meta', text: time }), ui.badge(status, rules.statusLabel(status))]));
+      });
+      var closeBtn = el('button', { type: 'button', class: 'cms-btn cms-btn-outline', 'data-bs-dismiss': 'modal', text: 'Close' });
+      var modalEl = ui.modalShell('Events on ' + ui.formatDate(iso), [ul], [closeBtn]);
+      var modal = ui.openModal(modalEl);
+      modalEl.addEventListener('hidden.bs.modal', function () { if (pending) showEvent(pending); });
+    }
+
     function removeEvent(ev) {
       ui.confirmDialog({ title: 'Delete event', message: 'Delete \u201C' + ev.title + '\u201D? This cannot be undone.', confirmLabel: 'Delete' })
         .then(function (yes) {
@@ -88,6 +156,10 @@
         });
     }
 
+    viewSel.addEventListener('change', function () {
+      state.view = viewSel.value === 'calendar' ? 'calendar' : 'list';
+      saveView(state.view); syncUrl(); setStatusOptions(); state.page = 1; render();
+    });
     statusSel.addEventListener('change', function () { state.status = statusSel.value; state.page = 1; render(); });
     searchInput.addEventListener('input', ui.debounce(function () { state.q = searchInput.value.trim(); state.page = 1; render(); }, 180));
     render();

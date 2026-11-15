@@ -111,7 +111,7 @@
 }
 @media (max-width:575.98px){
   .cms-user-name,.cms-user-caret{display:none}
-  .cms-breadcrumb ol li:not(:last-child){display:none}
+  .cms-breadcrumb ol li:not([aria-current="page"]){display:none}
   .cms-breadcrumb li+li::before{content:none}
   .cms-page-title{font-size:21px}
 }
