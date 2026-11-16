@@ -44,18 +44,23 @@ CMS.seed = (function () {
   function announcements() {
     var rows = [
       ['Midterm Examination Schedule', 'Academic', 'Registrar', ALL, 'normal', '2026-10-27', '2026-11-15', 'published', p('The midterm examination schedule has been posted. Please check your college bulletin board and the student portal.')],
-      ['Suspension of Classes \u2013 Typhoon', 'Advisory', 'Admin User', ALL, 'urgent', '2026-10-22', '2026-10-25', 'published', p('Classes at all levels are suspended due to the approaching typhoon. Stay safe and monitor official advisories.')],
-      ['Scholarship Application Deadline', 'Scholarship', 'Ana Reyes', ALL, 'normal', '2026-10-18', '2026-11-30', 'published', p('Applications for the scholarship program close on the date shown. Submit all requirements to the Scholarship Office.')],
-      ['Faculty Meeting Notice', 'Administrative', 'Pedro Cruz', 'Urdaneta', 'normal', '2026-10-12', '2026-11-05', 'pending', p('A general faculty meeting will be held in the conference room. Attendance is required.')],
+      ['Suspension of Classes \u2013 Typhoon', 'Advisory', 'Admin User', ALL, 'urgent', '2026-10-22', '2026-10-25', 'published', p('Due to the approaching tropical cyclone and the weather advisory issued by PAGASA, classes at all levels in all PSU campuses are suspended on October 23, 2026.') + p('Faculty and staff are advised to monitor official university channels for updates on the resumption of classes and make-up schedules.'),
+       { name: 'Memorandum-Class-Suspension.pdf', size: 217088, type: 'pdf' }],
+      ['Scholarship Application Deadline', 'Scholarship', 'Ana Reyes', ALL, 'normal', '2026-10-18', '2026-11-30', 'published', p('The Scholarship Office reminds all qualified students that the deadline for submitting applications for the Second Semester scholarship grants is on November 30, 2026.') + p('Applicants must submit the accomplished form, a copy of their grades, and a certificate of indigency at the Student Affairs Office of their campus.'),
+       { name: 'Scholarship-Application-Guidelines.pdf', size: 1153434, type: 'pdf' }],
+      ['Faculty Meeting Notice', 'Administrative', 'Pedro Cruz', 'Urdaneta', 'normal', '2026-10-12', '2026-11-05', 'pending', p('All faculty members are invited to attend the general faculty meeting on November 4, 2026 at 2:00 PM at the University Auditorium.') + p('The agenda includes the semestral calendar updates, research and extension reports, and the preparations for the Founding Anniversary celebration.'),
+       { name: 'Faculty-Meeting-Agenda.docx', size: 100352, type: 'docx' }],
       ['Enrollment Schedule for Freshmen', 'Academic', 'Registrar', ALL, 'normal', '2026-10-26', day(40), 'published', p('Incoming freshmen should follow the enrollment schedule per college. Bring your admission slip and a valid ID.')],
       ['Library Hours During Semester Break', 'Advisory', 'Viexi Arwan', 'Lingayen', 'normal', '2026-10-20', day(25), 'published', p('The library will close at 5:00 PM during the semester break.')],
       ['Water Interruption This Week', 'Advisory', 'Admin User', 'Urdaneta', 'urgent', '2026-11-08', day(2), 'published', p('Water supply will be interrupted for pipe repairs. Please store water in advance.')],
       ['Campus Clean-up Drive', 'Administrative', 'Pedro Cruz', 'Binmaley', 'normal', '2026-11-01', day(12), 'draft', p('Volunteers are needed for the clean-up drive. Sign-up sheets are at the student affairs office.')]
     ];
     return rows.map(function (r, i) {
+      /* r[9] (optional) is the attachment: only name, size and type are kept for sample data.
+         "Last updated" starts as the date posted. */
       return { id: 'ann_seed_' + (i + 1), title: r[0], category: r[1], author: r[2], campus: r[3], priority: r[4],
-               publishedAt: r[5], expiresAt: r[6], status: r[7], content: r[8], attachment: null,
-               createdAt: stamp(i), updatedAt: stamp(i) };
+               publishedAt: r[5], expiresAt: r[6], status: r[7], content: r[8], attachment: r[9] || null,
+               createdAt: stamp(i), updatedAt: new Date(r[5] + 'T09:00:00').toISOString() };
     });
   }
 
@@ -64,7 +69,8 @@ CMS.seed = (function () {
       { id: 'cat_academic', name: 'Academic', description: 'Lectures, forums, and academic programs' },
       { id: 'cat_cultural', name: 'Cultural', description: 'Arts, festivals, and heritage events' },
       { id: 'cat_sports', name: 'Sports', description: 'Intramurals and athletic meets' },
-      { id: 'cat_seminar', name: 'Seminar', description: 'Workshops and trainings' }
+      { id: 'cat_seminar', name: 'Seminar', description: 'Workshops and trainings' },
+      { id: 'cat_handbooks', name: 'Handbooks', description: 'Student and employee handbooks' }
     ].map(function (c, i) { c.createdAt = stamp(i); c.updatedAt = stamp(i); return c; });
   }
 

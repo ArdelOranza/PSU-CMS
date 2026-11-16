@@ -69,10 +69,9 @@
       tr.appendChild(el('td', { text: ui.formatDate(n.publishedAt) }));
       tr.appendChild(el('td', {}, [ui.badge(n.status, statusLabel(n.status))]));
 
-      var view = el('button', { type: 'button', class: 'cms-action', 'aria-label': 'View ' + n.title, text: 'View' });
+      var view = el('a', { class: 'cms-action', href: 'news-details.html?id=' + encodeURIComponent(n.id), 'aria-label': 'View ' + n.title, text: 'View' });
       var edit = el('a', { class: 'cms-action', href: 'add-news.html?id=' + encodeURIComponent(n.id), 'aria-label': 'Edit ' + n.title, text: 'Edit' });
       var del = el('button', { type: 'button', class: 'cms-action cms-action-danger', 'aria-label': 'Delete ' + n.title, text: 'Delete' });
-      view.addEventListener('click', function () { showNews(n); });
       del.addEventListener('click', function () { removeNews(n); });
       tr.appendChild(el('td', {}, [el('div', { class: 'cms-actions' }, [view, edit, del])]));
       return tr;
@@ -99,20 +98,12 @@
       ui.renderFooter(footer, { page: state.page, pageSize: size, total: rows.length, onPage: function (p) { state.page = p; render(); } });
     }
 
-    function showNews(n) {
-      var rows = [['Title', n.title], ['Category', n.category], ['Author', n.author]];
-      if (cfg.features.campus) rows.push(['Campus', n.campus]);
-      rows.push(['Date published', ui.formatDate(n.publishedAt)], ['Status', statusLabel(n.status)], ['Summary', n.shortDescription]);
-      ui.showDetails({ title: 'News article', cover: n.image, rows: rows, contentHtml: n.content });
-    }
-
     function removeNews(n) {
-      ui.confirmDialog({ title: 'Delete news article', message: 'Delete \u201C' + n.title + '\u201D? This cannot be undone.', confirmLabel: 'Delete' })
-        .then(function (yes) {
-          if (!yes) return;
-          if (db.remove(n.id)) { ui.toast('News article deleted.', 'success'); render(); }
-          else ui.toast('The article could not be deleted.', 'error');
-        });
+      ui.confirmDelete().then(function (yes) {
+        if (!yes) return;
+        if (db.remove(n.id)) { ui.toast(ui.MSG.deleted, 'deleted'); render(); }
+        else ui.toast('The article could not be deleted.', 'error');
+      });
     }
 
     function bind(select, key) {
@@ -135,7 +126,6 @@
     };
     var editor = CMS.richtext.init(document.getElementById('newsContentEditor'));
     var preview = document.getElementById('newsImagePreview');
-    var imageInput = document.getElementById('newsImageInput');
     var removeBtn = document.getElementById('newsImageRemove');
     var image = '';
 
@@ -171,13 +161,13 @@
       else preview.appendChild(el('span', { text: 'Featured Image' }));
       removeBtn.hidden = !image;
     }
-    document.getElementById('newsImageBtn').addEventListener('click', function () { imageInput.click(); });
-    imageInput.addEventListener('change', function () {
-      var file = imageInput.files[0];
-      if (!file) return;
-      ui.readImage(file).then(function (dataUrl) { image = dataUrl; renderPreview(); })
-        .catch(function (err) { ui.toast(err.message, 'error'); })
-        .then(function () { imageInput.value = ''; });
+    document.getElementById('newsImageBtn').addEventListener('click', function () {
+      ui.chooseFile({ text: 'Select an image from your computer to upload.', hint: 'PNG, JPG, GIF or WEBP up to ' + ui.formatSize(cfg.imageMaxFileBytes) + '.',
+                      accept: 'image/png,image/jpeg,image/gif,image/webp' }).then(function (file) {
+        if (!file) return;
+        ui.readImage(file).then(function (dataUrl) { image = dataUrl; renderPreview(); ui.toast(ui.MSG.uploaded, 'success'); })
+          .catch(function (err) { ui.toast(err.message, 'error'); });
+      });
     });
     removeBtn.addEventListener('click', function () { image = ''; renderPreview(); });
     renderPreview();
@@ -207,10 +197,14 @@
       return !first;
     }
 
-    /* Publish -> Published. Save as Draft -> the chosen status, unless it says Published. */
+    /* Publish -> Published (after a confirmation). Save as Draft -> the chosen status, unless it says Published. */
     function save(mode) {
       var status = mode === 'publish' ? 'published' : (f.status.value === 'published' ? 'draft' : f.status.value);
       if (!validate(status)) return;
+      if (status === 'published') ui.confirmPublish().then(function (yes) { if (yes) persist(status); });
+      else persist(status);
+    }
+    function persist(status) {
       var record = {
         title: f.title.value.trim(), category: f.category.value, author: f.author.value.trim() || cfg.currentUser.name,
         campus: f.campus ? f.campus.value : (editing ? editing.campus : cfg.allCampuses),
@@ -220,7 +214,7 @@
       if (editing) record.id = editing.id;
       var res = db.save(record);
       if (!res.ok) { ui.toast('Could not save. Browser storage may be full \u2014 try a smaller image.', 'error'); return; }
-      ui.flash(status === 'published' ? 'News article published.' : editing ? 'News article updated.' : 'News article saved.', 'success');
+      ui.flash(status === 'published' ? ui.MSG.published : status === 'draft' ? ui.MSG.draft : ui.MSG.saved, 'success');
       window.location.href = 'all-news.html';
     }
     document.getElementById('newsSaveDraft').addEventListener('click', function () { save('draft'); });

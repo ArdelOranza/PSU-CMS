@@ -1,7 +1,8 @@
 /* ==========================================================================
    search.js — Global Search page. Reads ?q= (and optional ?type= and
-   ?campus=), searches every source in CMS.searchSources, and shows the
-   results or the "no results" state.
+   ?campus=). With no keyword it lists ALL public content, newest first; the
+   chips narrow it by type and a keyword narrows it further. A keyword that
+   matches nothing shows the "no results" state.
    Safety: the query is plain text. Results and highlights are built with
    text nodes and <mark> elements, never with innerHTML.
    ========================================================================== */
@@ -14,7 +15,7 @@
 
   function run(q, type, ctx) {
     var t = terms(q), found = [];
-    if (!t.length) return found;
+    /* No keywords: every item of the chosen type is listed (newest first). */
     sources.forEach(function (src) {
       if (type && type !== src.id) return;
       src.collect(ctx).forEach(function (item) {
@@ -27,7 +28,9 @@
       });
     });
     found.sort(function (a, b) {
-      return b.score - a.score || String(b.item.date || '').localeCompare(String(a.item.date || '')) || String(a.item.title).localeCompare(String(b.item.title));
+      var da = String(a.item.date || ''), db = String(b.item.date || '');
+      if (!da !== !db) return da ? -1 : 1;                       // items without a date (faculty) go last
+      return b.score - a.score || db.localeCompare(da) || String(a.item.title).localeCompare(String(b.item.title));
     });
     return found;
   }
@@ -77,14 +80,21 @@
 
     function resultRow(r) {
       var meta = r.source.label + ' \u00B7 ' + (r.item.date ? ui.formatDate(r.item.date) : (r.item.meta || ''));
-      var titleBtn = el('button', { type: 'button', class: 'search-result-title' }, [ui.highlight(r.item.title, state.q)]);
+      var href = r.item.href;
       var open = function () { ui.showDetails(r.item.details()); };
-      titleBtn.addEventListener('click', open);
-      var info = el('div', { class: 'search-result-info' }, [titleBtn, el('div', { class: 'search-result-meta', text: meta.replace(/ \u00B7 $/, '') })]);
+      var titleEl, btn;
+      if (href) {                                   // news, announcements, events: open the details page
+        titleEl = el('a', { class: 'search-result-title', href: href }, [ui.highlight(r.item.title, state.q)]);
+        btn = el('a', { class: 'cms-action', href: href, 'aria-label': 'View details for ' + r.item.title, text: 'View Details' });
+      } else {                                      // documents, faculty: popup
+        titleEl = el('button', { type: 'button', class: 'search-result-title' }, [ui.highlight(r.item.title, state.q)]);
+        titleEl.addEventListener('click', open);
+        btn = el('button', { type: 'button', class: 'cms-action', 'aria-label': 'View details for ' + r.item.title, text: 'View Details' });
+        btn.addEventListener('click', open);
+      }
+      var info = el('div', { class: 'search-result-info' }, [titleEl, el('div', { class: 'search-result-meta', text: meta.replace(/ \u00B7 $/, '') })]);
       var snip = snippet(r.item, state.q);
       if (snip) info.appendChild(el('div', { class: 'search-result-snippet' }, [ui.highlight(snip, state.q)]));
-      var btn = el('button', { type: 'button', class: 'cms-action', 'aria-label': 'View details for ' + r.item.title, text: 'View Details' });
-      btn.addEventListener('click', open);
       return el('li', { class: 'search-result' }, [info, btn]);
     }
 
@@ -109,15 +119,24 @@
       ]));
     }
 
+    /* nothing of this type yet (no keyword typed) */
+    function renderNothingYet() {
+      var label = state.type ? sources.filter(function (x) { return x.id === state.type; })[0].chip : 'content';
+      resultsBox.appendChild(el('div', { class: 'cms-empty search-empty' }, [
+        el('img', { src: '../assets/images/empty-state.png', alt: '' }),
+        el('p', { class: 'cms-empty-title', text: 'No ' + label.toLowerCase() + ' to show yet' }),
+        el('p', { class: 'cms-empty-text', text: 'Items you add will appear here.' })
+      ]));
+    }
+
     function render() {
       renderChips();
       ui.clear(resultsBox);
-      status.textContent = '';
-      if (!state.q) { resultsBox.hidden = true; crumb.textContent = 'Global Search'; return; }
       resultsBox.hidden = false;
       var found = run(state.q, state.type, { campus: state.campus });
-      status.textContent = found.length + (found.length === 1 ? ' result' : ' results') + ' found';
-      crumb.textContent = found.length ? 'Global Search' : 'Global Search \u2013 No Results';
+      var noun = state.q ? 'result' : 'item';
+      status.textContent = found.length + (found.length === 1 ? ' ' + noun : ' ' + noun + 's') + (state.q ? ' found' : ' shown');
+      crumb.textContent = state.q && !found.length ? 'Global Search \u2013 No Results' : 'Global Search';
       if (state.campus) {
         var note = el('p', { class: 'search-campus-note' }, [state.campus + ' campus and university-wide content only. ']);
         var clearCampus = el('a', { href: '#', text: 'Show all campuses' });
@@ -125,7 +144,7 @@
         note.appendChild(clearCampus);
         resultsBox.appendChild(note);
       }
-      if (!found.length) { renderNoResults(); return; }
+      if (!found.length) { if (state.q) renderNoResults(); else renderNothingYet(); return; }
       var list = el('ul', { class: 'search-result-list' });
       found.forEach(function (r) { list.appendChild(resultRow(r)); });
       resultsBox.appendChild(list);
@@ -139,7 +158,6 @@
       state.q = input.value.trim();
       if (headerInput) headerInput.value = state.q;
       syncUrl(); render();
-      if (!state.q) input.focus();
     });
     render();
   }
