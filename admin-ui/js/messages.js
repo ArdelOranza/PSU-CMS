@@ -73,7 +73,9 @@
 
   /* ---------- rows ---------- */
   function viewLink(m) {
-    return el('a', { class: 'cms-action', href: 'message-details.html?id=' + encodeURIComponent(m.id), 'aria-label': 'View message from ' + m.fullName, text: 'View' });
+    /* the Feedback list has its own details screen (Feedback Details) */
+    var target = isFeedback ? 'feedback-details.html' : 'message-details.html';
+    return el('a', { class: 'cms-action', href: target + '?id=' + encodeURIComponent(m.id), 'aria-label': 'View ' + (isFeedback ? 'feedback' : 'message') + ' from ' + m.fullName, text: 'View' });
   }
   function deleteBtn(m) {
     var b = el('button', { type: 'button', class: 'cms-action cms-action-danger', 'aria-label': 'Delete message from ' + m.fullName, text: 'Delete' });

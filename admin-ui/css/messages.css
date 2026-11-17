@@ -44,3 +44,12 @@
   .message-detail-head{flex-wrap:wrap}
   .message-detail-actions .cms-btn{flex:1 1 auto}
 }
+
+/* Feedback Details */
+.feedback-detail-card{padding:14px 16px 16px}
+.feedback-detail-name{margin:0;font-size:18px;line-height:24px;font-weight:700;color:var(--cms-text)}
+.feedback-detail-badge{margin-top:6px}
+.feedback-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 24px;margin:12px 0 0;padding-top:12px;border-top:1px solid var(--cms-border)}
+.feedback-detail-label{margin:0 0 2px;font-size:10px;line-height:14px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--cms-muted)}
+.feedback-detail-value{margin:0;font-size:13px;line-height:19px;font-weight:500;color:var(--cms-text);white-space:pre-wrap;overflow-wrap:anywhere}
+@media (max-width:575.98px){.feedback-detail-grid{grid-template-columns:1fr}}

@@ -61,7 +61,7 @@ state, Unread Messages, Feedback, Message Details), `settings/` (Account, Securi
 |---|---|
 | `js/message-store.js` | One `messages` dataset (`CMS.db.messages`) + `CMS.messages` helpers, used by every message page |
 | `js/settings-store.js` | One-record repos `account`, `security`, `theme` + header name/avatar sync |
-| `js/messages.js`, `js/message-details.js`, `js/contact.js` | List pages, details page + simulated reply, public form |
+| `js/messages.js`, `js/message-details.js`, `js/feedback-details.js`, `js/contact.js` | List pages, Message Details + simulated reply, Feedback Details, public form |
 | `js/account.js`, `js/security.js`, `js/theme-page.js` | Settings pages |
 | `js/theme.js` | Applies the saved theme; load it in `<head>` (`<script src="../js/theme.js">`) |
 | `js/csv.js` | CSV export (escapes commas/quotes/line breaks; `data:` URL, not `blob:`) |
