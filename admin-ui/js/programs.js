@@ -1,11 +1,14 @@
 /* ==========================================================================
-   programs.js — Academic Programs list (academic-programs.html) and
-   Add/Edit Program form (program-form.html, edit mode via ?id=).
+   programs.js — Academic Programs list (academic-programs.html), Program Details
+   (program-details.html?id=) and Add/Edit Program (program-form.html, edit via ?id=).
    A program stores collegeId + departmentId + degreeLevel. The department
    options always depend on the selected college.
    ========================================================================== */
 (function () {
   var ui = CMS.ui, el = ui.el, S = CMS.structure, db = CMS.db.programs;
+
+  function deleteProgram(p, done) { S.deleteFlow({ repo: db, id: p.id, blocked: null, done: done }); }
+  function editHref(p) { return 'program-form.html?id=' + encodeURIComponent(p.id); }
 
   /* ======================= Academic Programs (list) ======================= */
   function initList() {
@@ -23,33 +26,11 @@
       tr.appendChild(el('td', { text: S.departmentName(p.departmentId) }));
       tr.appendChild(el('td', { text: p.description || '' }));
       tr.appendChild(el('td', {}, [S.statusBadge(p.status)]));
-      tr.appendChild(S.actions(p.name, 'program-form.html?id=' + encodeURIComponent(p.id),
-        function () { showProgram(p); }, function () { removeProgram(p, refresh); }));
+      tr.appendChild(S.actions(p.name, 'program-details.html?id=' + encodeURIComponent(p.id), editHref(p), function () {
+        deleteProgram(p, function () { S.toast('Item deleted successfully.', 'deleted'); refresh(); });
+      }));
       return tr;
     }
-
-    /* Read-only program detail (public-site preview). Empty optional fields are skipped. */
-    function showProgram(p) {
-      ui.showDetails({
-        title: p.name,
-        rows: [
-          ['Code', p.code], ['Degree level', p.degreeLevel], ['College', S.collegeName(p.collegeId)],
-          ['Department', S.departmentName(p.departmentId)], ['Campus', p.campus], ['Description', p.description],
-          ['Career prospects', p.careerProspects], ['Admission criteria', p.admissionCriteria],
-          ['Accreditation', p.accreditation], ['Syllabus file', p.syllabusFileName], ['Status', S.statusBadge(p.status)]
-        ]
-      });
-    }
-
-    function removeProgram(p, refresh) {
-      ui.confirmDialog({ title: 'Delete program', message: 'Delete \u201C' + p.name + '\u201D? This cannot be undone.', confirmLabel: 'Delete' })
-        .then(function (yes) {
-          if (!yes) return;
-          if (db.remove(p.id)) { ui.toast('Program deleted.', 'success'); refresh(); }
-          else ui.toast('The program could not be deleted.', 'error');
-        });
-    }
-
     S.listPage({
       body: document.getElementById('programTableBody'), wrap: document.getElementById('programTableWrap'),
       emptyBox: document.getElementById('programEmpty'), footer: document.getElementById('programFooter'),
@@ -67,6 +48,22 @@
     });
   }
 
+  /* ======================= Academic Program Details ======================= */
+  function initDetails() {
+    var p = db.get(ui.getParam('id'));
+    if (!p) { S.flash('That program was not found.', 'error'); window.location.href = 'academic-programs.html'; return; }
+    document.title = 'Academic Program Details | PSU CMS';
+    document.getElementById('programEdit').href = editHref(p);
+    S.renderDetail(document.getElementById('programDetail'), {
+      title: p.name, status: p.status,
+      fields: [['Code', p.code], ['Level', p.degreeLevel], ['College', S.collegeCode(p.collegeId)],
+               ['Department', S.departmentName(p.departmentId)], ['Description', p.description]]
+    });
+    document.getElementById('programDelete').addEventListener('click', function () {
+      deleteProgram(p, function () { S.flash('Item deleted successfully.', 'deleted'); window.location.href = 'academic-programs.html'; });
+    });
+  }
+
   /* ======================= Add / Edit Academic Program (form) ======================= */
   function initForm() {
     var form = document.getElementById('programForm');
@@ -80,7 +77,7 @@
     var editing = null, editId = ui.getParam('id');
     if (editId) {
       editing = db.get(editId);
-      if (!editing) { ui.flash('That program was not found.', 'error'); window.location.href = 'academic-programs.html'; return; }
+      if (!editing) { S.flash('That program was not found.', 'error'); window.location.href = 'academic-programs.html'; return; }
       document.title = 'Edit Academic Program | PSU CMS';
     }
 
@@ -122,20 +119,21 @@
       if (!f.college.value || !S.college(f.college.value)) v.fail(f.college, 'Choose an existing college.');
       if (!dept) v.fail(f.department, 'Choose a department.');
       else if (dept.collegeId !== f.college.value) v.fail(f.department, 'That department does not belong to the selected college.');
-      if (!v.ok()) { ui.toast('Please fix the highlighted fields.', 'error'); return; }
+      if (!v.ok()) { S.toast('Please fix the highlighted fields.', 'error'); return; }
 
       var record = { name: name, code: code, degreeLevel: f.level.value, collegeId: f.college.value, departmentId: dept.id, description: f.description.value.trim() };
       if (editing) record.id = editing.id;
       else Object.assign(record, { status: 'active', campus: '', careerProspects: '', admissionCriteria: '', accreditation: '', syllabusFileName: '' });
       var res = db.save(record);
       if (!res.ok) { S.saveFailed(); return; }
-      ui.flash(editing ? 'Program updated.' : 'Program added.', 'success');
+      S.flash('Changes saved successfully.', 'success');
       window.location.href = 'academic-programs.html';
     });
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('programForm')) initForm();
+    else if (document.getElementById('programDetail')) initDetails();
     else if (document.getElementById('programTableBody')) initList();
   });
 })();
