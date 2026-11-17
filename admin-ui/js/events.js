@@ -23,7 +23,7 @@
       root: calWrap,
       /* the calendar shows published events only (drafts are not in its legend) */
       getEvents: function () { return db.list().filter(function (ev) { return ev.state === 'published' && matches(ev); }); },
-      onOpen: function (ev) { showEvent(ev); },
+      onOpen: function (ev) { window.location.href = 'event-details.html?id=' + encodeURIComponent(ev.id); },
       onMore: function (iso, list) { showDay(iso, list); }
     });
 
@@ -68,10 +68,9 @@
       tr.appendChild(el('td', { text: ev.venue }));
       tr.appendChild(el('td', { text: ev.organizer }));
       tr.appendChild(el('td', {}, [ui.badge(status, rules.statusLabel(status))]));
-      var view = el('button', { type: 'button', class: 'cms-action', 'aria-label': 'View ' + ev.title, text: 'View' });
+      var view = el('a', { class: 'cms-action', href: 'event-details.html?id=' + encodeURIComponent(ev.id), 'aria-label': 'View ' + ev.title, text: 'View' });
       var edit = el('a', { class: 'cms-action', href: 'add-event.html?id=' + encodeURIComponent(ev.id), 'aria-label': 'Edit ' + ev.title, text: 'Edit' });
       var del = el('button', { type: 'button', class: 'cms-action cms-action-danger', 'aria-label': 'Delete ' + ev.title, text: 'Delete' });
-      view.addEventListener('click', function () { showEvent(ev); });
       del.addEventListener('click', function () { removeEvent(ev); });
       tr.appendChild(el('td', {}, [el('div', { class: 'cms-actions' }, [view, edit, del])]));
       return tr;
@@ -121,39 +120,24 @@
       }
     }
 
-    function showEvent(ev) {
-      var status = rules.effectiveStatus(ev);
-      var dateRange = ui.formatDate(ev.startDate) + (ev.endDate && ev.endDate !== ev.startDate ? ' \u2013 ' + ui.formatDate(ev.endDate) : '');
-      ui.showDetails({
-        title: 'Event', cover: ev.banner,
-        rows: [['Title', ev.title], ['Category', rules.categoryName(ev.categoryId)], ['Date', dateRange], ['Time', rules.timeText(ev)],
-               ['Venue', ev.venue], ['Organizer', ev.organizer], ['Status', rules.statusLabel(status)], ['Description', ev.description]]
-      });
-    }
-
-    /* "+N more": every event of a busy day in one list */
+    /* "+N more": every event of a busy day in one list; each title opens its details page */
     function showDay(iso, list) {
-      var pending = null;
       var ul = el('ul', { class: 'event-day-list' });
       list.forEach(function (ev) {
         var status = rules.effectiveStatus(ev), time = rules.timeText(ev);
-        var open = el('button', { type: 'button', class: 'event-day-open', text: ev.title });
-        open.addEventListener('click', function () { pending = ev; modal.hide(); });
+        var open = el('a', { class: 'event-day-open', href: 'event-details.html?id=' + encodeURIComponent(ev.id), text: ev.title });
         ul.appendChild(el('li', {}, [open, el('span', { class: 'event-day-meta', text: time }), ui.badge(status, rules.statusLabel(status))]));
       });
       var closeBtn = el('button', { type: 'button', class: 'cms-btn cms-btn-outline', 'data-bs-dismiss': 'modal', text: 'Close' });
-      var modalEl = ui.modalShell('Events on ' + ui.formatDate(iso), [ul], [closeBtn]);
-      var modal = ui.openModal(modalEl);
-      modalEl.addEventListener('hidden.bs.modal', function () { if (pending) showEvent(pending); });
+      ui.openModal(ui.modalShell('Events on ' + ui.formatDate(iso), [ul], [closeBtn]));
     }
 
     function removeEvent(ev) {
-      ui.confirmDialog({ title: 'Delete event', message: 'Delete \u201C' + ev.title + '\u201D? This cannot be undone.', confirmLabel: 'Delete' })
-        .then(function (yes) {
-          if (!yes) return;
-          if (db.remove(ev.id)) { ui.toast('Event deleted.', 'success'); render(); }
-          else ui.toast('The event could not be deleted.', 'error');
-        });
+      ui.confirmDelete().then(function (yes) {
+        if (!yes) return;
+        if (db.remove(ev.id)) { ui.toast(ui.MSG.deleted, 'deleted'); render(); }
+        else ui.toast('The event could not be deleted.', 'error');
+      });
     }
 
     viewSel.addEventListener('change', function () {
@@ -176,7 +160,6 @@
       organizer: document.getElementById('eventOrganizer'), status: document.getElementById('eventStatus')
     };
     var preview = document.getElementById('eventBannerPreview');
-    var imageInput = document.getElementById('eventBannerInput');
     var removeBtn = document.getElementById('eventBannerRemove');
     var banner = '';
 
@@ -214,13 +197,13 @@
       else preview.appendChild(el('span', { text: 'Event Banner' }));
       removeBtn.hidden = !banner;
     }
-    document.getElementById('eventBannerBtn').addEventListener('click', function () { imageInput.click(); });
-    imageInput.addEventListener('change', function () {
-      var file = imageInput.files[0];
-      if (!file) return;
-      ui.readImage(file).then(function (dataUrl) { banner = dataUrl; renderPreview(); })
-        .catch(function (err) { ui.toast(err.message, 'error'); })
-        .then(function () { imageInput.value = ''; });
+    document.getElementById('eventBannerBtn').addEventListener('click', function () {
+      ui.chooseFile({ text: 'Select an image from your computer to upload.', hint: 'PNG, JPG, GIF or WEBP up to ' + ui.formatSize(cfg.imageMaxFileBytes) + '.',
+                      accept: 'image/png,image/jpeg,image/gif,image/webp' }).then(function (file) {
+        if (!file) return;
+        ui.readImage(file).then(function (dataUrl) { banner = dataUrl; renderPreview(); ui.toast(ui.MSG.uploaded, 'success'); })
+          .catch(function (err) { ui.toast(err.message, 'error'); });
+      });
     });
     removeBtn.addEventListener('click', function () { banner = ''; renderPreview(); });
     renderPreview();
@@ -250,9 +233,14 @@
       return !first;
     }
 
+    /* Publish Event asks for a confirmation first; Save Draft saves right away. */
     function save(mode) {
       var state = mode === 'publish' ? 'published' : 'draft';
       if (!validate(state)) return;
+      if (state === 'published') ui.confirmPublish().then(function (yes) { if (yes) persist(state); });
+      else persist(state);
+    }
+    function persist(state) {
       var record = {
         title: f.title.value.trim(), description: f.description.value.trim(), categoryId: f.category.value, banner: banner,
         venue: f.venue.value.trim(), startDate: f.startDate.value, endDate: f.endDate.value || f.startDate.value,
@@ -261,7 +249,7 @@
       if (editing) record.id = editing.id;
       var res = db.save(record);
       if (!res.ok) { ui.toast('Could not save. Browser storage may be full \u2014 try a smaller image.', 'error'); return; }
-      ui.flash(state === 'published' ? 'Event published.' : editing ? 'Event updated.' : 'Event saved as a draft.', 'success');
+      ui.flash(state === 'published' ? ui.MSG.published : ui.MSG.draft, 'success');
       window.location.href = 'all-events.html';
     }
     document.getElementById('eventSaveDraft').addEventListener('click', function () { save('draft'); });

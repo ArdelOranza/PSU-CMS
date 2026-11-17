@@ -52,7 +52,8 @@ CMS.ui = (function () {
     if (!bytes && bytes !== 0) return '';
     if (bytes < 1024) return bytes + ' B';
     if (bytes < 1048576) return Math.round(bytes / 1024) + ' KB';
-    return (bytes / 1048576).toFixed(1) + ' MB';
+    var mb = bytes / 1048576;
+    return (mb % 1 === 0 ? mb : mb.toFixed(1)) + ' MB';
   }
   function todayISO() {
     var d = new Date();
@@ -69,21 +70,27 @@ CMS.ui = (function () {
     return el('span', { class: 'cms-status cms-status-' + (COLORS[statusKey] || 'gray'), text: label });
   }
 
-  /* ---------- Toasts ---------- */
+  /* ---------- Toasts (solid green / red, top right, as in the design) ---------- */
+  /* Standard messages. Use these instead of writing your own text. */
+  var MSG = {
+    saved: 'Changes saved successfully.', draft: 'Draft saved successfully.', published: 'Content published successfully.',
+    deleted: 'Item deleted successfully.', uploaded: 'File uploaded successfully.', read: 'Marked as read.',
+    download: 'Download started.', reply: 'Reply sent successfully.'
+  };
   var toastStack = null;
+  /* type: 'success' (green), 'deleted' (red with a check, for deletions), 'error' (red), 'info' (blue) */
   function toast(message, type) {
     type = type || 'info';
     if (!toastStack) {
       toastStack = el('div', { class: 'cms-toast-stack', role: 'status', 'aria-live': 'polite' });
       document.body.appendChild(toastStack);
     }
-    var iconName = type === 'success' ? 'check-circle-fill' : type === 'error' ? 'exclamation-circle-fill' : 'info-circle-fill';
-    var closeBtn = el('button', { type: 'button', 'aria-label': 'Dismiss' }, [icon('x')]);
-    var node = el('div', { class: 'cms-toast is-' + type }, [icon(iconName), el('span', { text: message }), closeBtn]);
+    var iconName = (type === 'success' || type === 'deleted') ? 'check-lg' : type === 'error' ? 'exclamation-circle' : 'info-circle';
+    var node = el('div', { class: 'cms-toast is-' + type }, [icon(iconName), el('span', { text: message })]);
     function remove() { if (node.parentNode) node.parentNode.removeChild(node); }
-    closeBtn.addEventListener('click', remove);
+    node.addEventListener('click', remove);
     toastStack.appendChild(node);
-    setTimeout(remove, type === 'error' ? 6000 : 4000);
+    setTimeout(remove, type === 'error' ? 5000 : 3500);
   }
 
   /* Messages that must survive a page change (e.g. "Saved" after redirect) */
@@ -122,16 +129,87 @@ CMS.ui = (function () {
     return el('div', { class: 'modal fade cms-modal', tabindex: '-1', 'aria-hidden': 'true' }, [dialog]);
   }
 
+  /* ---------- Small dialogs (delete / publish / choose file / category) ---------- */
+  var dialogCount = 0;
+  /* opts: { title, text, body: [nodes], actions: [buttons] } -> the modal element (not shown yet) */
+  function dialogShell(opts) {
+    var id = 'cmsDialogTitle' + (++dialogCount);
+    var parts = [el('h2', { class: 'cms-dialog-title', id: id, text: opts.title })];
+    if (opts.text) parts.push(el('p', { class: 'cms-dialog-text', text: opts.text }));
+    parts = parts.concat(opts.body || []);
+    parts.push(el('div', { class: 'cms-dialog-actions' }, opts.actions || []));
+    return el('div', { class: 'modal fade cms-modal cms-dialog', tabindex: '-1', 'aria-labelledby': id, 'aria-hidden': 'true' }, [
+      el('div', { class: 'modal-dialog modal-dialog-centered' }, [
+        el('div', { class: 'modal-content' }, [el('div', { class: 'modal-body' }, parts)])
+      ])
+    ]);
+  }
+  function cancelButton(label) { return el('button', { type: 'button', class: 'cms-btn cms-btn-outline', 'data-bs-dismiss': 'modal', text: label || 'Cancel' }); }
+
   /* Resolves true when the user confirms, false otherwise. */
-  function confirmDialog(opts) {
+  function confirmAction(opts) {
     return new Promise(function (resolve) {
       var answered = false;
-      var cancelBtn = el('button', { type: 'button', class: 'cms-btn cms-btn-outline', 'data-bs-dismiss': 'modal', text: opts.cancelLabel || 'Cancel' });
-      var okBtn = el('button', { type: 'button', class: 'cms-btn cms-btn-danger', text: opts.confirmLabel || 'Delete' });
-      var modalEl = modalShell(opts.title || 'Are you sure?', [el('p', { text: opts.message || '' })], [cancelBtn, okBtn]);
+      var okBtn = el('button', { type: 'button', class: 'cms-btn ' + (opts.confirmClass || 'cms-btn-primary'), text: opts.confirmLabel });
+      var modalEl = dialogShell({ title: opts.title, text: opts.text, actions: [cancelButton(opts.cancelLabel), okBtn] });
       var modal = openModal(modalEl);
       okBtn.addEventListener('click', function () { answered = true; modal.hide(); resolve(true); });
       modalEl.addEventListener('hidden.bs.modal', function () { if (!answered) resolve(false); });
+    });
+  }
+  /* "Delete this item?" */
+  function confirmDelete(opts) {
+    opts = opts || {};
+    return confirmAction({
+      title: opts.title || 'Delete this item?',
+      text: opts.text || 'This action cannot be undone. The item will be permanently removed from the website.',
+      confirmLabel: opts.confirmLabel || 'Delete', confirmClass: 'cms-btn-danger'
+    });
+  }
+  /* "Publish this content?" */
+  function confirmPublish(opts) {
+    opts = opts || {};
+    return confirmAction({
+      title: opts.title || 'Publish this content?',
+      text: opts.text || 'It will become visible on the public PSU website right away.',
+      confirmLabel: opts.confirmLabel || 'Publish', confirmClass: 'cms-btn-primary'
+    });
+  }
+  /* Older name, kept so other modules keep working; it now uses the same dialog design. */
+  function confirmDialog(opts) {
+    return confirmAction({ title: opts.title || 'Are you sure?', text: opts.message || '', cancelLabel: opts.cancelLabel,
+                           confirmLabel: opts.confirmLabel || 'Delete', confirmClass: opts.confirmClass || 'cms-btn-danger' });
+  }
+  /* Message dialog with a single OK button */
+  function notice(opts) {
+    var ok = el('button', { type: 'button', class: 'cms-btn cms-btn-primary', 'data-bs-dismiss': 'modal', text: opts.buttonLabel || 'OK' });
+    return openModal(dialogShell({ title: opts.title, text: opts.text, actions: [ok] }));
+  }
+
+  /* "Choose File": resolves with the File the user picked or dropped, or null if cancelled.
+     opts: { title, text, hint, accept }   (the caller checks type and size) */
+  function chooseFile(opts) {
+    opts = opts || {};
+    return new Promise(function (resolve) {
+      var picked = null;
+      var input = el('input', { type: 'file', accept: opts.accept || null, hidden: true });
+      var zone = el('div', { class: 'cms-dialog-drop', tabindex: '0', role: 'button', 'aria-label': 'Drag and drop a file here, or press Enter to choose one' }, [
+        el('span', { class: 'cms-dialog-drop-main', text: 'Drag and drop files here' }),
+        opts.hint ? el('span', { class: 'cms-dialog-drop-hint', text: opts.hint }) : null
+      ]);
+      var choose = el('button', { type: 'button', class: 'cms-btn cms-btn-primary', text: 'Choose File' });
+      var modalEl = dialogShell({ title: opts.title || 'Choose File', text: opts.text || 'Select a file from your computer to upload.', body: [zone, input], actions: [cancelButton(), choose] });
+      var modal = openModal(modalEl);
+      function done(file) { if (!file) return; picked = file; modal.hide(); }
+      function browse() { input.click(); }
+      choose.addEventListener('click', browse);
+      zone.addEventListener('click', browse);
+      zone.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); browse(); } });
+      input.addEventListener('change', function () { done(input.files[0]); });
+      ['dragenter', 'dragover'].forEach(function (ev) { zone.addEventListener(ev, function (e) { e.preventDefault(); zone.classList.add('is-over'); }); });
+      ['dragleave', 'drop'].forEach(function (ev) { zone.addEventListener(ev, function (e) { e.preventDefault(); zone.classList.remove('is-over'); }); });
+      zone.addEventListener('drop', function (e) { done(e.dataTransfer.files[0]); });
+      modalEl.addEventListener('hidden.bs.modal', function () { resolve(picked); });
     });
   }
 
@@ -394,14 +472,38 @@ CMS.ui = (function () {
     return [CMS.config.allCampuses].concat(CMS.config.campuses);
   }
 
+  /* Wires the Edit / Delete buttons of a detail page (#detailEdit, #detailDelete).
+     opts: { editHref | onEdit(), remove() -> true when deleted, listHref, blocked() -> {title,text} | null } */
+  function bindDetailActions(opts) {
+    var edit = document.getElementById('detailEdit'), del = document.getElementById('detailDelete');
+    if (opts.editHref) edit.setAttribute('href', opts.editHref);
+    else edit.addEventListener('click', function (e) { e.preventDefault(); opts.onEdit(); });
+    del.addEventListener('click', function () {
+      var block = opts.blocked ? opts.blocked() : null;
+      if (block) { notice(block); return; }
+      confirmDelete().then(function (yes) {
+        if (!yes) return;
+        if (opts.remove()) { flash(MSG.deleted, 'deleted'); window.location.href = opts.listHref; }
+        else toast('The item could not be deleted.', 'error');
+      });
+    });
+  }
+  /* local 'YYYY-MM-DD' of a saved timestamp (used for "Last updated") */
+  function dateOfTimestamp(iso) {
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+  }
+
   return {
     el: el, icon: icon, clear: clear, getParam: getParam, debounce: debounce,
     formatDate: formatDate, formatTime: formatTime, formatSize: formatSize, todayISO: todayISO,
-    badge: badge, toast: toast, flash: flash, showFlash: showFlash,
-    confirmDialog: confirmDialog, showDetails: showDetails, openModal: openModal, modalShell: modalShell,
+    badge: badge, toast: toast, MSG: MSG, flash: flash, showFlash: showFlash,
+    confirmDialog: confirmDialog, confirmDelete: confirmDelete, confirmPublish: confirmPublish, notice: notice,
+    chooseFile: chooseFile, dialogShell: dialogShell, showDetails: showDetails, openModal: openModal, modalShell: modalShell,
     renderFooter: renderFooter, renderEmpty: renderEmpty,
     enhanceSelect: enhanceSelect, enhanceSelects: enhanceSelects, syncSelect: syncSelect, setOptions: setOptions,
-    applyFeatures: applyFeatures, campusChoices: campusChoices,
+    applyFeatures: applyFeatures, campusChoices: campusChoices, bindDetailActions: bindDetailActions, dateOfTimestamp: dateOfTimestamp,
     setError: setError, clearErrors: clearErrors, highlight: highlight, readImage: readImage
   };
 })();

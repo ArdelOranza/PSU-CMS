@@ -10,7 +10,8 @@
                     the optional campus context (null = no campus filtering).
    An item is: { title, date, summary, extra: [more searchable text],
                  meta (shown instead of the date when there is no date),
-                 details() -> options for CMS.ui.showDetails }
+                 href (optional: a details page to open), details() -> options for
+                 CMS.ui.showDetails (the popup used when there is no href) }
    Only PUBLIC content is returned: published news, active announcements,
    published events.
    PHP: replace each collect() with a database query.
@@ -39,6 +40,7 @@ CMS.searchSources = (function () {
           if (cfg.features.campus) rows.push(['Campus', n.campus]);
           rows.push(['Date published', ui.formatDate(n.publishedAt)], ['Summary', n.shortDescription]);
           return { title: n.title, date: n.publishedAt, summary: n.shortDescription || plain(n.content),
+                   href: '../news/news-details.html?id=' + encodeURIComponent(n.id),
                    extra: [n.category, n.author, plain(n.content)],
                    details: function () { return { title: 'News article', cover: n.image, rows: rows, contentHtml: n.content }; } };
         });
@@ -53,6 +55,7 @@ CMS.searchSources = (function () {
           if (cfg.features.priority) rows.push(['Priority', a.priority === 'urgent' ? 'Urgent' : 'Normal']);
           rows.push(['Date posted', ui.formatDate(a.publishedAt)], ['Expiration', a.expiresAt ? ui.formatDate(a.expiresAt) : 'No expiration'], ['Attachment', fileLink(a.attachment)]);
           return { title: a.title, date: a.publishedAt, summary: plain(a.content), extra: [a.category, a.author],
+                   href: '../announcements/announcement-details.html?id=' + encodeURIComponent(a.id),
                    details: function () { return { title: 'Announcement', rows: rows, contentHtml: a.content }; } };
         });
       }
@@ -64,6 +67,7 @@ CMS.searchSources = (function () {
           var cat = evRules.categoryName(e.categoryId), status = evRules.effectiveStatus(e);
           var range = ui.formatDate(e.startDate) + (e.endDate && e.endDate !== e.startDate ? ' \u2013 ' + ui.formatDate(e.endDate) : '');
           return { title: e.title, date: e.startDate, summary: e.description, extra: [e.venue, e.organizer, cat],
+                   href: '../events/event-details.html?id=' + encodeURIComponent(e.id),
                    details: function () {
                      return { title: 'Event', cover: e.banner, rows: [['Title', e.title], ['Category', cat], ['Date', range], ['Time', evRules.timeText(e)],
                        ['Venue', e.venue], ['Organizer', e.organizer], ['Status', evRules.statusLabel(status)], ['Description', e.description]] };

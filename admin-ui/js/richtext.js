@@ -81,6 +81,7 @@ CMS.richtext = (function () {
           restore();
           document.execCommand('insertImage', false, dataUrl);
           notify();
+          ui.toast(ui.MSG.uploaded, 'success');
         }).catch(function (err) { ui.toast(err.message, 'error'); })
           .then(function () { fileInput.value = ''; });
       });
