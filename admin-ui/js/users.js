@@ -1,6 +1,6 @@
 /* ==========================================================================
-   users.js — All Users (all-users.html) and Add New User / Edit User form
-   (add-user.html, edit mode via ?id=).
+   users.js — All Users (all-users.html), User Details (user-details.html?id=) and
+   Add New User / Edit User form (add-user.html, edit mode via ?id=).
    Each user stores a roleId from CMS.db.roles.
    FRONT-END DEMO ONLY: there is no sign-in. Passwords are checked for
    shape and then thrown away — they are never saved anywhere.
@@ -11,6 +11,11 @@
 
   function roleOptions() { return S.roles().map(function (r) { return { value: r.id, label: r.name }; }); }
   function isSignedInUser(u) { return u.fullName === CMS.config.currentUser.name; }   // simulated "current user"
+  function blockReason(u) {
+    return isSignedInUser(u) ? { title: 'Cannot delete user', message: 'You cannot delete the account you are signed in with.' } : null;
+  }
+  function deleteUser(u, done) { S.deleteFlow({ repo: db, id: u.id, blocked: blockReason(u), done: done }); }
+  function editHref(u) { return 'add-user.html?id=' + encodeURIComponent(u.id); }
 
   /* ======================= All Users (list) ======================= */
   function initList() {
@@ -28,27 +33,10 @@
       tr.appendChild(el('td', { text: S.roleName(u.roleId) }));
       tr.appendChild(el('td', {}, [S.statusBadge(u.status)]));
       tr.appendChild(el('td', { text: S.formatLastLogin(u.lastLogin) }));
-      tr.appendChild(S.actions(u.fullName, 'add-user.html?id=' + encodeURIComponent(u.id),
-        function () { showUser(u); }, function () { removeUser(u, refresh); }));
+      tr.appendChild(S.actions(u.fullName, 'user-details.html?id=' + encodeURIComponent(u.id), editHref(u), function () {
+        deleteUser(u, function () { S.toast('Item deleted successfully.', 'deleted'); refresh(); });
+      }));
       return tr;
-    }
-
-    function showUser(u) {
-      ui.showDetails({
-        title: u.fullName,
-        rows: [['Username', u.username], ['Email', u.email], ['Role', S.roleName(u.roleId)],
-               ['Status', S.statusBadge(u.status)], ['Last login', S.formatLastLogin(u.lastLogin)]]
-      });
-    }
-
-    function removeUser(u, refresh) {
-      if (isSignedInUser(u)) { S.blocked('Cannot delete user', 'You cannot delete the account you are signed in with.'); return; }
-      ui.confirmDialog({ title: 'Delete user', message: 'Delete \u201C' + u.fullName + '\u201D? This cannot be undone.', confirmLabel: 'Delete' })
-        .then(function (yes) {
-          if (!yes) return;
-          if (db.remove(u.id)) { ui.toast('User deleted.', 'success'); refresh(); }
-          else ui.toast('The user could not be deleted.', 'error');
-        });
     }
 
     S.listPage({
@@ -68,6 +56,21 @@
     });
   }
 
+  /* ======================= User Details ======================= */
+  function initDetails() {
+    var u = db.get(ui.getParam('id'));
+    if (!u) { S.flash('That user was not found.', 'error'); window.location.href = 'all-users.html'; return; }
+    document.title = 'User Details | PSU CMS';
+    document.getElementById('userEdit').href = editHref(u);
+    S.renderDetail(document.getElementById('userDetail'), {
+      title: u.fullName, status: u.status, media: true, image: u.photo,
+      fields: [['Username', u.username], ['Email', u.email], ['Role', S.roleName(u.roleId)], ['Last login', S.formatLastLogin(u.lastLogin)]]
+    });
+    document.getElementById('userDelete').addEventListener('click', function () {
+      deleteUser(u, function () { S.flash('Item deleted successfully.', 'deleted'); window.location.href = 'all-users.html'; });
+    });
+  }
+
   /* ======================= Add New User / Edit User (form) ======================= */
   function initForm() {
     var form = document.getElementById('userForm');
@@ -79,7 +82,7 @@
     };
     var photo = S.imageField({
       preview: document.getElementById('userPhotoPreview'), button: document.getElementById('userPhotoBtn'),
-      remove: document.getElementById('userPhotoRemove'), input: document.getElementById('userPhotoInput'),
+      remove: document.getElementById('userPhotoRemove'),
       placeholder: 'Profile Picture', alt: 'Profile picture preview', maxWidth: CMS.config.avatarMaxWidth
     });
     var v = S.validator(form);
@@ -87,7 +90,7 @@
     var editing = null, editId = ui.getParam('id');
     if (editId) {
       editing = db.get(editId);
-      if (!editing) { ui.flash('That user was not found.', 'error'); window.location.href = 'all-users.html'; return; }
+      if (!editing) { S.flash('That user was not found.', 'error'); window.location.href = 'all-users.html'; return; }
       document.getElementById('userPageTitle').textContent = 'Edit User';
       document.getElementById('userPageSub').textContent = 'Update this CMS account.';
       document.getElementById('userCrumb').textContent = 'Edit User';
@@ -131,7 +134,7 @@
         if (!pw2) v.fail(f.confirm, 'Confirm the password.');
         else if (pw && pw2 !== pw) v.fail(f.confirm, 'The passwords do not match.');
       }
-      if (!v.ok()) { ui.toast('Please fix the highlighted fields.', 'error'); return; }
+      if (!v.ok()) { S.toast('Please fix the highlighted fields.', 'error'); return; }
 
       /* the password is validated above and intentionally NOT part of the record */
       f.password.value = ''; f.confirm.value = '';
@@ -140,13 +143,14 @@
       else Object.assign(record, { lastLogin: '', collegeId: '', departmentId: '' });
       var res = db.save(record);
       if (!res.ok) { S.saveFailed(); return; }
-      ui.flash(editing ? 'User updated.' : 'User created.', 'success');
+      S.flash('Changes saved successfully.', 'success');
       window.location.href = 'all-users.html';
     });
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('userForm')) initForm();
+    else if (document.getElementById('userDetail')) initDetails();
     else if (document.getElementById('userTableBody')) initList();
   });
 })();

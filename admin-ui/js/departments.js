@@ -1,11 +1,19 @@
 /* ==========================================================================
-   departments.js — Departments list (departments.html) and Add/Edit
-   Department form (department-form.html, edit mode via ?id=).
+   departments.js — Departments list (departments.html), Department Details
+   (department-details.html?id=) and Add/Edit Department (department-form.html).
    Each department belongs to one college (collegeId) and may have a head
    chosen from the faculty directory (CMS.db.faculty) via a searchable dropdown.
    ========================================================================== */
 (function () {
   var ui = CMS.ui, el = ui.el, S = CMS.structure, db = CMS.db.departments;
+
+  function blockReason(d) {
+    var p = S.programsOfDepartment(d.id).length;
+    if (!p) return null;
+    return { title: 'Cannot delete department', message: '\u201C' + d.name + '\u201D still has ' + p + ' academic program' + (p === 1 ? '' : 's') + '. Delete or move them first.' };
+  }
+  function deleteDepartment(d, done) { S.deleteFlow({ repo: db, id: d.id, blocked: blockReason(d), done: done }); }
+  function editHref(d) { return 'department-form.html?id=' + encodeURIComponent(d.id); }
 
   /* ======================= Departments (list) ======================= */
   function initList() {
@@ -20,39 +28,11 @@
       tr.appendChild(el('td', { text: d.headName || '\u2014' }));
       tr.appendChild(el('td', { text: d.description || '' }));
       tr.appendChild(el('td', {}, [S.statusBadge(d.status)]));
-      tr.appendChild(S.actions(d.name, 'department-form.html?id=' + encodeURIComponent(d.id),
-        function () { showDepartment(d); }, function () { removeDepartment(d, refresh); }));
+      tr.appendChild(S.actions(d.name, 'department-details.html?id=' + encodeURIComponent(d.id), editHref(d), function () {
+        deleteDepartment(d, function () { S.toast('Item deleted successfully.', 'deleted'); refresh(); });
+      }));
       return tr;
     }
-
-    /* Read-only department profile (public-site preview) */
-    function showDepartment(d) {
-      ui.showDetails({
-        title: d.name,
-        rows: [
-          ['Code', d.code], ['College', S.collegeName(d.collegeId)], ['Head', d.headName],
-          ['Contact email', d.contactEmail], ['Office', d.officeLocation], ['Hours', d.operationalHours],
-          ['Description', d.description], ['Status', S.statusBadge(d.status)],
-          ['Programs', S.listOf(S.programsOfDepartment(d.id).map(function (p) { return p.name + ' (' + p.code + ')'; }), 'No programs yet')],
-          ['Staff', S.listOf(S.staffOf(d).map(function (f) { return f.name + (f.position ? ' \u2014 ' + f.position : ''); }), 'No staff listed')]
-        ]
-      });
-    }
-
-    function removeDepartment(d, refresh) {
-      var p = S.programsOfDepartment(d.id).length;
-      if (p) {
-        S.blocked('Cannot delete department', '\u201C' + d.name + '\u201D still has ' + p + ' academic program' + (p === 1 ? '' : 's') + '. Delete or move them first.');
-        return;
-      }
-      ui.confirmDialog({ title: 'Delete department', message: 'Delete \u201C' + d.name + '\u201D? This cannot be undone.', confirmLabel: 'Delete' })
-        .then(function (yes) {
-          if (!yes) return;
-          if (db.remove(d.id)) { ui.toast('Department deleted.', 'success'); refresh(); }
-          else ui.toast('The department could not be deleted.', 'error');
-        });
-    }
-
     S.listPage({
       body: document.getElementById('departmentTableBody'), wrap: document.getElementById('departmentTableWrap'),
       emptyBox: document.getElementById('departmentEmpty'), footer: document.getElementById('departmentFooter'),
@@ -65,6 +45,21 @@
       row: buildRow,
       emptyNone: { title: 'No departments yet', text: 'Departments you add will appear here.', actionLabel: '+ Add Department', actionHref: 'department-form.html' },
       emptyFiltered: { title: 'No matching departments found', text: 'Try a different search or filter.' }
+    });
+  }
+
+  /* ======================= Department Details ======================= */
+  function initDetails() {
+    var d = db.get(ui.getParam('id'));
+    if (!d) { S.flash('That department was not found.', 'error'); window.location.href = 'departments.html'; return; }
+    document.title = 'Department Details | PSU CMS';
+    document.getElementById('departmentEdit').href = editHref(d);
+    S.renderDetail(document.getElementById('departmentDetail'), {
+      title: d.name, status: d.status,
+      fields: [['Code', d.code], ['College', S.collegeCode(d.collegeId)], ['Head', d.headName], ['Description', d.description]]
+    });
+    document.getElementById('departmentDelete').addEventListener('click', function () {
+      deleteDepartment(d, function () { S.flash('Item deleted successfully.', 'deleted'); window.location.href = 'departments.html'; });
     });
   }
 
@@ -81,7 +76,7 @@
     var editing = null, editId = ui.getParam('id');
     if (editId) {
       editing = db.get(editId);
-      if (!editing) { ui.flash('That department was not found.', 'error'); window.location.href = 'departments.html'; return; }
+      if (!editing) { S.flash('That department was not found.', 'error'); window.location.href = 'departments.html'; return; }
       document.title = 'Edit Department | PSU CMS';
     }
 
@@ -121,7 +116,7 @@
       if (!code) v.fail(f.code, 'Enter the department code.');
       else if (!/^[A-Z0-9-]{1,12}$/.test(code)) v.fail(f.code, 'Use letters, numbers or hyphens only (max 12).');
       else if (siblings.some(function (d) { return S.same(d.code, code); })) v.fail(f.code, 'This code is already used in the selected college.');
-      if (!v.ok()) { ui.toast('Please fix the highlighted fields.', 'error'); return; }
+      if (!v.ok()) { S.toast('Please fix the highlighted fields.', 'error'); return; }
 
       var h = head.getValue();
       var record = { name: name, code: code, collegeId: collegeId, description: f.description.value.trim(), headId: h ? h.id : '', headName: h ? h.label : '' };
@@ -130,13 +125,14 @@
       var res = db.save(record);
       if (!res.ok) { S.saveFailed(); return; }
       S.syncProgramsWithDepartment(res.record);   // keep programs under the same college as their department
-      ui.flash(editing ? 'Department updated.' : 'Department added.', 'success');
+      S.flash('Changes saved successfully.', 'success');
       window.location.href = 'departments.html';
     });
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('departmentForm')) initForm();
+    else if (document.getElementById('departmentDetail')) initDetails();
     else if (document.getElementById('departmentTableBody')) initList();
   });
 })();

@@ -32,6 +32,15 @@ window.CMS = window.CMS || {};
   CMS.config.degreeLevels = ['Bachelor', 'Master', 'Doctorate'];
   CMS.config.recordStatuses = [{ value: 'active', label: 'Active' }, { value: 'inactive', label: 'Inactive' }];
   CMS.config.userStatuses = [{ value: 'active', label: 'Active' }, { value: 'suspended', label: 'Suspended' }];
+  /* rows and columns of the Edit Role permission matrix (same order as the design) */
+  CMS.config.permissionModules = [
+    { key: 'dashboard', label: 'Dashboard' }, { key: 'homepage', label: 'Homepage Management' },
+    { key: 'news', label: 'News & Announcements' }, { key: 'events', label: 'Events Management' },
+    { key: 'university', label: 'University Structure' }, { key: 'faculty', label: 'Faculty & Staff Directory' },
+    { key: 'documents', label: 'Documents & Media' }, { key: 'users', label: 'User Management' },
+    { key: 'settings', label: 'Settings & Appearance' }
+  ];
+  CMS.config.permissionActions = ['view', 'create', 'edit', 'delete', 'publish'];
   CMS.config.avatarMaxWidth = 256;     // profile pictures are kept small (localStorage is ~5 MB)
   CMS.config.collegeImageMaxWidth = 800;
 
@@ -79,9 +88,12 @@ window.CMS = window.CMS || {};
   S.collegeName = function (id) { var c = S.college(id); return c ? c.name : 'Unknown college'; };
   S.departmentName = function (id) { var d = S.department(id); return d ? d.name : 'Unknown department'; };
   S.roleName = function (id) { var r = S.role(id); return r ? r.name : 'Unassigned'; };
-  /* staff of a department: the head plus faculty whose directory "department" text matches */
-  S.staffOf = function (dept) {
-    return CMS.db.faculty.list().filter(function (f) { return f.id === dept.headId || same(f.department, dept.name); });
+  /* Permission matrix of a role. Roles saved before this feature existed have none stored,
+     so fall back to the sample matrix with the same id (or an empty one). */
+  S.permissionsOf = function (role) {
+    if (role && role.permissions && typeof role.permissions === 'object') return role.permissions;
+    var sample = CMS.seedStructure.roles().filter(function (r) { return role && r.id === role.id; })[0];
+    return sample ? sample.permissions : {};
   };
 
   /* ---------- Rules used by several pages ---------- */
@@ -111,22 +123,6 @@ window.CMS = window.CMS || {};
     var names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return m ? names[parseInt(m[1], 10) - 1] + ' ' + m[2] : '';
   };
-  S.listOf = function (items, emptyText) {
-    if (!items.length) return CMS.ui.el('span', { class: 'structure-none', text: emptyText || 'None' });
-    return CMS.ui.el('ul', { class: 'structure-list' }, items.map(function (t) { return CMS.ui.el('li', { text: t }); }));
-  };
-
-  /* ---------- Dialogs ---------- */
-  /* Message-only dialog for "can't delete because ..." */
-  S.blocked = function (title, message) {
-    var ui = CMS.ui;
-    var closeBtn = ui.el('button', { type: 'button', class: 'cms-btn cms-btn-primary', 'data-bs-dismiss': 'modal', text: 'OK' });
-    return ui.openModal(ui.modalShell(title, [ui.el('p', { text: message })], [closeBtn]));
-  };
-  S.saveFailed = function () {
-    CMS.ui.toast('Could not save. The browser storage may be full or disabled \u2014 try a smaller image.', 'error');
-  };
-
   /* ---------- Images (data URLs only: the site CSP blocks blob: URLs) ---------- */
   /* Shrinks an existing data URL so many images fit in localStorage. */
   S.shrinkImage = function (dataUrl, maxWidth) {
@@ -142,29 +138,6 @@ window.CMS = window.CMS || {};
       };
       img.src = dataUrl;
     });
-  };
-  /* Wires "preview + Upload/Replace + Remove" markup. Returns { get, set }. */
-  S.imageField = function (o) {
-    var ui = CMS.ui, value = '';
-    function render() {
-      ui.clear(o.preview);
-      if (value) o.preview.appendChild(ui.el('img', { src: value, alt: o.alt || 'Preview' }));
-      else o.preview.appendChild(ui.el('span', { text: o.placeholder }));
-      o.button.textContent = value ? 'Replace Image' : 'Upload Image';
-      o.remove.hidden = !value;
-    }
-    o.button.addEventListener('click', function () { o.input.click(); });
-    o.input.addEventListener('change', function () {
-      var file = o.input.files[0];
-      if (!file) return;
-      ui.readImage(file).then(function (url) { return S.shrinkImage(url, o.maxWidth); })
-        .then(function (url) { value = url; render(); })
-        .catch(function (err) { ui.toast(err.message, 'error'); })
-        .then(function () { o.input.value = ''; });
-    });
-    o.remove.addEventListener('click', function () { value = ''; render(); });
-    render();
-    return { get: function () { return value; }, set: function (v) { value = v || ''; render(); } };
   };
 
   /* ---------- Form validation helper ---------- */
@@ -221,13 +194,12 @@ window.CMS = window.CMS || {};
     return { render: render };
   };
 
-  /* Row action buttons: View (button), Edit (link), Delete (button). */
-  S.actions = function (label, editHref, onView, onDelete) {
+  /* Row actions: View and Edit are links to their pages, Delete is a button. */
+  S.actions = function (label, viewHref, editHref, onDelete) {
     var ui = CMS.ui;
-    var view = ui.el('button', { type: 'button', class: 'cms-action', 'aria-label': 'View ' + label, text: 'View' });
+    var view = ui.el('a', { class: 'cms-action', href: viewHref, 'aria-label': 'View ' + label, text: 'View' });
     var edit = ui.el('a', { class: 'cms-action', href: editHref, 'aria-label': 'Edit ' + label, text: 'Edit' });
     var del = ui.el('button', { type: 'button', class: 'cms-action cms-action-danger', 'aria-label': 'Delete ' + label, text: 'Delete' });
-    view.addEventListener('click', onView);
     del.addEventListener('click', onDelete);
     return ui.el('td', {}, [ui.el('div', { class: 'cms-actions' }, [view, edit, del])]);
   };

@@ -53,32 +53,41 @@ the layout falls back to the original screenshots.
 - Add CSRF tokens to forms (marked with `<!-- PHP: ... -->` comments).
 
 ## University Structure & User Management (Member 3)
-Screens: `colleges/`, `departments/`, `programs/`, `users/` (9 screens, matching the Member 3 design document).
+Screens: `colleges/`, `departments/`, `programs/`, `users/` — 14 pages:
+the 9 list/form pages plus **College / Department / Academic Program / User Details** and **Edit Role** (`role-form.html`).
+Details and Edit pages take the record in the URL, e.g. `college-details.html?id=col_seed_cea`.
 
 | File | Purpose |
 | --- | --- |
-| `js/structure-seed.js` | First-run sample data (colleges, departments, programs, roles, users, extra faculty). |
-| `js/structure-db.js` | Adds `CMS.db.colleges / departments / programs / roles / users` and the shared helpers in `CMS.structure` (lookups, delete rules, generic list page, validation helper). Does **not** edit `storage.js`. |
-| `js/colleges.js`, `departments.js`, `programs.js`, `users.js`, `roles.js` | One script per module (list + add/edit form where both exist). |
+| `js/structure-seed.js` | First-run sample data (colleges, departments, programs, roles with permission matrices, users, extra faculty). |
+| `js/structure-db.js` | Adds `CMS.db.colleges / departments / programs / roles / users` and the shared helpers in `CMS.structure` (lookups, relationship rules, generic list page, validation helper). Does **not** edit `storage.js`. |
+| `js/structure-ui.js` | UI pieces from the UX team's extra screens: solid green/red toasts (`S.toast`, `S.flash`), the "Delete this item?" dialog, the **Choose File** modal (`S.chooseFile`, `S.imageField`), the details card (`S.renderDetail`) and the shared delete flow. |
+| `js/colleges.js`, `departments.js`, `programs.js`, `users.js`, `roles.js` | One script per module: list, details and add/edit form (and the Edit Role matrix in `roles.js`). |
 | `js/combobox.js` + `css/cms-combobox.css` | Reusable searchable dropdown (used for Department Head). Any module may reuse it. |
 | `css/structure.css`, `colleges.css`, `departments.css`, `programs.css`, `users.css` | Styles (prefixes `structure-`, `college-`, `department-`, `program-`, `user-`, `role-`). |
 
 How the data connects (all by ID): `department.collegeId` → college, `program.collegeId` + `program.departmentId`,
 `department.headId` → `CMS.db.faculty`, `user.roleId` → role. Dropdowns read these datasets; nothing is hard-coded.
-Rules (front-end only): a college with departments/programs, a department with programs, and a role with users cannot be
-deleted; codes/emails/usernames/role names must be unique; the signed-in demo user cannot be deleted.
+Rules (front-end only): a college with departments/programs, and a department with programs, cannot be deleted;
+codes/emails/usernames/role names must be unique; the signed-in demo user cannot be deleted.
 
 Notes for the team:
 - The sidebar groups **University Structure** and **User Management** replaced the two placeholder links in every page.
-- `structure-db.js` adds 4 sample faculty (the department heads shown in the design) to `CMS.db.faculty` once;
+- The UX team's toasts (solid green/red, top right) and compact dialogs differ from the shared ones, so they are scoped to
+  this module (`structure.css`) and do not change other pages. To adopt them project-wide, move those rules into `cms-components.css`.
+- **Edit Role** saves a permission matrix (module × view/create/edit/delete/publish) as data only.
+  Nothing in the front-end enforces it. There is no real login or permission check; the server must enforce permissions.
+- On Edit Role, "Role Description" edits the blue summary line of the role card; the grey line is not editable in the design.
+- `structure-db.js` adds 4 sample faculty (the department heads in the design) to `CMS.db.faculty` once;
   the existing faculty records are not changed.
-- Passwords on Add New User are validated and then discarded — nothing is stored. There is no real login or permission check.
-- Images are saved as small JPEG data URLs (the site CSP blocks `blob:` URLs).
+- Passwords on Add New User are validated and then discarded — nothing is stored.
+- Images are saved as small JPEG data URLs (the site CSP blocks `blob:` URLs). The Choose File modal accepts images only
+  (PNG, JPG, GIF, WebP, up to 5 MB); the design's "PDF or DOCX up to 20 MB" text is not used because these fields cannot store those files.
 - Fields beyond the screenshots (vision, mission, header image, department email/office/hours, campus, accreditation,
-  career prospects, admission criteria, syllabus file name) exist in the data model but have no form inputs yet.
-  They show in the **View** dialogs once filled.
-- PHP: colleges/departments/programs need their own tables (they are not `content` rows with these fields), and users
-  need `username`, `status`, `last_login` and a role reference. Hash passwords with `password_hash()` on the server.
+  career prospects, admission criteria, syllabus file name) exist in the data model but have no inputs or detail rows yet.
+- PHP: colleges/departments/programs need their own tables (they are not `content` rows with these fields), users
+  need `username`, `status`, `last_login` and a role reference, and roles need a permissions table.
+  Hash passwords with `password_hash()` on the server.
 
 ## Git
 Never push to `main`. Work on `feature/news-announcements-events-search`, push that branch, and open a pull request.

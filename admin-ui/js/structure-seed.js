@@ -87,12 +87,35 @@ CMS.seedStructure = (function () {
     }));
   }
 
+  /* Permission matrix per role: { moduleKey: [actions] }. Module keys and action names are
+     listed in CMS.config.permissionModules / permissionActions (structure-db.js).
+     These are labels for the demo UI only; nothing here is enforced. */
+  var ACTIONS = ['view', 'create', 'edit', 'delete', 'publish'];
+  var MODULES = ['dashboard', 'homepage', 'news', 'events', 'university', 'faculty', 'documents', 'users', 'settings'];
+  function matrix(rule) {
+    var out = {};
+    MODULES.forEach(function (m) { out[m] = (rule[m] || []).slice(); });
+    return out;
+  }
+  function allExcept(overrides) {
+    var rule = {};
+    MODULES.forEach(function (m) { rule[m] = ACTIONS; });
+    Object.keys(overrides).forEach(function (m) { rule[m] = overrides[m]; });
+    return matrix(rule);
+  }
+  var EDITOR_ACTIONS = ['view', 'create', 'edit', 'publish'];
+
   function roles() {
     return withDates([
-      { id: 'role_seed_super', name: 'Super Administrator', tagline: 'Full system access', description: 'All permissions, settings, security' },
-      { id: 'role_seed_admin', name: 'Administrator', tagline: 'Manage website content and users', description: 'Manage content, users, documents' },
-      { id: 'role_seed_editor', name: 'Editor', tagline: 'Create, edit, and publish content', description: 'Publish and edit all content' },
-      { id: 'role_seed_author', name: 'Author', tagline: 'Create and manage own content', description: 'Create and edit own drafts' }
+      { id: 'role_seed_super', name: 'Super Administrator', tagline: 'Full system access', description: 'All permissions, settings, security',
+        permissions: allExcept({}) },
+      { id: 'role_seed_admin', name: 'Administrator', tagline: 'Manage website content and users', description: 'Manage content, users, documents',
+        permissions: allExcept({ settings: ['view', 'create'] }) },
+      { id: 'role_seed_editor', name: 'Editor', tagline: 'Create, edit, and publish content', description: 'Publish and edit all content',
+        permissions: matrix({ dashboard: ['view'], homepage: EDITOR_ACTIONS, news: EDITOR_ACTIONS, events: EDITOR_ACTIONS,
+                              university: EDITOR_ACTIONS, faculty: EDITOR_ACTIONS, documents: EDITOR_ACTIONS }) },
+      { id: 'role_seed_author', name: 'Author', tagline: 'Create and manage own content', description: 'Create and edit own drafts',
+        permissions: matrix({ dashboard: ['view'], news: ['view', 'create', 'edit'], events: ['view', 'create', 'edit'] }) }
     ]);
   }
 
