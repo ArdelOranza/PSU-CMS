@@ -21,9 +21,9 @@
   </a>
   <nav aria-label="Main navigation">
     <p class="cms-nav-label">Main</p>
-    <a class="cms-nav-link" href="#" data-nav="dashboard" data-pending="Dashboard"><i class="bi bi-columns-gap" aria-hidden="true"></i><span class="cms-nav-text">Dashboard</span></a>
+    <a class="cms-nav-link" href="../dashboard/dashboard.html" data-nav="dashboard"><i class="bi bi-columns-gap" aria-hidden="true"></i><span class="cms-nav-text">Dashboard</span></a>
     <p class="cms-nav-label">Website content</p>
-    <a class="cms-nav-link" href="#" data-nav="homepage" data-pending="Homepage Management"><i class="bi bi-house" aria-hidden="true"></i><span class="cms-nav-text">Homepage Management</span></a>
+    <a class="cms-nav-link" href="../homapage/homepage-mg.html" data-nav="homepage"><i class="bi bi-house" aria-hidden="true"></i><span class="cms-nav-text">Homepage Management</span></a>
     <div class="cms-nav-group" data-group="news">
       <button type="button" class="cms-nav-link cms-nav-toggle" aria-expanded="false" aria-controls="subnav-news"><i class="bi bi-journal-text" aria-hidden="true"></i><span class="cms-nav-text">News &amp; Announcements</span><span class="cms-nav-caret" aria-hidden="true"></span></button>
       <div class="cms-subnav" id="subnav-news">
@@ -65,7 +65,13 @@
         <a class="cms-nav-link" href="../users/user-roles.html" data-nav="user-roles"><span class="cms-nav-text">User Roles</span></a>
       </div>
     </div>
-    <a class="cms-nav-link" href="#" data-nav="settings" data-pending="Settings"><i class="bi bi-sliders" aria-hidden="true"></i><span class="cms-nav-text">Settings</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
+    <div class="cms-nav-group" data-group="settings">
+      <button type="button" class="cms-nav-link cms-nav-toggle" aria-expanded="false" aria-controls="subnav-settings"><i class="bi bi-sliders" aria-hidden="true"></i><span class="cms-nav-text">Settings</span><span class="cms-nav-caret" aria-hidden="true"></span></button>
+      <div class="cms-subnav" id="subnav-settings">
+        <a class="cms-nav-link" href="../system/system-web-info.html" data-nav="system-web-info"><span class="cms-nav-text">Website Information</span></a>
+        <a class="cms-nav-link" href="../system/system-gen.html" data-nav="system-gen"><span class="cms-nav-text">General Settings</span></a>
+      </div>
+    </div>
     <a class="cms-nav-link" href="#" data-nav="appearance" data-pending="Appearance"><i class="bi bi-palette" aria-hidden="true"></i><span class="cms-nav-text">Appearance</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
   </nav>
 </aside>
