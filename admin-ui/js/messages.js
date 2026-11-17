@@ -157,8 +157,7 @@
     else ui.toast('The status could not be updated.', 'error');
   }
   function removeMessage(m) {
-    ui.confirmDialog({ title: 'Delete ' + (m.type === 'feedback' ? 'feedback' : 'message'),
-                       message: 'Delete \u201C' + m.subject + '\u201D from ' + m.fullName + '? This cannot be undone.', confirmLabel: 'Delete' })
+    store.confirmDelete()
       .then(function (yes) {
         if (!yes) return;
         if (store.remove(m.id)) { ui.toast('Deleted.', 'success'); render(); }

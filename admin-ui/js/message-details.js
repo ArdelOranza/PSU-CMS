@@ -82,7 +82,7 @@
   }
 
   function removeMessage(m) {
-    ui.confirmDialog({ title: 'Delete message', message: 'Delete \u201C' + m.subject + '\u201D from ' + m.fullName + '? This cannot be undone.', confirmLabel: 'Delete' })
+    store.confirmDelete()
       .then(function (yes) {
         if (!yes) return;
         if (store.remove(m.id)) { ui.flash('Message deleted.', 'success'); window.location.href = 'all-messages.html'; }

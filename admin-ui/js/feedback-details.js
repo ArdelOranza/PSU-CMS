@@ -53,7 +53,7 @@
   ]));
 
   delBtn.addEventListener('click', function () {
-    ui.confirmDialog({ title: 'Delete feedback', message: 'Delete the feedback from ' + m.fullName + '? This cannot be undone.', confirmLabel: 'Delete' })
+    store.confirmDelete()
       .then(function (yes) {
         if (!yes) return;
         if (store.remove(m.id)) { ui.flash('Feedback deleted.', 'success'); window.location.href = 'feedback.html'; }

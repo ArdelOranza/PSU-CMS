@@ -178,6 +178,36 @@ window.CMS = window.CMS || {};
     return (parts[0].charAt(0) + (parts.length > 1 ? parts[parts.length - 1].charAt(0) : '')).toUpperCase();
   }
 
+  /* Delete confirmation modal (design: "Delete this item?" + Cancel / Delete).
+     Resolves true when the admin clicks Delete; false on Cancel, Esc or backdrop click.
+     Optional: { title, message, cancelLabel, confirmLabel }.
+     Styles: css/messages.css (.delete-modal). Built with textContent only. */
+  function confirmDelete(opts) {
+    opts = opts || {};
+    var ui = CMS.ui, el = ui.el;
+    return new Promise(function (resolve) {
+      var answered = false;
+      var titleId = 'deleteModalTitle', textId = 'deleteModalText';
+      var cancelBtn = el('button', { type: 'button', class: 'cms-btn cms-btn-outline', 'data-bs-dismiss': 'modal', text: opts.cancelLabel || 'Cancel' });
+      var okBtn = el('button', { type: 'button', class: 'cms-btn cms-btn-danger', text: opts.confirmLabel || 'Delete' });
+      var modalEl = el('div', { class: 'modal fade cms-modal delete-modal', tabindex: '-1', 'aria-labelledby': titleId, 'aria-describedby': textId, 'aria-hidden': 'true' }, [
+        el('div', { class: 'modal-dialog modal-dialog-centered' }, [
+          el('div', { class: 'modal-content' }, [
+            el('div', { class: 'delete-modal-body' }, [
+              el('h2', { class: 'delete-modal-title', id: titleId, text: opts.title || 'Delete this item?' }),
+              el('p', { class: 'delete-modal-text', id: textId, text: opts.message || 'This action cannot be undone. The item will be permanently removed from the website.' }),
+              el('div', { class: 'delete-modal-actions' }, [cancelBtn, okBtn])
+            ])
+          ])
+        ])
+      ]);
+      var modal = ui.openModal(modalEl);
+      modalEl.addEventListener('shown.bs.modal', function () { cancelBtn.focus(); });   // safest default for a destructive action
+      okBtn.addEventListener('click', function () { answered = true; modal.hide(); resolve(true); });
+      modalEl.addEventListener('hidden.bs.modal', function () { if (!answered) resolve(false); });
+    });
+  }
+
   /* Downloads the given records (pass the already-filtered list) as a .csv file. */
   function exportCsv(records, baseName) {
     var headers = ['Name', 'Email', 'Subject', 'Campus/Department', 'Message', 'Status', 'Type', 'Rating', 'Category', 'Submitted'];
@@ -191,7 +221,7 @@ window.CMS = window.CMS || {};
   CMS.messages = {
     all: all, get: get, counts: counts, setStatus: setStatus, saveReply: saveReply, remove: remove, create: create,
     statusLabel: statusLabel, feedbackLabel: feedbackLabel, statusBadge: statusBadge,
-    formatDateTime: formatDateTime, stars: stars, initials: initials, exportCsv: exportCsv, nowLocalISO: nowLocalISO
+    formatDateTime: formatDateTime, stars: stars, initials: initials, exportCsv: exportCsv, nowLocalISO: nowLocalISO, confirmDelete: confirmDelete
   };
 
   CMS.dev.clearMessages = function () { db.clear(); console.info('[CMS] Messages cleared. Reload the page to see the empty state.'); };

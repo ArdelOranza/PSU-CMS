@@ -53,3 +53,13 @@
 .feedback-detail-label{margin:0 0 2px;font-size:10px;line-height:14px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--cms-muted)}
 .feedback-detail-value{margin:0;font-size:13px;line-height:19px;font-weight:500;color:var(--cms-text);white-space:pre-wrap;overflow-wrap:anywhere}
 @media (max-width:575.98px){.feedback-detail-grid{grid-template-columns:1fr}}
+
+/* Delete confirmation modal (matches the "Modal - Delete Confirmation" design) */
+.delete-modal .modal-dialog{max-width:440px}
+.delete-modal .modal-content{border:0;border-radius:16px;background:var(--cms-surface);box-shadow:0 20px 50px rgba(15,23,42,.3)}
+.delete-modal-body{padding:24px}
+.delete-modal-title{margin:0 0 12px;font-size:16px;line-height:22px;font-weight:700;color:var(--cms-text)}
+.delete-modal-text{margin:0;font-size:13px;line-height:16px;color:var(--cms-muted)}
+.delete-modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+.delete-modal-actions .cms-btn{height:34px;padding:0 14px;font-size:13px}
+@media (max-width:575.98px){.delete-modal .modal-dialog{margin:0 16px}.delete-modal-actions .cms-btn{flex:1}}
