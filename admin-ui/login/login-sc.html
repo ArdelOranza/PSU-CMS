@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/login.css" />
+    <title>Login</title>
+  </head>
+
+  <body>
+    <main class="login-card">
+      <!-- LOGIN FORM -->
+      <!-- CLICKABLE LINK -->
+      <!-- INPUT FIELD -->
+      <!-- ASSETS -->
+      <!-- university logo -->
+      <!-- ASSETS -->
+      <div class="logo">
+        <img
+          src="../assets/images/psu-logo.png"
+          alt="Pangasinan State University logo"
+        />
+      </div>
+
+      <h1>PSU CMS</h1>
+      <p class="login-intro">Administration Panel – Sign in to continue</p>
+
+      <form action="login_process.php" method="post">
+        <div class="form-field">
+          <!-- RAW DATA -->
+          <label for="campus">Campus</label>
+          <select class="campus-select" id="campus" name="campus" required>
+            <option value="" selected disabled>Select campus</option>
+            <option value="Alaminos City Campus">Alaminos City Campus</option>
+            <option value="Asingan Campus">Asingan Campus</option>
+            <option value="Bayambang Campus">Bayambang Campus</option>
+            <option value="Binmaley Campus">Binmaley Campus</option>
+            <option value="Infanta Campus">Infanta Campus</option>
+            <option value="Lingayen Campus (Main)">
+              Lingayen Campus (Main)
+            </option>
+            <option value="San Carlos City Campus">
+              San Carlos City Campus
+            </option>
+            <option value="Santa Maria Campus">Santa Maria Campus</option>
+            <option value="Urdaneta Campus">Urdaneta Campus</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="username">Username or Email</label>
+          <!-- RAW DATA -->
+          <input
+            type="text"
+            id="username"
+            placeholder="admin@psu.edu.ph"
+            name="username"
+            autocomplete="username"
+            required
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="password">Password</label>
+          <!-- RAW DATA -->
+          <input
+            type="password"
+            id="password"
+            placeholder="••••••••"
+            name="password"
+            autocomplete="current-password"
+            required
+          />
+        </div>
+
+        <div class="form-options">
+          <!-- RAW DATA -->
+          <label class="remember-option" for="remember">
+            <input type="checkbox" id="remember" name="remember" value="1" />
+            <span>Remember me</span>
+          </label>
+          <a class="forgot-password" href="forgot_password.php"
+            >Forgot password?</a
+          >
+        </div>
+        <!-- RAW DATA -->
+        <button type="submit">Sign in</button>
+      </form>
+    </main>
+  </body>
+</html>

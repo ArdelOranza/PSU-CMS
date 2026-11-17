@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../vendor/bootstrap-icons/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../css/cms-base.css">
+    <link rel="stylesheet" href="../css/cms-layout.css">
+    <link rel="stylesheet" href="../css/cms-components.css">
+    <link rel="stylesheet" href="../css/dashboard.css?v=16">
+    <title>Dashboard | PSU Admin</title>
+</head>
+
+<body class="cms-body" data-page="dashboard">
+    <div class="cms-shell">
+        <aside class="cms-sidebar" id="cmsSidebar" aria-label="Sidebar">
+            <a class="cms-brand" href="../index.html">
+                <img class="cms-brand-logo" src="../assets/images/psu-logo.png" alt="">
+                <span class="cms-brand-text"><strong>PSU CMS</strong><small>Administration Panel</small></span>
+            </a>
+            <nav aria-label="Main navigation">
+                <p class="cms-nav-label">Main</p>
+                <a class="cms-nav-link" href="../dashboard/dashboard.html" data-nav="dashboard"><i class="bi bi-columns-gap" aria-hidden="true"></i><span class="cms-nav-text">Dashboard</span></a>
+                <p class="cms-nav-label">Website content</p>
+                <a class="cms-nav-link" href="../homapage/homepage-mg.html" data-nav="homepage"><i class="bi bi-house" aria-hidden="true"></i><span class="cms-nav-text">Homepage Management</span></a>
+                <div class="cms-nav-group" data-group="news">
+                    <button type="button" class="cms-nav-link cms-nav-toggle" aria-expanded="false" aria-controls="subnav-news"><i class="bi bi-journal-text" aria-hidden="true"></i><span class="cms-nav-text">News &amp; Announcements</span><span class="cms-nav-caret" aria-hidden="true"></span></button>
+                    <div class="cms-subnav" id="subnav-news">
+                        <a class="cms-nav-link" href="../news/all-news.html" data-nav="all-news"><span class="cms-nav-text">All News</span></a>
+                        <a class="cms-nav-link" href="../news/add-news.html" data-nav="add-news"><span class="cms-nav-text">Add New News</span></a>
+                        <a class="cms-nav-link" href="../announcements/all-announcements.html" data-nav="all-announcements"><span class="cms-nav-text">All Announcements</span></a>
+                        <a class="cms-nav-link" href="../announcements/add-announcement.html" data-nav="add-announcement"><span class="cms-nav-text">Add New Announcement</span></a>
+                    </div>
+                </div>
+                <div class="cms-nav-group" data-group="events">
+                    <button type="button" class="cms-nav-link cms-nav-toggle" aria-expanded="false" aria-controls="subnav-events"><i class="bi bi-calendar" aria-hidden="true"></i><span class="cms-nav-text">Events Management</span><span class="cms-nav-caret" aria-hidden="true"></span></button>
+                    <div class="cms-subnav" id="subnav-events">
+                        <a class="cms-nav-link" href="../events/all-events.html" data-nav="all-events"><span class="cms-nav-text">All Events</span></a>
+                        <a class="cms-nav-link" href="../events/add-event.html" data-nav="add-event"><span class="cms-nav-text">Add New Event</span></a>
+                        <a class="cms-nav-link" href="../events/event-categories.html" data-nav="event-categories"><span class="cms-nav-text">Event Categories</span></a>
+                    </div>
+                </div>
+                <div class="cms-nav-group" data-group="university">
+                    <button type="button" class="cms-nav-link cms-nav-toggle" aria-expanded="false" aria-controls="subnav-university"><i class="bi bi-bank" aria-hidden="true"></i><span class="cms-nav-text">University Structure</span><span class="cms-nav-caret" aria-hidden="true"></span></button>
+                    <div class="cms-subnav" id="subnav-university">
+                        <a class="cms-nav-link" href="../colleges/colleges.html" data-nav="colleges"><span class="cms-nav-text">Colleges</span></a>
+                        <a class="cms-nav-link" href="../departments/departments.html" data-nav="departments"><span class="cms-nav-text">Departments</span></a>
+                        <a class="cms-nav-link" href="../programs/academic-programs.html" data-nav="programs"><span class="cms-nav-text">Academic Programs</span></a>
+                    </div>
+                </div>
+                <a class="cms-nav-link" href="#" data-nav="faculty" data-pending="Faculty &amp; Staff Directory"><i class="bi bi-people" aria-hidden="true"></i><span class="cms-nav-text">Faculty &amp; Staff Directory</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
+                <p class="cms-nav-label">Resources</p>
+                <a class="cms-nav-link" href="#" data-nav="documents" data-pending="Document Library"><i class="bi bi-file-earmark-text" aria-hidden="true"></i><span class="cms-nav-text">Document Library</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
+                <a class="cms-nav-link" href="#" data-nav="media" data-pending="Media Library"><i class="bi bi-image" aria-hidden="true"></i><span class="cms-nav-text">Media Library</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
+                <p class="cms-nav-label">Communication</p>
+                <a class="cms-nav-link" href="#" data-nav="contact" data-pending="Contact &amp; Feedback"><i class="bi bi-envelope" aria-hidden="true"></i><span class="cms-nav-text">Contact &amp; Feedback</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
+                <a class="cms-nav-link" href="../search/search-results.html" data-nav="search"><i class="bi bi-search" aria-hidden="true"></i><span class="cms-nav-text">Search</span></a>
+                <p class="cms-nav-label">System</p>
+                <div class="cms-nav-group" data-group="users">
+                    <button type="button" class="cms-nav-link cms-nav-toggle" aria-expanded="false" aria-controls="subnav-users"><i class="bi bi-person" aria-hidden="true"></i><span class="cms-nav-text">User Management</span><span class="cms-nav-caret" aria-hidden="true"></span></button>
+                    <div class="cms-subnav" id="subnav-users">
+                        <a class="cms-nav-link" href="../users/all-users.html" data-nav="all-users"><span class="cms-nav-text">All Users</span></a>
+                        <a class="cms-nav-link" href="../users/add-user.html" data-nav="add-user"><span class="cms-nav-text">Add New User</span></a>
+                        <a class="cms-nav-link" href="../users/user-roles.html" data-nav="user-roles"><span class="cms-nav-text">User Roles</span></a>
+                    </div>
+                </div>
+                <div class="cms-nav-group" data-group="settings">
+                    <button type="button" class="cms-nav-link cms-nav-toggle" aria-expanded="false" aria-controls="subnav-settings"><i class="bi bi-sliders" aria-hidden="true"></i><span class="cms-nav-text">Settings</span><span class="cms-nav-caret" aria-hidden="true"></span></button>
+                    <div class="cms-subnav" id="subnav-settings">
+                        <a class="cms-nav-link" href="../system/system-web-info.html" data-nav="system-web-info"><span class="cms-nav-text">Website Information</span></a>
+                        <a class="cms-nav-link" href="../system/system-gen.html" data-nav="system-gen"><span class="cms-nav-text">General Settings</span></a>
+                    </div>
+                </div>
+                <a class="cms-nav-link" href="#" data-nav="appearance" data-pending="Appearance"><i class="bi bi-palette" aria-hidden="true"></i><span class="cms-nav-text">Appearance</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
+            </nav>
+        </aside>
+        <div class="cms-backdrop"></div>
+        <div class="cms-main">
+            <header class="cms-topbar">
+                <button type="button" class="cms-menu-toggle" aria-label="Open menu" aria-controls="cmsSidebar" aria-expanded="false"><i class="bi bi-list" aria-hidden="true"></i></button>
+                <nav class="cms-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li>Main</li><li aria-current="page">Dashboard</li></ol></nav>
+                <div class="cms-topbar-right">
+                    <button type="button" class="cms-search-toggle" aria-label="Search" aria-expanded="false"><i class="bi bi-search" aria-hidden="true"></i></button>
+                    <form class="cms-search" role="search" action="../search/search-results.html" method="get">
+                        <label class="cms-visually-hidden" for="cmsGlobalSearch">Search the website</label>
+                        <input type="search" id="cmsGlobalSearch" name="q" placeholder="Search..." autocomplete="off">
+                        <button type="submit" class="cms-search-btn" aria-label="Search"><i class="bi bi-search" aria-hidden="true"></i></button>
+                    </form>
+                    <button type="button" class="cms-notif" data-pending="Notifications" aria-label="Notifications"><i class="bi bi-bell" aria-hidden="true"></i><span class="cms-notif-text">Notifications</span> <span class="cms-badge-count">3</span></button>
+                    <a class="cms-btn cms-btn-outline" href="../../index.php" target="_blank" rel="noopener"><span class="cms-view-site-text">View Website</span><i class="bi bi-box-arrow-up-right cms-view-site-icon" aria-hidden="true"></i></a>
+                    <button type="button" class="cms-user" data-pending="The account menu"><span class="cms-avatar" aria-hidden="true"></span><span class="cms-user-name">Admin User</span><span class="cms-user-caret" aria-hidden="true"></span></button>
+                </div>
+            </header>
+
+    <main class="cms-content dashboard-content" id="dashboard">
+        <div class="page-heading">
+            <div>
+                <h1>Welcome home, Admin!</h1>
+                <p class="page-description">Here’s what’s happening with your university website today.</p>
+            </div>
+        </div>
+
+        <section class="summary-cards" aria-label="Content overview metrics">
+            <article class="summary-card">
+                <p>Published Pages</p>
+                <strong>48</strong>
+            </article>
+            <article class="summary-card">
+                <p>News Articles</p>
+                <strong>236</strong>
+            </article>
+            <article class="summary-card">
+                <p>Announcements</p>
+                <strong>96</strong>
+            </article>
+            <article class="summary-card">
+                <p>Upcoming Events</p>
+                <strong>12</strong>
+            </article>
+        </section>
+
+        <section class="overview-panel overview-panel-2" aria-labelledby="quick-actions-heading">
+            <div class="panel-heading">
+                <h2 id="quick-actions-heading">Quick Actions</h2>
+            </div>
+            <div class="quick-actions">
+                <button class="quick-action primary-action" type="button">
+                    <span aria-hidden="true">+</span>
+                    <span>Add News</span>
+                </button>
+                <button class="quick-action" type="button">
+                    <span aria-hidden="true">+</span>
+                    <span>Add Announcement</span>
+                </button>
+                <button class="quick-action" type="button">
+                    <span aria-hidden="true">+</span>
+                    <span>Add Event</span>
+                </button>
+                <button class="quick-action" type="button">
+                    <span>Upload Document</span>
+                </button>
+            </div>
+        </section>
+
+        <section class="dashboard-panels" aria-label="Website content insights">
+            <article class="overview-panel activity-chart-panel" aria-labelledby="content-activity-heading">
+                <div class="panel-heading">
+                    <div>
+                        <h2 id="content-activity-heading">Website Content Activity</h2>
+                    </div>
+                </div>
+                <div class="chart-legend" aria-label="Chart categories">
+                    <span><i class="legend-dot news-dot"></i>News</span>
+                    <span><i class="legend-dot announcements-dot"></i>Announcements</span>
+                    <span><i class="legend-dot events-dot"></i>Events</span>
+                    <span><i class="legend-dot documents-dot"></i>Documents</span>
+                    <span><i class="legend-dot other-dot"></i>Other</span>
+                </div>
+                <p class="chart-subtitle">Items published</p>
+                <div class="chart-scroll">
+                    <svg class="activity-chart" viewBox="0 0 960 240" role="img" aria-labelledby="activity-chart-title activity-chart-description">
+                        <title id="activity-chart-title">Website content activity by month</title>
+                        <desc id="activity-chart-description">Stacked columns show monthly totals for news, announcements, events, documents, and other content.</desc>
+                        <g class="chart-grid">
+                            <line x1="0" y1="55" x2="960" y2="55"></line>
+                            <line x1="0" y1="105" x2="960" y2="105"></line>
+                            <line x1="0" y1="155" x2="960" y2="155"></line>
+                            <line x1="0" y1="205" x2="960" y2="205"></line>
+                        </g>
+                        <g class="chart-columns">
+                            <g class="chart-column"><text class="chart-month-label" x="40" y="225">Jan</text></g>
+                            <g class="chart-column"><text class="chart-month-label" x="120" y="225">Feb</text></g>
+                            <g class="chart-column"><text class="chart-month-label" x="200" y="225">Mar</text></g>
+                            <g class="chart-column"><text class="chart-month-label" x="280" y="225">Apr</text></g>
+                            <g class="chart-column"><text class="chart-month-label" x="360" y="225">May</text></g>
+                            <g class="chart-column"><text class="chart-month-label" x="440" y="225">Jun</text></g>
+                            <g class="chart-column"><text class="chart-month-label" x="520" y="225">Jul</text></g>
+                            <g class="chart-column">
+                                <text class="chart-month-label" x="600" y="225">Aug</text>
+                                <rect class="series-news" x="582" y="185.43" width="36" height="19.57"></rect>
+                                <rect class="series-announcements" x="582" y="172.39" width="36" height="13.04"></rect>
+                                <rect class="series-events" x="582" y="165.87" width="36" height="6.52"></rect>
+                                <rect class="series-documents" x="582" y="152.83" width="36" height="13.04"></rect>
+                                <rect class="series-other" x="582" y="146.30" width="36" height="6.52"></rect>
+                            </g>
+                            <g class="chart-column">
+                                <text class="chart-month-label" x="680" y="225">Sep</text>
+                                <rect class="series-news" x="662" y="172.39" width="36" height="32.61"></rect>
+                                <rect class="series-announcements" x="662" y="149.57" width="36" height="22.83"></rect>
+                                <rect class="series-events" x="662" y="136.52" width="36" height="13.04"></rect>
+                                <rect class="series-documents" x="662" y="116.96" width="36" height="19.57"></rect>
+                                <rect class="series-other" x="662" y="103.91" width="36" height="13.04"></rect>
+                            </g>
+                            <g class="chart-column">
+                                <text class="chart-month-label" x="760" y="225">Oct</text>
+                                <rect class="series-news" x="742" y="156.09" width="36" height="48.91"></rect>
+                                <rect class="series-announcements" x="742" y="123.48" width="36" height="32.61"></rect>
+                                <rect class="series-events" x="742" y="103.91" width="36" height="19.57"></rect>
+                                <rect class="series-documents" x="742" y="74.57" width="36" height="29.35"></rect>
+                                <rect class="series-other" x="742" y="55" width="36" height="19.57"></rect>
+                            </g>
+                            <g class="chart-column"><text class="chart-month-label" x="840" y="225">Nov</text></g>
+                            <g class="chart-column"><text class="chart-month-label" x="920" y="225">Dec</text></g>
+                        </g>
+                    </svg>
+                    <table class="chart-data-table" aria-label="Monthly total item counts">
+                        <tbody>
+                            <tr>
+                                <td></td><td></td><td></td><td></td><td></td><td></td>
+                                <td></td>
+                                <td><span class="chart-total">18 items</span></td>
+                                <td><span class="chart-total">31 items</span></td>
+                                <td><span class="chart-total latest-total">46 items</span></td>
+                                <td></td><td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+            <article class="overview-panel published-panel" aria-labelledby="recently-published-heading">
+                <div class="panel-heading">
+                    <div>
+                        <h2 id="recently-published-heading">Recently Published Content</h2>
+                    </div>
+                </div>
+                <ul class="published-list">
+                    <li>
+                        <a class="published-item" href="#">
+                            <span class="content-thumbnail" aria-hidden="true"></span>
+                            <span class="published-copy">
+                                <strong>
+                                    <span>PSU Opens Enrollment</span>
+                                    <span class="published-status">Published</span>
+                                </strong>
+                                <span>News <span class="content-date">· Oct 28</span></span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="published-item" href="#">
+                            <span class="content-thumbnail" aria-hidden="true"></span>
+                            <span class="published-copy">
+                                <strong>
+                                    <span>Midterm Examination Schedule</span>
+                                    <span class="published-status">Published</span>
+                                </strong>
+                                <span>Announcement <span class="content-date">· Oct 27</span></span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="published-item" href="#">
+                            <span class="content-thumbnail" aria-hidden="true"></span>
+                            <span class="published-copy">
+                                <strong>
+                                    <span>Research Congress 2026</span>
+                                    <span class="published-status">Published</span>
+                                </strong>
+                                <span>Event <span class="content-date">· Oct 25</span></span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="overview-panel recent-activities-panel" aria-labelledby="recent-activities-heading">
+            <div class="panel-heading">
+                <div>
+                    <h2 id="recent-activities-heading">Recent Activities</h2>
+                </div>
+            </div>
+            <div class="activity-table-scroll">
+                <table class="activity-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">User</th>
+                            <th scope="col">Activity</th>
+                            <th scope="col">Content</th>
+                            <th scope="col">Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Marlito Morales</td>
+                            <td>Published News</td>
+                            <td>PSU Opens Enrollment</td>
+                            <td><time datetime="PT10M">10 min ago</time></td>
+                        </tr>
+                        <tr>
+                            <td>Clove Dela Cruz</td>
+                            <td>Edited event</td>
+                            <td>Research Congress 2026</td>
+                            <td><time datetime="PT1H">1 hr ago</time></td>
+                        </tr>
+                        <tr>
+                            <td>Leomord Gonzales</td>
+                            <td>Uploaded document</td>
+                            <td>Student Handbook 2026.pdf</td>
+                            <td><time datetime="PT3H">3 hr ago</time></td>
+                        </tr>
+                        <tr>
+                            <td>Dranrev Eslao</td>
+                            <td>Added personnel</td>
+                            <td>Dr. Liza Manuel</td>
+                            <td><time datetime="2026-11-15">Yesterday</time></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+        </div>
+    </div>
+    <script src="../vendor/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/seed-data.js"></script>
+    <script src="../js/sanitize.js"></script>
+    <script src="../js/storage.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/layout.js"></script>
+</body>
+
+</html>
