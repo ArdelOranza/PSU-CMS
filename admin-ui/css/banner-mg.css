@@ -384,6 +384,31 @@ h1 {
   outline-offset: 2px;
 }
 
+.banner-image-preview {
+  width: 320px;
+  max-width: 100%;
+  height: 180px;
+  background: #EEF0F3;
+}
+
+.banner-image-preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.banner-upload-btn {
+  border-radius: 8px;
+  background: #E8EFFB;
+  color: #1E4FA3;
+}
+
+.banner-upload-btn:hover {
+  background: #DBE7FA;
+  color: #1E4FA3;
+}
+
 .banner-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -471,7 +496,10 @@ h1 {
 }
 
 .banner-action {
+  display: inline-flex;
   min-width: 60px;
+  align-items: center;
+  justify-content: center;
   padding: 5px 9px;
   border: 1px solid #d0d5dd;
   border-radius: 6px;
@@ -480,10 +508,12 @@ h1 {
   font: inherit;
   font-size: 12px;
   font-weight: 600;
+  line-height: 1.2;
   cursor: pointer;
+  text-decoration: none;
 }
 
-.edit-action {
+.banner-action.edit-action {
   color: #172033;
 }
 
