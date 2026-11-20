@@ -1,0 +1,34 @@
+/* ==========================================================================
+   contact.css — public Contact & Feedback form (prefix: contact-).
+   Uses the same tokens as the admin screens; no sidebar.
+   ========================================================================== */
+.contact-body{min-height:100vh}
+.contact-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 28px;height:var(--cms-topbar-h);background:var(--cms-surface);border-bottom:1px solid var(--cms-border)}
+.contact-brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px}
+.contact-brand img{width:36px;height:36px;border-radius:50%;object-fit:cover}
+.contact-main{max-width:680px;margin:0 auto;padding:28px 16px 48px}
+.contact-card{padding:22px}
+.contact-intro{margin:4px 0 18px}
+.contact-note{display:flex;gap:8px;margin-bottom:16px;padding:9px 12px;border-radius:var(--cms-radius);background:var(--cms-primary-soft);color:var(--cms-text);font-size:12px;line-height:17px}
+.contact-banner{display:flex;gap:8px;align-items:flex-start;margin-bottom:14px;padding:10px 12px;border-radius:var(--cms-radius);font-size:13px;line-height:18px}
+.contact-banner.is-error{background:var(--cms-red-bg);color:var(--cms-red)}
+.contact-banner.is-info{background:var(--cms-blue-bg);color:var(--cms-blue)}
+.contact-counter{text-align:right}
+
+/* honeypot: hidden from people, visible to simple bots */
+.contact-hp{position:absolute!important;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+
+/* success + simulated receipt */
+.contact-success-icon{display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin:0 auto 10px;border-radius:50%;background:var(--cms-green-bg);color:var(--cms-green);font-size:24px}
+#contactReceipt{text-align:center;outline:none}
+.contact-receipt-title{font-size:20px;font-weight:700}
+.contact-receipt{margin:16px 0;padding:14px;border:1px dashed var(--cms-border-strong);border-radius:var(--cms-radius);text-align:left}
+.contact-receipt-head{margin-bottom:10px;font-size:12px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--cms-muted)}
+.contact-receipt-list{grid-template-columns:110px minmax(0,1fr)}
+.contact-receipt-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+
+@media (max-width:575.98px){
+  .contact-header{padding:0 14px}
+  .contact-card{padding:16px}
+  .contact-receipt-list{grid-template-columns:1fr}
+}

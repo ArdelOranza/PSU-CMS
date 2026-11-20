@@ -1,0 +1,65 @@
+/* ==========================================================================
+   messages.css — Contact & Feedback screens (All Messages, Unread Messages,
+   Feedback, Message Details). Prefixes: message-, feedback-.
+   Shared look comes from cms-base / cms-layout / cms-components.
+   ========================================================================== */
+
+/* stat cards on All Messages */
+.message-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:15px}
+.message-stat{padding:12px 16px}
+.message-stat-label{font-size:12px;line-height:16px;color:var(--cms-muted)}
+.message-stat-value{font-size:24px;line-height:30px;font-weight:700;color:var(--cms-primary-text,var(--cms-primary))}
+
+/* table helpers */
+.message-row-unread .message-cell-name,
+.message-row-unread .message-cell-subject{font-weight:600}
+.message-cell-subject span{display:block;max-width:230px;overflow-wrap:anywhere}
+.feedback-text{display:block;max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.feedback-stars{letter-spacing:1px;white-space:nowrap;color:var(--cms-text)}
+.message-table .cms-action[disabled]{opacity:.45;cursor:default}
+.message-table .cms-actions{flex-wrap:wrap}
+
+/* Message Details */
+.message-detail-card{padding:14px 16px 16px}
+.message-detail-head{display:flex;align-items:center;gap:10px}
+.message-avatar{display:inline-flex;align-items:center;justify-content:center;flex:none;width:36px;height:36px;border-radius:8px;background:var(--cms-primary-soft);color:var(--cms-primary-text,var(--cms-primary));font-size:13px;font-weight:600}
+.message-detail-who{flex:1;min-width:0}
+.message-detail-name{font-size:14px;line-height:18px;font-weight:600;color:var(--cms-text)}
+.message-detail-meta{font-size:12px;line-height:16px;color:var(--cms-muted);overflow-wrap:anywhere}
+.message-detail-subject{margin:14px 0 4px;font-size:16px;line-height:22px;font-weight:600;color:var(--cms-text)}
+.message-detail-extra{display:flex;flex-wrap:wrap;gap:4px 18px;margin:2px 0 6px;font-size:12px;color:var(--cms-muted)}
+.message-meta-label{font-weight:500}
+.message-detail-body{margin:0;font-size:13px;line-height:20px;color:var(--cms-text);white-space:pre-wrap;overflow-wrap:anywhere}
+.message-detail-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.message-btn{height:30px;padding:0 12px;font-size:13px}
+.message-btn-danger{color:var(--cms-red);border-color:var(--cms-red-border)}
+.message-btn-danger:hover{background:var(--cms-red-bg);color:var(--cms-red)}
+.message-reply{margin-top:16px;padding-top:12px;border-top:1px solid var(--cms-border)}
+.message-reply-title{font-size:12px;font-weight:500;letter-spacing:.03em;text-transform:uppercase;color:var(--cms-muted)}
+.message-reply-subject{margin:6px 0 2px;font-size:13px;font-weight:600}
+.message-reply-note{margin:0 0 12px}
+
+@media (max-width:575.98px){
+  .message-stats{grid-template-columns:1fr}
+  .message-detail-head{flex-wrap:wrap}
+  .message-detail-actions .cms-btn{flex:1 1 auto}
+}
+
+/* Feedback Details */
+.feedback-detail-card{padding:14px 16px 16px}
+.feedback-detail-name{margin:0;font-size:18px;line-height:24px;font-weight:700;color:var(--cms-text)}
+.feedback-detail-badge{margin-top:6px}
+.feedback-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 24px;margin:12px 0 0;padding-top:12px;border-top:1px solid var(--cms-border)}
+.feedback-detail-label{margin:0 0 2px;font-size:10px;line-height:14px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--cms-muted)}
+.feedback-detail-value{margin:0;font-size:13px;line-height:19px;font-weight:500;color:var(--cms-text);white-space:pre-wrap;overflow-wrap:anywhere}
+@media (max-width:575.98px){.feedback-detail-grid{grid-template-columns:1fr}}
+
+/* Delete confirmation modal (matches the "Modal - Delete Confirmation" design) */
+.delete-modal .modal-dialog{max-width:440px}
+.delete-modal .modal-content{border:0;border-radius:16px;background:var(--cms-surface);box-shadow:0 20px 50px rgba(15,23,42,.3)}
+.delete-modal-body{padding:24px}
+.delete-modal-title{margin:0 0 12px;font-size:16px;line-height:22px;font-weight:700;color:var(--cms-text)}
+.delete-modal-text{margin:0;font-size:13px;line-height:16px;color:var(--cms-muted)}
+.delete-modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+.delete-modal-actions .cms-btn{height:34px;padding:0 14px;font-size:13px}
+@media (max-width:575.98px){.delete-modal .modal-dialog{margin:0 16px}.delete-modal-actions .cms-btn{flex:1}}

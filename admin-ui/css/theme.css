@@ -1,0 +1,75 @@
+/* ==========================================================================
+   theme.css — colors for the three themes (PSU Classic, Modern Light,
+   Campus Dark). Load it LAST on a page. theme.js sets <html data-theme=...>.
+   PSU Classic = the default tokens in cms-base.css (nothing to override).
+   Everything here only changes CSS variables, plus a few components in
+   cms-components.css that hard-code white — never the layout.
+   ========================================================================== */
+
+/* a custom primary color gets matching darker / softer shades */
+html[data-custom-primary]{
+  --cms-primary-dark:color-mix(in srgb,var(--cms-primary) 82%,#000);
+  --cms-primary-soft:color-mix(in srgb,var(--cms-primary) 12%,#fff);
+}
+
+/* ---------- Modern Light ---------- */
+html[data-theme="light"]{
+  --cms-bg:#f8fafc;
+  --cms-border:#e2e8f0;
+  --cms-sidebar-top:#1e293b;
+  --cms-sidebar-bottom:#334155;
+  --cms-sidebar-label:#94a3b8;
+}
+
+/* ---------- Campus Dark ---------- */
+html[data-theme="dark"]{
+  color-scheme:dark;
+  --cms-bg:#0b1220;
+  --cms-surface:#111a2e;
+  --cms-border:#25324a;
+  --cms-border-strong:#33425f;
+  --cms-text:#e5e9f0;
+  --cms-muted:#9aa7bd;
+  --cms-placeholder:#6b7890;
+  --cms-thumb:#1b2740;
+  --cms-primary-soft:#1b2c52;
+  --cms-primary-text:#8fb4f5;
+  --cms-sidebar-top:#060d1c;
+  --cms-sidebar-bottom:#0d2347;
+  --cms-green-bg:#123524;  --cms-green:#6ee7a0;
+  --cms-amber-bg:#3b2a0a;  --cms-amber:#fbbf24;
+  --cms-blue-bg:#16315f;   --cms-blue:#93c5fd;
+  --cms-gray-bg:#1f2a40;   --cms-gray:#aab6cb;
+  --cms-red-bg:#3b1519;    --cms-red:#f87171;  --cms-red-border:#7f1d1d;
+}
+html[data-theme="dark"][data-custom-primary]{--cms-primary-soft:color-mix(in srgb,var(--cms-primary) 28%,#111a2e)}
+
+html[data-theme="dark"] .cms-menu-toggle,
+html[data-theme="dark"] .cms-search input,
+html[data-theme="dark"] .cms-search-toggle,
+html[data-theme="dark"] .cms-btn-outline,
+html[data-theme="dark"] .cms-action,
+html[data-theme="dark"] .cms-input,
+html[data-theme="dark"] .cms-textarea,
+html[data-theme="dark"] .cms-select-btn,
+html[data-theme="dark"] .cms-select-menu,
+html[data-theme="dark"] .cms-page-btn,
+html[data-theme="dark"] .cms-toast,
+html[data-theme="dark"] .cms-richtext{background:var(--cms-surface);color:var(--cms-text)}
+@media (max-width:767.98px){html[data-theme="dark"] .cms-search{background:var(--cms-surface)}}
+
+html[data-theme="dark"] .cms-btn-outline:hover,
+html[data-theme="dark"] .cms-action:hover,
+html[data-theme="dark"] .cms-select-btn:hover,
+html[data-theme="dark"] .cms-select-option:hover,
+html[data-theme="dark"] .cms-select-option.is-focus,
+html[data-theme="dark"] .cms-page-btn:hover:not([disabled]){background:var(--cms-thumb)}
+html[data-theme="dark"] .cms-action-danger:hover{background:var(--cms-red-bg)}
+html[data-theme="dark"] .cms-btn-soft{background:var(--cms-primary-soft);color:var(--cms-primary-text)}
+html[data-theme="dark"] .cms-select-option[aria-selected=true]{background:var(--cms-primary-soft);color:var(--cms-primary-text)}
+html[data-theme="dark"] .cms-notif{color:var(--cms-muted)}
+html[data-theme="dark"] .cms-user-caret,
+html[data-theme="dark"] .cms-select-btn::after{border-top-color:var(--cms-muted)}
+html[data-theme="dark"] .cms-body{--bs-body-bg:var(--cms-bg);--bs-body-color:var(--cms-text)}
+html[data-theme="dark"] .cms-modal{--bs-modal-bg:var(--cms-surface);--bs-modal-color:var(--cms-text)}
+html[data-theme="dark"] .cms-modal .btn-close{filter:invert(1) grayscale(1)}

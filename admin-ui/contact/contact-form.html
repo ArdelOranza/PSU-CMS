@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact &amp; Feedback | PSU Urdaneta Campus</title>
+  <link rel="stylesheet" href="../vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="../vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../css/cms-base.css">
+  <link rel="stylesheet" href="../css/cms-layout.css">
+  <link rel="stylesheet" href="../css/cms-components.css">
+  <link rel="stylesheet" href="../css/contact.css">
+  <link rel="stylesheet" href="../css/theme.css">
+  <script src="../js/theme.js"></script>
+</head>
+<body class="cms-body contact-body" data-page="contact-form">
+  <!-- PUBLIC page (no admin sidebar). PHP: this becomes part of the public site, next to index.php. -->
+  <header class="contact-header">
+    <a class="contact-brand" href="../../index.php"><img src="../assets/images/psu-logo.png" alt=""><span>PSU Urdaneta Campus</span></a>
+    <a class="cms-btn cms-btn-outline" href="../messages/all-messages.html">Admin inbox</a>
+  </header>
+
+  <main class="contact-main" id="main">
+    <section class="cms-card contact-card" aria-labelledby="contactTitle">
+      <h1 class="cms-page-title" id="contactTitle">Contact &amp; Feedback</h1>
+      <p class="cms-page-sub contact-intro">Send a question or comment to the campus team.</p>
+      <p class="contact-note"><i class="bi bi-info-circle" aria-hidden="true"></i><span>Prototype: messages are saved in this browser only (localStorage) and appear in the admin inbox. No email is sent.</span></p>
+      <div id="contactBanner" role="alert" hidden></div>
+
+      <!-- PHP: method="post" + hidden CSRF input here; the server must validate again -->
+      <form id="contactForm" novalidate>
+          <div class="cms-field">
+            <label class="cms-label cms-required" for="contactName">Full Name</label>
+            <input class="cms-input" id="contactName" type="text" maxlength="120" autocomplete="name">
+            <p class="cms-field-error" role="alert"></p>
+          </div>
+          <div class="cms-field">
+            <label class="cms-label cms-required" for="contactEmail">Email</label>
+            <input class="cms-input" id="contactEmail" type="email" maxlength="190" autocomplete="email">
+            <p class="cms-field-error" role="alert"></p>
+          </div>
+          <div class="cms-field">
+            <label class="cms-label cms-required" for="contactSubject">Subject</label>
+            <input class="cms-input" id="contactSubject" type="text" maxlength="220">
+            <p class="cms-field-error" role="alert"></p>
+          </div>
+          <div class="cms-field" data-feature="campus">
+            <label class="cms-label cms-required" for="contactCampus">Campus/Department</label>
+            <select class="cms-input" id="contactCampus"></select>
+            <p class="cms-field-error" role="alert"></p>
+          </div>
+          <div class="cms-field">
+            <label class="cms-label" for="contactType">Message type</label>
+            <select class="cms-input" id="contactType"><option value="inquiry">Inquiry</option><option value="feedback">Feedback</option></select>
+            <p class="cms-field-error" role="alert"></p>
+          </div>
+
+          <div id="contactFeedbackFields" hidden>
+            <div class="cms-form-row">
+          <div class="cms-field">
+            <label class="cms-label cms-required" for="contactRating">Rating</label>
+            <select class="cms-input" id="contactRating"></select>
+            <p class="cms-field-error" role="alert"></p>
+          </div>
+          <div class="cms-field">
+            <label class="cms-label cms-required" for="contactCategory">Category</label>
+            <select class="cms-input" id="contactCategory"></select>
+            <p class="cms-field-error" role="alert"></p>
+          </div>
+            </div>
+          </div>
+          <div class="cms-field">
+            <label class="cms-label cms-required" for="contactMessage">Message</label>
+            <textarea class="cms-textarea" id="contactMessage" rows="6" maxlength="5000"></textarea><p class="cms-field-hint contact-counter" id="contactCounter">0 / 5000</p>
+            <p class="cms-field-error" role="alert"></p>
+          </div>
+
+          <!-- honeypot: leave empty (hidden from people) -->
+          <div class="contact-hp" aria-hidden="true">
+            <label for="contactWebsite">Website</label>
+            <input id="contactWebsite" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="cms-form-actions">
+            <button type="reset" class="cms-btn cms-btn-outline">Clear</button>
+            <button type="submit" class="cms-btn cms-btn-primary">Send message</button>
+          </div>
+      </form>
+
+      <div id="contactReceipt" hidden aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script src="../vendor/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="../js/config.js"></script>
+  <script src="../js/seed-data.js"></script>
+  <script src="../js/sanitize.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/message-store.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/contact.js"></script>
+</body>
+</html>
