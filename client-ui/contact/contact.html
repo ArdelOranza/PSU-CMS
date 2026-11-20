@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact Us | Pangasinan State University</title>
+  <meta name="description" content="Send a message to Pangasinan State University. We will reply to the email you provide.">
+  <link rel="icon" href="../assets/images/psu-logo.png" type="image/png">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/header.css">
+  <link rel="stylesheet" href="../css/footer.css">
+  <link rel="stylesheet" href="../css/contact.css">
+  <script src="../js/header.js" defer></script>
+  <script src="../js/includes.js" defer></script>
+  <script src="../js/contact.js" defer></script>
+</head>
+<body data-root="../../" data-nav="contact">
+  <!-- Shared header (client-ui/includes/header.html). PHP: include 'client-ui/includes/header.php' -->
+  <div data-include="header"></div>
+
+  <main id="main">
+    <section class="page-head">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="../../index.php">Home</a></li>
+            <li aria-current="page">Contact</li>
+          </ol>
+        </nav>
+        <h1 class="page-title">Contact Us</h1>
+        <p class="page-lead" id="page-lead">Send us a message. We will reply to the email you provide.</p>
+      </div>
+    </section>
+
+    <div class="container contact-body" id="contact-form-section">
+      <div class="contact-grid">
+        <section class="card contact-form" aria-labelledby="form-title">
+          <div class="form-alert" id="form-alert" role="alert" tabindex="-1" hidden>
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path d="M12 3.5l9.5 16.5h-19L12 3.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 10v4.5M12 17.2v.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span id="form-alert-text"></span>
+          </div>
+          <h2 class="contact-form__title" id="form-title">Send us a message</h2>
+
+          <form id="contact-form" novalidate>
+            <div class="form-grid">
+              <div class="field">
+                <label for="name">Full name</label>
+                <input id="name" name="name" type="text" autocomplete="name" maxlength="120" placeholder="Your full name" required>
+                <p class="field-error" id="name-error" role="alert" hidden></p>
+              </div>
+              <div class="field">
+                <label for="email">Email address</label>
+                <input id="email" name="email" type="email" autocomplete="email" maxlength="190" placeholder="you@example.com" required>
+                <p class="field-error" id="email-error" role="alert" hidden></p>
+              </div>
+              <div class="field">
+                <label for="subject">Subject</label>
+                <input id="subject" name="subject" type="text" maxlength="220" placeholder="What is this about?" required>
+                <p class="field-error" id="subject-error" role="alert" hidden></p>
+              </div>
+              <div class="field">
+                <label for="campus">Campus / Department</label>
+                <select id="campus" name="campus" required>
+                  <option value="" selected disabled>Select campus or department</option>
+            <option value="Lingayen (Main Campus)">Lingayen (Main Campus)</option>
+            <option value="Alaminos City">Alaminos City</option>
+            <option value="Asingan">Asingan</option>
+            <option value="Bayambang">Bayambang</option>
+            <option value="Binmaley">Binmaley</option>
+            <option value="Infanta">Infanta</option>
+            <option value="San Carlos City">San Carlos City</option>
+            <option value="Santa Maria">Santa Maria</option>
+            <option value="Urdaneta">Urdaneta</option>
+            <option value="School of Advanced Studies">School of Advanced Studies</option>
+            <option value="Open University Systems">Open University Systems</option>
+                </select>
+                <p class="field-error" id="campus-error" role="alert" hidden></p>
+              </div>
+              <div class="field full">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" maxlength="5000" placeholder="Type your message here" required></textarea>
+                <p class="field-error" id="message-error" role="alert" hidden></p>
+              </div>
+              <div class="field full">
+                <!-- Front-end demo only. Not a real CAPTCHA; replace with a server-verified service before production. -->
+                <div class="robot">
+                  <div class="robot__box">
+                    <input id="robot" name="robot" type="checkbox">
+                    <label for="robot">I'm not a robot</label>
+                    <span class="robot__badge" aria-hidden="true">Demo<br>check</span>
+                  </div>
+                  <p class="field-error" id="robot-error" role="alert" hidden></p>
+                </div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn--primary" type="submit">Send message</button>
+            </div>
+          </form>
+        </section>
+
+        <aside class="card info-card" aria-labelledby="info-title">
+          <h2 class="info-card__title" id="info-title">Contact Information</h2>
+          <dl class="info-list">
+            <div><dt>Address</dt><dd>Alvear St., Poblacion, Lingayen, 2401 Pangasinan</dd></div>
+            <div><dt>Email</dt><dd><a href="mailto:prpio@psu.edu.ph">prpio@psu.edu.ph</a></dd></div>
+            <div><dt>Phone</dt><dd><a href="tel:+63756326513">(075) 632-6513</a></dd></div>
+            <div><dt>Office Hours</dt><dd>Monday to Friday, 8:00 AM to 5:00 PM</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </div>
+
+    <!-- Success state: shown by js/contact.js after valid submission -->
+    <section class="contact-success container" id="contact-success" hidden aria-labelledby="success-title">
+      <div class="card success-card">
+        <div class="success-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h2 id="success-title" tabindex="-1">Message sent</h2>
+        <!-- Wording avoids claiming an email was sent: no backend mail service is connected yet. -->
+        <p>Thank you for contacting us. We will reply to the email address you provided as soon as we can.</p>
+        <a class="btn btn--primary" href="../../index.php">Back to Home</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Shared footer (client-ui/includes/footer.html). PHP: include 'client-ui/includes/footer.php' -->
+  <div data-include="footer"></div>
+</body>
+</html>

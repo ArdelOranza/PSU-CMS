@@ -1,0 +1,56 @@
+/* PSU design tokens: single source for colour, type and spacing. */
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  /* Font files are not in the repo yet. Drop the .woff2 into assets/fonts/ and
+     uncomment the url() line (the CSP only allows same-origin fonts). */
+  src: local("Atkinson Hyperlegible Next") /* , url("../assets/fonts/AtkinsonHyperlegibleNext-Variable.woff2") format("woff2") */;
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --primary: #0A27D8;
+  --primary-dark: #030D73;
+  --primary-tint: #E8ECFD;
+  --accent: #FFD21F;
+  --background: #F7F8FC;
+  --surface: #FFFFFF;
+  --text: #191923;
+  --text-muted: #555B6E;
+  --border: #DCE0EA;
+  --footer: #0C3AA6;
+  --gray-strip: #EFEFEF;
+  --bar-dark: #212121;
+
+  /* feedback colours (used sparingly) */
+  --error: #B42318;
+  --error-bg: #FDECEA;
+  --error-border: #F1B4AE;
+
+  --font: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+
+  --fs-display: 52px;
+  --fs-page-title: 44px;
+  --fs-section: 32px;
+  --fs-sub: 22px;
+  --fs-card: 20px;
+  --fs-body: 18px;
+  --fs-body-sm: 16px;
+  --fs-caption: 13px;
+
+  --sp-1: 8px; --sp-2: 12px; --sp-3: 16px; --sp-4: 24px;
+  --sp-5: 32px; --sp-6: 48px; --sp-7: 56px;
+
+  --gutter: 80px;
+  --content-max: 1440px;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --focus: 0 0 0 3px rgba(10, 39, 216, .35);
+  --ease: 180ms ease;
+}
+
+@media (max-width: 1100px) { :root { --gutter: 40px; } }
+@media (max-width: 640px) {
+  :root { --gutter: 20px; --fs-display: 40px; --fs-page-title: 34px; --fs-section: 26px; }
+}
