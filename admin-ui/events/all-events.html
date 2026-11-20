@@ -21,9 +21,9 @@
   </a>
   <nav aria-label="Main navigation">
     <p class="cms-nav-label">Main</p>
-    <a class="cms-nav-link" href="#" data-nav="dashboard" data-pending="Dashboard"><i class="bi bi-columns-gap" aria-hidden="true"></i><span class="cms-nav-text">Dashboard</span></a>
+    <a class="cms-nav-link" href="../dashboard/dashboard.html" data-nav="dashboard"><i class="bi bi-columns-gap" aria-hidden="true"></i><span class="cms-nav-text">Dashboard</span></a>
     <p class="cms-nav-label">Website content</p>
-    <a class="cms-nav-link" href="#" data-nav="homepage" data-pending="Homepage Management"><i class="bi bi-house" aria-hidden="true"></i><span class="cms-nav-text">Homepage Management</span></a>
+    <a class="cms-nav-link" href="../homapage/homepage-mg.html" data-nav="homepage"><i class="bi bi-house" aria-hidden="true"></i><span class="cms-nav-text">Homepage Management</span></a>
     <div class="cms-nav-group" data-group="news">
       <button type="button" class="cms-nav-link cms-nav-toggle" aria-expanded="false" aria-controls="subnav-news"><i class="bi bi-journal-text" aria-hidden="true"></i><span class="cms-nav-text">News &amp; Announcements</span><span class="cms-nav-caret" aria-hidden="true"></span></button>
       <div class="cms-subnav" id="subnav-news">
@@ -41,7 +41,14 @@
         <a class="cms-nav-link" href="../events/event-categories.html" data-nav="event-categories"><span class="cms-nav-text">Event Categories</span></a>
       </div>
     </div>
-    <a class="cms-nav-link" href="#" data-nav="university" data-pending="University Structure"><i class="bi bi-bank" aria-hidden="true"></i><span class="cms-nav-text">University Structure</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
+    <div class="cms-nav-group" data-group="university">
+      <button type="button" class="cms-nav-link cms-nav-toggle" aria-expanded="false" aria-controls="subnav-university"><i class="bi bi-bank" aria-hidden="true"></i><span class="cms-nav-text">University Structure</span><span class="cms-nav-caret" aria-hidden="true"></span></button>
+      <div class="cms-subnav" id="subnav-university">
+        <a class="cms-nav-link" href="../colleges/colleges.html" data-nav="colleges"><span class="cms-nav-text">Colleges</span></a>
+        <a class="cms-nav-link" href="../departments/departments.html" data-nav="departments"><span class="cms-nav-text">Departments</span></a>
+        <a class="cms-nav-link" href="../programs/academic-programs.html" data-nav="programs"><span class="cms-nav-text">Academic Programs</span></a>
+      </div>
+    </div>
     <a class="cms-nav-link" href="#" data-nav="faculty" data-pending="Faculty &amp; Staff Directory"><i class="bi bi-people" aria-hidden="true"></i><span class="cms-nav-text">Faculty &amp; Staff Directory</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
     <p class="cms-nav-label">Resources</p>
     <a class="cms-nav-link" href="#" data-nav="documents" data-pending="Document Library"><i class="bi bi-file-earmark-text" aria-hidden="true"></i><span class="cms-nav-text">Document Library</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
@@ -50,8 +57,21 @@
     <a class="cms-nav-link" href="#" data-nav="contact" data-pending="Contact &amp; Feedback"><i class="bi bi-envelope" aria-hidden="true"></i><span class="cms-nav-text">Contact &amp; Feedback</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
     <a class="cms-nav-link" href="../search/search-results.html" data-nav="search"><i class="bi bi-search" aria-hidden="true"></i><span class="cms-nav-text">Search</span></a>
     <p class="cms-nav-label">System</p>
-    <a class="cms-nav-link" href="#" data-nav="users" data-pending="User Management"><i class="bi bi-person" aria-hidden="true"></i><span class="cms-nav-text">User Management</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
-    <a class="cms-nav-link" href="#" data-nav="settings" data-pending="Settings"><i class="bi bi-sliders" aria-hidden="true"></i><span class="cms-nav-text">Settings</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
+    <div class="cms-nav-group" data-group="users">
+      <button type="button" class="cms-nav-link cms-nav-toggle" aria-expanded="false" aria-controls="subnav-users"><i class="bi bi-person" aria-hidden="true"></i><span class="cms-nav-text">User Management</span><span class="cms-nav-caret" aria-hidden="true"></span></button>
+      <div class="cms-subnav" id="subnav-users">
+        <a class="cms-nav-link" href="../users/all-users.html" data-nav="all-users"><span class="cms-nav-text">All Users</span></a>
+        <a class="cms-nav-link" href="../users/add-user.html" data-nav="add-user"><span class="cms-nav-text">Add New User</span></a>
+        <a class="cms-nav-link" href="../users/user-roles.html" data-nav="user-roles"><span class="cms-nav-text">User Roles</span></a>
+      </div>
+    </div>
+    <div class="cms-nav-group" data-group="settings">
+      <button type="button" class="cms-nav-link cms-nav-toggle" aria-expanded="false" aria-controls="subnav-settings"><i class="bi bi-sliders" aria-hidden="true"></i><span class="cms-nav-text">Settings</span><span class="cms-nav-caret" aria-hidden="true"></span></button>
+      <div class="cms-subnav" id="subnav-settings">
+        <a class="cms-nav-link" href="../system/system-web-info.html" data-nav="system-web-info"><span class="cms-nav-text">Website Information</span></a>
+        <a class="cms-nav-link" href="../system/system-gen.html" data-nav="system-gen"><span class="cms-nav-text">General Settings</span></a>
+      </div>
+    </div>
     <a class="cms-nav-link" href="#" data-nav="appearance" data-pending="Appearance"><i class="bi bi-palette" aria-hidden="true"></i><span class="cms-nav-text">Appearance</span><span class="cms-nav-caret" aria-hidden="true"></span></a>
   </nav>
 </aside>
@@ -62,7 +82,7 @@
 <!-- BEGIN SHARED: header (PHP: move into partials/header.php; breadcrumb changes per page) -->
 <header class="cms-topbar">
   <button type="button" class="cms-menu-toggle" aria-label="Open menu" aria-controls="cmsSidebar" aria-expanded="false"><i class="bi bi-list" aria-hidden="true"></i></button>
-  <nav class="cms-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li>Website content</li><li aria-current="page" id="eventCrumb">All Events</li></ol></nav>
+  <nav class="cms-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li>Website content</li><li aria-current="page" id="eventCrumb">All Events</li><li id="eventCrumbView" hidden>Calendar View</li></ol></nav>
   <div class="cms-topbar-right">
     <button type="button" class="cms-search-toggle" aria-label="Search" aria-expanded="false"><i class="bi bi-search" aria-hidden="true"></i></button>
     <!-- PHP: this GET form can stay as is; the search page reads ?q= -->
@@ -94,8 +114,7 @@
             <input class="cms-input" id="eventSearch" type="search" placeholder="Search..." autocomplete="off">
           </div>
           <select id="eventFilterStatus" data-cms-select aria-label="Filter by status"></select>
-          <!-- Static label for now (the UI team has not decided on other views) -->
-          <span class="cms-select-btn event-view-label">List View</span>
+          <select id="eventViewSelect" data-cms-select aria-label="Choose view"></select>
         </div>
 
         <!-- PHP: replace the JS-rendered rows with a foreach over the events query -->
@@ -115,6 +134,36 @@
             <tbody id="eventTableBody"></tbody>
           </table>
         </div>
+        <!-- Calendar View (shown instead of the table when "Calendar View" is chosen) -->
+        <div id="eventCalendarWrap" hidden>
+          <div class="event-calendar-bar">
+            <div class="event-calendar-nav-group">
+              <button type="button" class="event-calendar-nav" data-cal="prev" aria-label="Previous month">&lsaquo;</button>
+              <button type="button" class="event-calendar-nav" data-cal="next" aria-label="Next month">&rsaquo;</button>
+              <h2 class="event-calendar-title" data-cal="title"></h2>
+              <button type="button" class="event-calendar-today" data-cal="today">Today</button>
+            </div>
+            <div class="event-calendar-legend" aria-label="Legend">
+              <span class="event-legend-item"><i class="event-legend-dot event-dot-upcoming"></i>Upcoming</span>
+              <span class="event-legend-item"><i class="event-legend-dot event-dot-ongoing"></i>Ongoing</span>
+              <span class="event-legend-item"><i class="event-legend-dot event-dot-completed"></i>Completed</span>
+            </div>
+          </div>
+          <p class="cms-visually-hidden" data-cal="status" role="status" aria-live="polite"></p>
+          <div class="event-calendar-scroll">
+            <!-- PHP: the weeks/days below can be built with a loop; the markup stays the same -->
+            <table class="event-calendar-table">
+              <thead>
+                <tr>
+                  <th scope="col">SUN</th><th scope="col">MON</th><th scope="col">TUE</th><th scope="col">WED</th>
+                  <th scope="col">THU</th><th scope="col">FRI</th><th scope="col">SAT</th>
+                </tr>
+              </thead>
+              <tbody data-cal="body"></tbody>
+            </table>
+          </div>
+        </div>
+
         <!-- Empty state: shown automatically when there are no events -->
         <div id="eventEmpty" hidden></div>
         <div class="cms-table-footer" id="eventFooter"></div>
@@ -131,6 +180,7 @@
   <script src="../js/ui.js"></script>
   <script src="../js/layout.js"></script>
   <script src="../js/event-rules.js"></script>
+  <script src="../js/event-calendar.js"></script>
   <script src="../js/events.js"></script>
 </body>
 </html>

@@ -1,0 +1,9 @@
+/* colleges.css — Colleges screens */
+.college-table{min-width:900px}
+.college-table th:nth-child(1){width:7%}
+.college-table th:nth-child(2){width:27%}
+.college-table th:nth-child(3){width:10%}
+.college-table th:nth-child(4){width:19%}
+.college-table th:nth-child(5){width:12%}
+.college-table th:nth-child(6){width:10%}
+.college-table th:nth-child(7){width:15%}

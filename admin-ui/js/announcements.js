@@ -17,13 +17,6 @@
     var d = new Date(); d.setDate(d.getDate() - days);
     return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
   }
-  function priorityLabel(v) { return v === 'urgent' ? 'Urgent' : 'Normal'; }
-  function fileLink(att) {
-    if (!att) return '';
-    var text = att.name + (att.size ? ' (' + ui.formatSize(att.size) + ')' : '');
-    if (att.data) return el('a', { href: att.data, download: att.name, text: text });
-    return text + ' \u2014 file content is not stored in this prototype';
-  }
 
   /* ======================= All Announcements (list) ======================= */
   function initList() {
@@ -76,10 +69,9 @@
       tr.appendChild(el('td', { text: ui.formatDate(a.publishedAt) }));
       tr.appendChild(el('td', { text: a.expiresAt ? ui.formatDate(a.expiresAt) : '\u2014' }));
       tr.appendChild(el('td', {}, [ui.badge(status, rules.statusLabel(status))]));
-      var view = el('button', { type: 'button', class: 'cms-action', 'aria-label': 'View ' + a.title, text: 'View' });
+      var view = el('a', { class: 'cms-action', href: 'announcement-details.html?id=' + encodeURIComponent(a.id), 'aria-label': 'View ' + a.title, text: 'View' });
       var edit = el('a', { class: 'cms-action', href: 'add-announcement.html?id=' + encodeURIComponent(a.id), 'aria-label': 'Edit ' + a.title, text: 'Edit' });
       var del = el('button', { type: 'button', class: 'cms-action cms-action-danger', 'aria-label': 'Delete ' + a.title, text: 'Delete' });
-      view.addEventListener('click', function () { showAnnouncement(a); });
       del.addEventListener('click', function () { removeAnnouncement(a); });
       tr.appendChild(el('td', {}, [el('div', { class: 'cms-actions' }, [view, edit, del])]));
       return tr;
@@ -103,23 +95,12 @@
       ui.renderFooter(footer, { page: state.page, pageSize: size, total: rows.length, onPage: function (p) { state.page = p; render(); } });
     }
 
-    function showAnnouncement(a) {
-      var status = rules.effectiveStatus(a);
-      var rows = [['Title', a.title], ['Category', a.category], ['Author', a.author]];
-      if (cfg.features.campus) rows.push(['Campus', a.campus]);
-      if (cfg.features.priority) rows.push(['Priority', priorityLabel(a.priority)]);
-      rows.push(['Date posted', ui.formatDate(a.publishedAt)], ['Expiration', a.expiresAt ? ui.formatDate(a.expiresAt) : 'No expiration'],
-                ['Status', rules.statusLabel(status)], ['Attachment', fileLink(a.attachment)]);
-      ui.showDetails({ title: 'Announcement', rows: rows, contentHtml: a.content });
-    }
-
     function removeAnnouncement(a) {
-      ui.confirmDialog({ title: 'Delete announcement', message: 'Delete \u201C' + a.title + '\u201D? This cannot be undone.', confirmLabel: 'Delete' })
-        .then(function (yes) {
-          if (!yes) return;
-          if (db.remove(a.id)) { ui.toast('Announcement deleted.', 'success'); render(); }
-          else ui.toast('The announcement could not be deleted.', 'error');
-        });
+      ui.confirmDelete().then(function (yes) {
+        if (!yes) return;
+        if (db.remove(a.id)) { ui.toast(ui.MSG.deleted, 'deleted'); render(); }
+        else ui.toast('The announcement could not be deleted.', 'error');
+      });
     }
 
     [[catSel, 'category'], [statusSel, 'status'], [dateSel, 'date'], [campusSel, 'campus'], [prioritySel, 'priority']].forEach(function (pair) {
@@ -190,20 +171,23 @@
       remove.addEventListener('click', function () { attachment = null; renderAttachment(); });
       fileList.appendChild(el('span', { class: 'cms-file-chip' }, [ui.icon('paperclip'), el('span', { text: attachment.name + (attachment.size ? ' (' + ui.formatSize(attachment.size) + ')' : '') }), remove]));
     }
+    function attach(meta) { attachment = meta; renderAttachment(); ui.toast(ui.MSG.uploaded, 'success'); }
     function takeFile(file) {
       if (!file) return;
       var ext = (file.name.split('.').pop() || '').toLowerCase();
       if (ALLOWED_EXT.indexOf(ext) === -1) { ui.toast('That file type is not allowed. Use PDF, Office documents, TXT, PNG or JPG.', 'error'); return; }
       if (file.size > cfg.documentMaxFileBytes) { ui.toast('That file is larger than ' + ui.formatSize(cfg.documentMaxFileBytes) + '.', 'error'); return; }
       var meta = { name: file.name, size: file.size, type: file.type || ext };
-      if (file.size > INLINE_FILE_LIMIT) { attachment = meta; renderAttachment(); return; }
+      if (file.size > INLINE_FILE_LIMIT) { attach(meta); return; }
       var reader = new FileReader();
-      reader.onload = function () { meta.data = reader.result; attachment = meta; renderAttachment(); };
-      reader.onerror = function () { attachment = meta; renderAttachment(); };
+      reader.onload = function () { meta.data = reader.result; attach(meta); };
+      reader.onerror = function () { attach(meta); };
       reader.readAsDataURL(file);
     }
-    document.getElementById('announcementBrowse').addEventListener('click', function () { fileInput.click(); });
-    fileInput.addEventListener('change', function () { takeFile(fileInput.files[0]); fileInput.value = ''; });
+    document.getElementById('announcementBrowse').addEventListener('click', function () {
+      ui.chooseFile({ hint: 'PDF, Office documents, TXT, PNG or JPG up to ' + ui.formatSize(cfg.documentMaxFileBytes) + '.',
+                      accept: '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.png,.jpg,.jpeg' }).then(takeFile);
+    });
     ['dragenter', 'dragover'].forEach(function (ev) { dropzone.addEventListener(ev, function (e) { e.preventDefault(); dropzone.classList.add('is-over'); }); });
     ['dragleave', 'drop'].forEach(function (ev) { dropzone.addEventListener(ev, function (e) { e.preventDefault(); dropzone.classList.remove('is-over'); }); });
     dropzone.addEventListener('drop', function (e) { takeFile(e.dataTransfer.files[0]); });
@@ -236,9 +220,14 @@
       return !first;
     }
 
+    /* Publish -> Published (after a confirmation). Save as Draft -> the chosen status, unless it says Published. */
     function save(mode) {
       var status = mode === 'publish' ? 'published' : (f.status.value === 'published' ? 'draft' : f.status.value);
       if (!validate(status)) return;
+      if (status === 'published') ui.confirmPublish().then(function (yes) { if (yes) persist(status); });
+      else persist(status);
+    }
+    function persist(status) {
       var record = {
         title: f.title.value.trim(), category: f.category.value, author: editing ? editing.author : cfg.currentUser.name,
         campus: f.campus ? f.campus.value : (editing ? editing.campus : cfg.allCampuses),
@@ -249,7 +238,7 @@
       if (editing) record.id = editing.id;
       var res = db.save(record);
       if (!res.ok) { ui.toast('Could not save. Browser storage may be full.', 'error'); return; }
-      ui.flash(status === 'published' ? 'Announcement published.' : editing ? 'Announcement updated.' : 'Announcement saved.', 'success');
+      ui.flash(status === 'published' ? ui.MSG.published : status === 'draft' ? ui.MSG.draft : ui.MSG.saved, 'success');
       window.location.href = 'all-announcements.html';
     }
     document.getElementById('announcementSaveDraft').addEventListener('click', function () { save('draft'); });

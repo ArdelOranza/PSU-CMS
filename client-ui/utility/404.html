@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 Page not found | Pangasinan State University</title>
+  <meta name="description" content="The page you are looking for may have been moved or no longer exists.">
+  <link rel="icon" href="../assets/images/psu-logo.png" type="image/png">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/header.css">
+  <link rel="stylesheet" href="../css/footer.css">
+  <link rel="stylesheet" href="../css/utility.css">
+  <script src="../js/header.js" defer></script>
+  <script src="../js/includes.js" defer></script>
+  <script src="../js/utility.js" defer></script>
+</head>
+<body data-root="../../" data-nav="">
+  <!-- Shared header (client-ui/includes/header.html). PHP: include 'client-ui/includes/header.php' -->
+  <div data-include="header"></div>
+
+  <main id="main">
+    <section class="notfound">
+      <div class="container">
+        <p class="notfound__code" aria-hidden="true">404</p>
+        <h1 class="notfound__title"><span class="visually-hidden">404: </span>Page not found</h1>
+        <p class="notfound__text">The page you are looking for may have been moved or no longer exists.</p>
+        <div class="notfound__actions">
+          <a class="btn btn--primary" href="../../index.php">Go to Home</a>
+          <button class="btn btn--outline" type="button" id="nf-search-btn" aria-expanded="false" aria-controls="nf-search">Search the website</button>
+        </div>
+        <!-- Uses the existing CMS search (index.php?q=...) -->
+        <form class="notfound__search" id="nf-search" role="search" method="get" action="../../index.php" hidden>
+          <label class="visually-hidden" for="nf-q">Search the website</label>
+          <input id="nf-q" type="search" name="q" maxlength="100" placeholder="Search news, events, programs…" autocomplete="off">
+          <button class="btn btn--primary" type="submit">Search</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+</body>
+</html>

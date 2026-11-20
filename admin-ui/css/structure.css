@@ -1,0 +1,47 @@
+/* structure.css — small styles shared by the University Structure and User Management screens */
+.structure-list{margin:0;padding-left:18px}
+.structure-list li{margin:0 0 2px}
+.structure-none{color:var(--cms-muted)}
+/* tables: fixed layout so long names wrap instead of pushing the Actions column off-screen */
+.structure-table{table-layout:fixed}
+.structure-table td{overflow-wrap:anywhere}
+.structure-table td:last-child,.structure-table th:last-child{overflow-wrap:normal}
+
+/* ---------- Toasts (solid green / red, top right) ---------- */
+.structure-toast-stack{position:fixed;top:76px;right:24px;z-index:2000;display:flex;flex-direction:column;gap:10px;max-width:calc(100vw - 48px)}
+.structure-toast{display:flex;align-items:center;gap:8px;padding:11px 16px;border-radius:8px;color:#fff;font-size:13px;font-weight:500;
+  box-shadow:0 6px 18px rgba(15,23,42,.18);cursor:pointer}
+.structure-toast.is-success{background:#16a34a}
+.structure-toast.is-deleted,.structure-toast.is-error{background:#dc2626}
+
+/* ---------- Compact dialogs: Delete this item? / Choose File ---------- */
+.structure-modal .modal-dialog{max-width:440px}
+.structure-modal .modal-body{padding:20px 22px}
+.structure-modal-title{font-size:15px;font-weight:600;margin:0 0 6px;color:var(--cms-text)}
+.structure-modal-text{font-size:13px;color:var(--cms-muted);margin:0}
+.structure-modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.structure-modal-error{margin:10px 0 0;font-size:13px;color:var(--cms-red)}
+.structure-dropzone{margin-top:12px;padding:20px 12px;border:1.5px dashed #cbd5e1;border-radius:8px;text-align:center;cursor:pointer;transition:border-color .15s,background-color .15s}
+.structure-dropzone:hover,.structure-dropzone:focus-visible,.structure-dropzone.is-over{border-color:var(--cms-primary);background:var(--cms-primary-soft);outline:0}
+.structure-dropzone-title{margin:0;font-size:13px;color:var(--cms-text)}
+.structure-dropzone-hint{margin:4px 0 0;font-size:12px;color:var(--cms-muted)}
+
+/* ---------- Details pages ---------- */
+.structure-head-actions{display:flex;flex-wrap:wrap;gap:8px}
+.structure-btn-delete{background:#fff;border-color:#fca5a5;color:var(--cms-red)}
+.structure-btn-delete:hover{background:#fef2f2;border-color:var(--cms-red);color:#b91c1c}
+.structure-detail{padding:20px 22px 22px}
+.structure-detail-head{display:flex;align-items:center;gap:16px;padding-bottom:18px;border-bottom:1px solid var(--cms-border)}
+.structure-detail-media{flex:none;width:120px;height:88px;border-radius:8px;overflow:hidden;background:var(--cms-thumb);color:var(--cms-muted);
+  font-size:11px;display:flex;align-items:center;justify-content:center}
+.structure-detail-media img{width:100%;height:100%;object-fit:cover}
+.structure-detail-title{margin:0 0 6px;font-size:20px;font-weight:700;line-height:1.25;color:var(--cms-text);overflow-wrap:anywhere}
+.structure-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 24px;margin:18px 0 0}
+.structure-detail-item dt{margin:0 0 3px;font-size:10.5px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--cms-muted)}
+.structure-detail-item dd{margin:0;font-size:14px;font-weight:500;color:var(--cms-text);overflow-wrap:anywhere}
+.structure-detail-item.is-wide{grid-column:1/-1}
+@media (max-width:575.98px){
+  .structure-detail-grid{grid-template-columns:1fr}
+  .structure-detail-head{align-items:flex-start}
+  .structure-toast-stack{top:70px;right:16px}
+}

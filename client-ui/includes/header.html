@@ -1,0 +1,88 @@
+<!-- ==========================================================================
+     PSU shared header  (single source of truth for the whole website)
+     - Links starting with "@/" are relative to the repository root. They are
+       rewritten at load time by js/includes.js (static pages) or by
+       includes/header.php (PHP pages).
+     - To change navigation, edit this file only.
+     - Mark the current page with <body data-nav="contact"> (matches data-nav-id).
+     ========================================================================== -->
+<header class="site-header" id="site-header">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <div class="site-header__brand">
+    <a class="brand" href="@/index.php" aria-label="Pangasinan State University, home">
+      <img class="brand__seal" src="@/client-ui/assets/images/psu-logo.png" alt="" width="64" height="64">
+      <span class="brand__text">
+        <span class="brand__abbr">PSU</span>
+        <span class="brand__name">Pangasinan State University</span>
+        <span class="brand__tag">Region's Premier University of Choice</span>
+      </span>
+    </a>
+  </div>
+
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="site-nav__inner">
+      <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-list">
+        <svg class="icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span>Menu</span>
+      </button>
+
+      <ul class="site-nav__list" id="site-nav-list">
+        <li><a class="site-nav__link" data-nav-id="home" href="@/index.php">Home</a></li>
+
+        <li class="has-dropdown">
+          <button class="site-nav__link" type="button" data-nav-id="news" aria-expanded="false" aria-haspopup="true">News
+            <svg class="chev" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true" focusable="false"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <ul class="dropdown">
+            <li><a href="@/index.php?type=news">News</a></li>
+            <li><a href="@/index.php?type=announcements">Announcements</a></li>
+          </ul>
+        </li>
+
+        <li><a class="site-nav__link" data-nav-id="events" href="@/index.php?type=events">Events</a></li>
+
+        <li class="has-dropdown">
+          <button class="site-nav__link" type="button" data-nav-id="academics" aria-expanded="false" aria-haspopup="true">Academics
+            <svg class="chev" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true" focusable="false"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <ul class="dropdown">
+            <li><a href="@/index.php?type=colleges">Colleges</a></li>
+            <li><a href="@/index.php?type=departments">Departments</a></li>
+            <li><a href="@/index.php?type=programs">Academic Programs</a></li>
+          </ul>
+        </li>
+
+        <li><a class="site-nav__link" data-nav-id="faculty" href="@/index.php?type=directory">Faculty &amp; Staff</a></li>
+
+        <li class="has-dropdown">
+          <button class="site-nav__link" type="button" data-nav-id="resources" aria-expanded="false" aria-haspopup="true">Resources
+            <svg class="chev" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true" focusable="false"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <ul class="dropdown">
+            <li><a href="@/index.php?type=documents">Documents</a></li>
+            <li><a href="@/index.php?type=media">Media Library</a></li>
+          </ul>
+        </li>
+
+        <!-- When the CMS contact page exists, point this at it (e.g. @/index.php?contact=1). -->
+        <li><a class="site-nav__link" data-nav-id="contact" href="@/client-ui/contact/contact.html">Contact</a></li>
+
+        <li class="site-nav__search">
+          <button class="site-nav__link site-nav__search-btn" type="button" aria-label="Search the website" aria-expanded="false" aria-controls="site-search">
+            <svg class="icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Search uses the existing CMS search (index.php?q=...) -->
+    <div class="site-search" id="site-search" hidden>
+      <form class="site-search__form" role="search" method="get" action="@/index.php">
+        <label class="visually-hidden" for="site-search-input">Search the website</label>
+        <input id="site-search-input" class="site-search__input" type="search" name="q" maxlength="100" placeholder="Search news, events, programs…" autocomplete="off">
+        <button class="site-search__submit" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+</header>

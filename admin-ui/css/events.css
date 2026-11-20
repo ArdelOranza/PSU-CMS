@@ -14,6 +14,41 @@
 .event-category-table th:nth-child(3){width:20%}
 .event-category-table th:nth-child(4){width:20%}
 .event-category-table td{overflow-wrap:anywhere}
-/* "List View" is a static label for now (waiting on the UI team): looks like the design, does nothing */
-.event-view-label{cursor:default;user-select:none}
-.event-view-label:hover{background:#fff}
+/* ---------- Calendar View (All Events) ---------- */
+.event-calendar-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;margin-bottom:13px}
+.event-calendar-nav-group{display:flex;align-items:center;gap:9px}
+.event-calendar-nav{width:26px;height:26px;padding:0;border:1px solid var(--cms-border-strong);border-radius:6px;background:#fff;font-size:15px;line-height:1;color:var(--cms-text);cursor:pointer}
+.event-calendar-nav:hover,.event-calendar-today:hover{background:#f9fafb}
+.event-calendar-title{margin:0 1px 0 0;font-size:18px;line-height:26px;font-weight:700;color:var(--cms-text)}
+.event-calendar-today{height:26px;padding:0 12px;border:1px solid var(--cms-border-strong);border-radius:6px;background:#fff;font-size:13px;line-height:1;color:var(--cms-text);cursor:pointer}
+.event-calendar-legend{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--cms-muted)}
+.event-legend-item{display:inline-flex;align-items:center;gap:6px}
+.event-legend-dot{display:inline-block;width:9px;height:9px;border-radius:3px}
+.event-dot-upcoming{background:var(--cms-green)}
+.event-dot-ongoing{background:var(--cms-blue)}
+.event-dot-completed{background:var(--cms-gray)}
+
+.event-calendar-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.event-calendar-table{width:100%;min-width:720px;table-layout:fixed;border-collapse:collapse;border:1px solid var(--cms-border)}
+.event-calendar-table th{height:34px;padding:0 8px;border:1px solid var(--cms-border);background:#f9fafb;font-size:12px;font-weight:600;letter-spacing:.02em;text-align:left;color:var(--cms-muted)}
+.event-calendar-day{height:112px;padding:8px;vertical-align:top;border:1px solid var(--cms-border);background:#fff;overflow:hidden}
+.event-calendar-day.is-outside{background:#f9fafb}
+.event-calendar-num{display:block;height:14px;margin-bottom:6px;font-size:13px;line-height:14px;color:var(--cms-text)}
+.is-outside .event-calendar-num{color:var(--cms-placeholder)}
+.is-today .event-calendar-num{display:flex;align-items:center;justify-content:center;width:24px;height:24px;margin-bottom:4px;border-radius:50%;background:var(--cms-primary);font-weight:600;line-height:24px;color:#fff}
+
+.event-chip{display:block;width:100%;height:18px;margin:0 0 4px;padding:0 6px;border:0;border-radius:4px;font-size:12px;line-height:18px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.event-chip:hover{filter:brightness(.96)}
+.event-chip-upcoming{background:var(--cms-green-bg);color:var(--cms-green)}
+.event-chip-ongoing{background:var(--cms-blue-bg);color:var(--cms-blue)}
+.event-chip-completed{background:var(--cms-gray-bg);color:var(--cms-gray)}
+.event-calendar-more{display:block;height:18px;padding:0 6px;border:0;background:none;font-size:12px;line-height:18px;color:var(--cms-muted);cursor:pointer}
+.event-calendar-more:hover{color:var(--cms-primary);text-decoration:underline}
+
+/* "+N more" popup */
+.event-day-list{list-style:none;margin:0;padding:0}
+.event-day-list li{display:flex;align-items:center;gap:10px;padding:9px 0}
+.event-day-list li+li{border-top:1px solid var(--cms-border)}
+.event-day-open{flex:1;min-width:0;padding:0;border:0;background:none;text-align:left;font-weight:600;color:var(--cms-text);cursor:pointer;overflow-wrap:anywhere}
+.event-day-open:hover{color:var(--cms-primary)}
+.event-day-meta{font-size:12px;color:var(--cms-muted);white-space:nowrap}

@@ -1,0 +1,39 @@
+/* users.css — All Users, Add New User, User Roles */
+.user-table{min-width:980px}
+.user-table th:nth-child(1){width:6%}
+.user-table th:nth-child(2){width:14%}
+.user-table th:nth-child(3){width:10%}
+.user-table th:nth-child(4){width:20%}
+.user-table th:nth-child(5){width:14%}
+.user-table th:nth-child(6){width:9%}
+.user-table th:nth-child(7){width:9%}
+.user-table th:nth-child(8){width:18%}
+
+/* photo column / avatar */
+.user-thumb{display:block;width:28px;height:28px;border-radius:6px;background:var(--cms-thumb);object-fit:cover}
+.user-photo-preview{width:110px;height:110px}
+.user-password-note{margin:-4px 0 15px}
+
+/* role cards (User Roles) */
+.role-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:44px}
+.role-card{display:flex;flex-direction:column;align-items:flex-start;padding:16px 18px}
+.role-name{font-size:15px;line-height:20px;font-weight:600;color:var(--cms-text)}
+.role-tagline{margin-top:5px;font-size:13px;line-height:18px;color:var(--cms-primary)}
+.role-desc{margin-top:5px;font-size:13px;line-height:18px;color:var(--cms-muted)}
+.role-edit{margin-top:12px;height:28px;padding:0 11px;font-size:12px}
+.role-empty{grid-column:1/-1}
+@media (max-width:767.98px){.role-grid{grid-template-columns:1fr;margin-top:24px}}
+
+/* ---------- Edit Role: permission matrix ---------- */
+.role-permissions{margin-top:16px;padding:16px 18px 8px}
+.role-permissions-title{margin:0 0 8px;font-size:15px;font-weight:600;color:var(--cms-text)}
+.role-permission-table{width:100%;min-width:640px;border-collapse:collapse}
+.role-permission-table th{padding:8px 0;font-size:11px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--cms-muted);text-align:center;border-bottom:1px solid var(--cms-border)}
+.role-permission-table td{padding:13px 0;font-size:13.5px;text-align:center;border-bottom:1px solid var(--cms-border)}
+.role-permission-table tbody tr:last-child td{border-bottom:0}
+.role-permission-table th:first-child,.role-permission-table td:first-child{width:36%;text-align:left}
+/* round checkbox: filled blue with a white tick when granted */
+.role-check{-webkit-appearance:none;appearance:none;position:relative;width:18px;height:18px;margin:0;border:1.5px solid #cbd5e1;border-radius:50%;background:#fff;cursor:pointer;vertical-align:middle}
+.role-check:checked{background:var(--cms-primary);border-color:var(--cms-primary)}
+.role-check:checked::after{content:"";position:absolute;left:5px;top:2px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.role-check:focus-visible{outline:2px solid var(--cms-primary);outline-offset:2px}

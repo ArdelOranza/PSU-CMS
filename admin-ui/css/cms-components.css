@@ -153,19 +153,18 @@
 .cms-prose p,.cms-prose div{margin:0 0 8px}
 .cms-prose ul,.cms-prose ol{margin:0 0 8px;padding-left:22px}
 
-/* ---------- Toasts ---------- */
-.cms-toast-stack{position:fixed;right:20px;bottom:20px;z-index:2000;display:flex;flex-direction:column;gap:10px;max-width:calc(100vw - 40px)}
+/* ---------- Toasts (solid colors, top right, as in the design) ---------- */
+.cms-toast-stack{position:fixed;top:24px;right:24px;z-index:2000;display:flex;flex-direction:column;align-items:flex-end;gap:10px;max-width:calc(100vw - 32px);pointer-events:none}
 .cms-toast{
-  display:flex;align-items:flex-start;gap:10px;min-width:260px;max-width:380px;padding:12px 14px;
-  background:#fff;border:1px solid var(--cms-border);border-left:4px solid var(--cms-primary);border-radius:10px;
-  box-shadow:0 10px 30px rgba(15,23,42,.16);font-size:13px;line-height:18px;
+  pointer-events:auto;display:flex;align-items:center;gap:8px;min-height:44px;padding:10px 19px;border-radius:10px;
+  background:var(--cms-primary);color:#fff;font-size:14px;line-height:20px;font-weight:500;cursor:pointer;
+  box-shadow:0 8px 22px rgba(15,23,42,.28);animation:cms-toast-in .18s ease-out;
 }
-.cms-toast.is-success{border-left-color:var(--cms-green)}
-.cms-toast.is-error{border-left-color:var(--cms-red)}
-.cms-toast .bi{font-size:16px;margin-top:1px}
-.cms-toast.is-success .bi{color:var(--cms-green)}
-.cms-toast.is-error .bi{color:var(--cms-red)}
-.cms-toast button{margin-left:auto;border:0;background:none;color:var(--cms-muted);padding:0;font-size:16px;line-height:1}
+.cms-toast.is-success{background:var(--cms-green)}
+.cms-toast.is-deleted,.cms-toast.is-error{background:var(--cms-red)}
+.cms-toast .bi{font-size:15px;line-height:1}
+@keyframes cms-toast-in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@media (max-width:575.98px){.cms-toast-stack{top:72px;right:16px;left:16px;align-items:stretch}}
 
 /* ---------- Modals (Bootstrap modal, restyled) ---------- */
 .cms-modal .modal-content{border:0;border-radius:var(--cms-radius-lg);box-shadow:0 20px 50px rgba(15,23,42,.25)}
@@ -192,3 +191,26 @@
   .cms-form-card{padding:14px}
   .cms-table-footer{justify-content:center}
 }
+
+/* ---------- Small dialogs: delete / publish / choose file / category ---------- */
+.cms-dialog .modal-dialog{max-width:440px;margin-left:auto;margin-right:auto}
+.cms-dialog .modal-content{border:0;border-radius:14px;box-shadow:0 20px 50px rgba(15,23,42,.28)}
+.cms-dialog .modal-body{padding:24px 24px 20px}
+.cms-dialog-title{margin:0;font-size:16px;line-height:22px;font-weight:600;color:var(--cms-text)}
+.cms-dialog-text{margin:6px 0 0;font-size:13px;line-height:19px;color:var(--cms-muted)}
+.cms-dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.cms-dialog-actions .cms-btn{height:34px;padding:0 15px;font-size:13px}
+.cms-dialog .cms-field{margin:12px 0 0}
+.cms-dialog .cms-label{font-weight:500}
+.cms-dialog .cms-field-error{margin-top:4px}
+.cms-dialog-drop{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:96px;margin-top:12px;padding:16px;
+  border:1.5px dashed var(--cms-border-strong);border-radius:10px;text-align:center;cursor:pointer;
+}
+.cms-dialog-drop:hover,.cms-dialog-drop.is-over{border-color:var(--cms-primary);background:#f8faff}
+.cms-dialog-drop-main{font-size:13px;color:#4b5563}
+.cms-dialog-drop-hint{font-size:12px;color:var(--cms-placeholder)}
+
+/* modals must be white (Bootstrap otherwise takes the gray page background) */
+.cms-modal{--bs-modal-bg:#fff}
+.cms-dialog .cms-textarea{resize:none}
