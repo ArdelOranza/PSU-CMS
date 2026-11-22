@@ -76,9 +76,9 @@
       </ul>
     </div>
 
-    <!-- Search uses the existing CMS search (index.php?q=...) -->
+    <!-- Search opens the dedicated client search page. -->
     <div class="site-search" id="site-search" hidden>
-      <form class="site-search__form" role="search" method="get" action="@/index.php">
+      <form class="site-search__form" role="search" method="get" action="@/client-ui/search/search.html">
         <label class="visually-hidden" for="site-search-input">Search the website</label>
         <input id="site-search-input" class="site-search__input" type="search" name="q" maxlength="100" placeholder="Search news, events, programs…" autocomplete="off">
         <button class="site-search__submit" type="submit">Search</button>
