@@ -1,0 +1,44 @@
+/* Faculty & Staff directory and profile. */
+.people-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-4); list-style: none; margin: 0; padding: 0; }
+.people-grid > li { display: flex; }
+
+.person-card {
+  display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%;
+  padding: var(--sp-4) var(--sp-3) var(--sp-3); background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius-lg); color: var(--text); text-decoration: none;
+  transition: box-shadow var(--ease), transform var(--ease), border-color var(--ease);
+}
+a.person-card:hover { color: var(--text); border-color: #b8bfd1; box-shadow: 0 8px 20px rgba(3, 13, 115, .10); transform: translateY(-2px); }
+.person-card .avatar { margin-bottom: var(--sp-2); }
+.person-card__name { font-size: 17px; font-weight: 700; line-height: 1.3; overflow-wrap: anywhere; }
+.person-card__role { margin-top: 2px; font-size: 14px; color: var(--text-muted); }
+.person-card__unit { margin-top: 6px; font-size: 14px; font-weight: 700; color: var(--primary-dark); }
+.person-card__email { margin: 6px 0 8px; font-size: 12px; color: var(--text-muted); overflow-wrap: anywhere; }
+.person-card--static { align-self: start; cursor: default; }
+
+.page-head--compact { padding-bottom: var(--sp-4); }
+
+.profile-layout { display: grid; grid-template-columns: 205px minmax(0, 1fr); gap: var(--sp-4); align-items: start; }
+.profile-main__name { font-size: 30px; font-weight: 800; color: var(--text); }
+.profile-main__sub { margin: var(--sp-2) 0 var(--sp-1); font-size: 18px; color: var(--text-muted); }
+.profile-pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 var(--sp-4); }
+.profile-heading { margin: var(--sp-4) 0 var(--sp-2); font-size: 22px; font-weight: 800; }
+.profile-main p { margin: 0 0 var(--sp-2); font-size: var(--fs-body-sm); line-height: 1.6; overflow-wrap: anywhere; }
+.profile-main .profile-pills { margin-bottom: 0; }
+.profile-list { margin: 0; padding-left: 22px; font-size: var(--fs-body-sm); line-height: 1.9; }
+
+.contact-card { margin-top: var(--sp-4); padding: var(--sp-3) var(--sp-4) var(--sp-3); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+.contact-card h3 { margin-bottom: var(--sp-2); font-size: 18px; font-weight: 800; }
+.contact-card dl { margin: 0; }
+.contact-card dt { margin-top: 12px; font-size: 12px; color: var(--text-muted); }
+.contact-card dd { margin: 2px 0 0; font-size: 15px; font-weight: 700; overflow-wrap: anywhere; }
+.contact-card dd a { color: var(--text); text-decoration: none; }
+.contact-card dd a:hover { color: var(--primary); text-decoration: underline; }
+
+@media (max-width: 1100px) { .people-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 800px) {
+  .people-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .profile-layout { grid-template-columns: 1fr; }
+  .person-card--static { max-width: 320px; }
+}
+@media (max-width: 460px) { .people-grid { grid-template-columns: 1fr; } }

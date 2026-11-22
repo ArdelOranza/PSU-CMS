@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Website Layout | PSU CMS</title>
+  <link rel="stylesheet" href="../assets/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../assets/css/cms-base.css">
+  <link rel="stylesheet" href="../assets/css/cms-layout.css">
+  <link rel="stylesheet" href="../assets/css/cms-components.css">
+  <link rel="stylesheet" href="../assets/css/admin-resources.css">
+</head>
+<body class="cms-body" data-page="website-layout" data-title="Website Layout" data-crumb="System">
+
+<main class="cms-content" id="main">
+  <div class="cms-page-head">
+    <div>
+      <h1 class="cms-page-title">Website Layout</h1>
+      <p class="cms-page-sub">Arrange header, footer, and sections.</p>
+    </div>
+    <a class="cms-btn cms-btn-soft" href="../client/directory.html" target="_blank" rel="noopener">Preview Website</a>
+  </div>
+  <form id="layoutForm">
+    <div class="res-layout-grid">
+      <section class="cms-card" aria-labelledby="layoutPreviewTitle">
+        <h2 class="res-card-title" id="layoutPreviewTitle">Homepage Layout Preview</h2>
+        <div class="res-layout-preview" id="layoutPreview" role="img" aria-label="Homepage Layout Preview"><span>Homepage Layout Preview</span></div>
+      </section>
+      <section class="cms-card" aria-labelledby="sectionArrangementTitle">
+        <h2 class="res-card-title" id="sectionArrangementTitle">Section Arrangement</h2>
+        <ul class="res-section-list" id="sectionList"></ul>
+      </section>
+    </div>
+    <section class="cms-card res-layout-options" aria-label="Header, footer and navigation">
+      <div class="res-layout-options-grid">
+        <div class="cms-field"><label class="cms-label" for="f_header">Header Layout</label><select class="cms-input" id="f_header" data-cms-select data-block></select></div>
+        <div class="cms-field"><label class="cms-label" for="f_footer">Footer Layout</label><select class="cms-input" id="f_footer" data-cms-select data-block></select></div>
+        <div class="cms-field"><label class="cms-label" for="f_menu">Navigation Menu</label><select class="cms-input" id="f_menu" data-cms-select data-block></select></div>
+      </div>
+    </section>
+    <div class="cms-form-actions"><button class="cms-btn cms-btn-primary" type="submit">Save Layout</button></div>
+  </form>
+</main>
+<script src="../assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/ui.js"></script>
+<script src="../assets/js/admin-shell.js"></script>
+<script src="../assets/js/layout.js"></script>
+<script src="../assets/js/store.js"></script>
+<script src="../assets/js/admin-common.js"></script>
+<script src="../assets/js/admin-layout.js"></script>
+</body>
+</html>

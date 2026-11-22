@@ -1,0 +1,24 @@
+/* Website Layout options (admin: Appearance > Website Layout).
+   Classes are added by includes/header.php and includes/footer.php. */
+
+/* Header: logo left, menu right */
+.site-header--logo-left .site-header__brand { justify-content: flex-start; max-width: var(--content-max); margin: 0 auto; }
+.site-header--logo-left .site-nav__inner,
+.site-header--logo-left .site-nav__list { justify-content: flex-end; }
+
+/* Navigation: compact menu hides the items marked data-nav-extra (Academics) */
+.site-header--menu-compact [data-nav-extra] { display: none; }
+
+/* Footer: two columns (about on top, campuses + quicklinks below) */
+.site-footer--two-columns .footer-main__inner { grid-template-columns: 1fr 1fr; }
+.site-footer--two-columns .footer-about { grid-column: 1 / -1; }
+
+/* Footer: single column */
+.site-footer--simple .footer-main__inner { grid-template-columns: 1fr; gap: var(--sp-4); }
+
+@media (max-width: 900px) {
+  .site-header--logo-left .site-header__brand { justify-content: center; }
+}
+@media (max-width: 600px) {
+  .site-footer--two-columns .footer-main__inner { grid-template-columns: 1fr; }
+}

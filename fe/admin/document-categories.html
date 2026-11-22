@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Document Categories | PSU CMS</title>
+  <link rel="stylesheet" href="../assets/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../assets/css/cms-base.css">
+  <link rel="stylesheet" href="../assets/css/cms-layout.css">
+  <link rel="stylesheet" href="../assets/css/cms-components.css">
+  <link rel="stylesheet" href="../assets/css/admin-resources.css">
+</head>
+<body class="cms-body" data-page="document-categories" data-title="Document Categories" data-crumb="Resources">
+
+<main class="cms-content" id="main">
+  <div class="cms-page-head">
+    <div>
+      <h1 class="cms-page-title">Document Categories</h1>
+      <p class="cms-page-sub">Organize documents.</p>
+    </div>
+    <button type="button" class="cms-btn cms-btn-primary" data-category-add>+ Add Category</button>
+  </div>
+  <section class="cms-card" aria-label="Document categories">
+    <form class="cms-filters" id="categoryFilters" role="search">
+      <div class="cms-filter-search"><label class="cms-visually-hidden" for="categorySearch">Search categories</label><input class="cms-input" id="categorySearch" type="search" placeholder="Search..." autocomplete="off" maxlength="100"></div>
+    </form>
+    <div class="cms-table-wrap" id="categoryTable">
+      <table class="cms-table res-table res-categories-table">
+        <thead><tr><th scope="col">Category</th><th scope="col">Description</th><th scope="col">Documents</th><th scope="col">Actions</th></tr></thead>
+        <tbody id="categoryRows"></tbody>
+      </table>
+    </div>
+    <div id="categoryEmpty"></div>
+    <div id="categoryFooter"></div>
+  </section>
+  <div class="modal fade cms-modal cms-dialog" id="categoryDialog" tabindex="-1" aria-labelledby="categoryTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-body">
+      <h2 class="cms-dialog-title" id="categoryTitle">Add Category</h2>
+      <form id="categoryForm" novalidate>
+        <input type="hidden" id="categoryId">
+        <div class="cms-field"><label class="cms-label" for="categoryName">Category Name</label><input class="cms-input" id="categoryName" type="text" maxlength="120" placeholder="Enter category name"><p class="cms-field-error"></p></div>
+        <div class="cms-field"><label class="cms-label" for="categoryDescription">Description</label><input class="cms-input" id="categoryDescription" type="text" maxlength="255" placeholder="Enter description"></div>
+        <div class="cms-dialog-actions"><button type="button" class="cms-btn cms-btn-outline" data-bs-dismiss="modal">Cancel</button><button type="submit" class="cms-btn cms-btn-primary">Save Category</button></div>
+      </form>
+    </div></div></div>
+  </div>
+</main>
+<script src="../assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/ui.js"></script>
+<script src="../assets/js/admin-shell.js"></script>
+<script src="../assets/js/layout.js"></script>
+<script src="../assets/js/store.js"></script>
+<script src="../assets/js/admin-common.js"></script>
+<script src="../assets/js/admin-documents.js"></script>
+</body>
+</html>

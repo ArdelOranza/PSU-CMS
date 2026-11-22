@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Staff Login | Pangasinan State University</title>
+  <meta name="description" content="">
+  <link rel="icon" href="../assets/images/psu-logo.png" type="image/png">
+  <link rel="stylesheet" href="../assets/css/client-variables.css">
+  <link rel="stylesheet" href="../assets/css/client-global.css">
+  <link rel="stylesheet" href="../assets/css/client-header.css">
+  <link rel="stylesheet" href="../assets/css/client-footer.css">
+  <link rel="stylesheet" href="../assets/css/client-layout.css">
+  <link rel="stylesheet" href="../assets/css/client-listing.css">
+  <link rel="stylesheet" href="../assets/css/client-resources.css">
+</head>
+<body data-nav="resources">
+<!-- Header and footer come from assets/js/client-shell.js (copied from the existing PSU public header/footer) -->
+<div id="site-header-slot"></div>
+<main id="main" class="auth-main">
+  <section class="auth-card" aria-labelledby="login-title">
+    <span class="lock-badge" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" focusable="false"><rect x="5" y="11" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+    <h1 class="auth-card__title" id="login-title">Staff Login</h1>
+    <p class="auth-card__lead">Some documents are for PSU staff only. Please log in to continue.</p>
+    <div class="form-alert" id="loginAlert" role="alert" hidden></div>
+    <form id="staffLoginForm" novalidate>
+      <div class="field"><label for="staff-email">Email</label><input id="staff-email" type="email" autocomplete="username" placeholder="you@psu.edu.ph"></div>
+      <div class="field"><label for="staff-password">Password</label><input id="staff-password" type="password" autocomplete="current-password" placeholder="••••••••"></div>
+      <button class="btn btn--primary auth-card__submit" type="submit">Log in</button>
+    </form>
+    <div class="auth-card__links"><a href="#" data-pending="Password reset">Forgot password?</a><a href="documents.html">Back to Documents</a></div>
+  </section>
+</main>
+<div id="site-footer-slot"></div>
+<script src="../assets/js/store.js"></script>
+<script src="../assets/js/client-header.js"></script>
+<script src="../assets/js/client-shell.js"></script>
+<script src="../assets/js/client-documents.js"></script>
+</body>
+</html>
