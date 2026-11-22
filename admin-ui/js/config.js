@@ -17,9 +17,9 @@ CMS.config = {
     priority: true   // Normal / Urgent priority (announcements)
   },
 
-  /* ---- Campuses (EDIT ME: confirm the real list with the team) ---------- */
+  /* ---- Campuses (the official list, same names as the public site footer) --- */
   allCampuses: 'All Campuses',
-  campuses: ['Lingayen', 'Urdaneta', 'Bayambang', 'Alaminos City', 'Asingan', 'Binmaley', 'Infanta', 'San Carlos City', 'Santa Maria'],
+  campuses: ['Lingayen-Main', 'Alaminos', 'Asingan', 'Bayambang', 'Binmaley', 'Infanta', 'San Carlos', 'Sta. Maria', 'Urdaneta', 'School of Advanced Studies', 'Open University Systems'],
 
   /* ---- Simulated user. No real login; this only drives the demo rules.
      role 'super_admin' may target any campus. role 'campus_admin' may only
@@ -27,7 +27,7 @@ CMS.config = {
   currentUser: { name: 'Admin User', role: 'super_admin', campus: null },
 
   /* ---- Fixed dropdown lists (the designs show no screen to manage these) - */
-  newsCategories: ['Campus News', 'Academics', 'Research', 'Sports', 'Events', 'Community'],
+  newsCategories: ['University News', 'Research', 'Student Life', 'Awards'],
   announcementCategories: ['Academic', 'Advisory', 'Scholarship', 'Administrative'],
 
   /* ---- Status lists. `value` is what is stored, `label` is what is shown. */

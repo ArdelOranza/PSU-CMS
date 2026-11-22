@@ -57,3 +57,12 @@ The existing `site_header()` / `site_footer()` in `bootstrap.php` were left unto
 - Search controls submit to the existing `index.php?q=`; campus footer links also run that search because no campus pages exist. Social icons link to `#` until official URLs are provided.
 - Contact nav link points to `client-ui/contact/contact.html`; change it in `includes/header.html` if the CMS contact page moves.
 - Serving `404.html` via Apache `ErrorDocument` needs root-absolute asset paths (the page uses relative paths).
+
+## News, Announcements and Events pages (public)
+PHP pages in `news/`, `announcements/`, `events/` (list + details each). They use the shared header/footer through
+`includes/page-open.php` / `page-close.php` and read the admin prototype's localStorage data through
+`js/public-data.js` (`PSU.data`). Replace that file with database queries and keep the field names.
+Styles: `css/psu-pages.css`, `page.css`, `news.css`, `events.css`, `announcements.css`. Fonts and Bootstrap Icons are in `assets/`.
+Open `http://localhost:8000/client-ui/news/news.php` after `php -S localhost:8000` from the repo root.
+
+Note: these pages still read localStorage (`js/public-data.js`). Backend can replace that file with database queries and keep the field names.

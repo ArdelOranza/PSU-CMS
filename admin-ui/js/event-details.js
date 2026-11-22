@@ -22,6 +22,7 @@
     put('detailDate', ui.formatDate(ev.startDate) + (ev.endDate && ev.endDate !== ev.startDate ? ' \u2013 ' + ui.formatDate(ev.endDate) : ''));
     put('detailTime', rules.timeText(ev) || '\u2014');
     put('detailVenue', ev.venue || '\u2014'); put('detailOrganizer', ev.organizer || '\u2014');
+    put('detailCampus', ev.campus || '\u2014');
     document.getElementById('detailStatus').appendChild(ui.badge(status, label));
     put('detailCategory', rules.categoryName(ev.categoryId));
     if (ev.description) { put('detailDescription', ev.description); document.getElementById('detailDescriptionField').hidden = false; }

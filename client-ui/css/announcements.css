@@ -1,0 +1,13 @@
+/* announcements.css — Announcements list rows */
+.announcement-list{list-style:none;margin:0;padding:0;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-sm);overflow:hidden}
+.announcement-item{position:relative;padding:var(--space-3) var(--space-3) 20px;border-bottom:1px solid var(--border);transition:background-color .15s}
+.announcement-item:last-child{border-bottom:0}
+.announcement-item:hover{background:#FBFCFF}
+.announcement-top{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2)}
+.announcement-date{font-size:var(--fs-caption);color:var(--text-muted)}
+.announcement-title{margin-top:var(--space-1);font-size:var(--fs-subsection);line-height:1.3;font-weight:600}
+.announcement-title a::after{content:"";position:absolute;inset:0}
+.announcement-item:focus-within{outline:2px solid var(--primary);outline-offset:-2px}
+.announcement-meta{display:flex;flex-wrap:wrap;gap:var(--space-1) var(--space-3);margin-top:6px;font-size:14px;color:var(--text-muted)}
+.announcement-meta span{display:inline-flex;align-items:center;gap:6px}
+@media (max-width:639.98px){.announcement-item{padding:var(--space-3)}.announcement-title{font-size:20px}}
