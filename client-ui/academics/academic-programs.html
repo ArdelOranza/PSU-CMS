@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Academic Programs | Pangasinan State University</title>
+  <meta name="description" content="Browse degree programs at Pangasinan State University by level, college, and campus.">
+  <link rel="icon" href="../assets/images/psu-logo.png" type="image/png">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/header.css">
+  <link rel="stylesheet" href="../css/footer.css">
+  <link rel="stylesheet" href="../css/academics.css">
+  <script src="../js/header.js" defer></script>
+  <script src="../js/includes.js" defer></script>
+  <script src="../js/academics-data.js" defer></script>
+  <script src="../js/academics-common.js" defer></script>
+  <script src="../js/programs.js" defer></script>
+</head>
+<body class="ac-page" data-root="../../" data-nav="academics">
+  <!-- Shared header (client-ui/includes/header.html). PHP: include 'client-ui/includes/header.php' -->
+  <div data-include="header"></div>
+
+  <main id="main">
+    <section class="page-head">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href="../../index.php">Home</a></li><li>Academics</li><li aria-current="page">Programs</li></ol></nav>
+        <h1 class="page-title">Academic Programs</h1>
+        <p class="page-lead">Browse degree programs by level, college, and campus.</p>
+      </div>
+    </section>
+    <div class="container ac-directory">
+      <div class="ac-tabs" role="group" aria-label="Degree level">
+        <button type="button" class="ac-tab is-active" data-level="" aria-pressed="true">All</button>
+        <button type="button" class="ac-tab" data-level="Undergraduate" aria-pressed="false">Undergraduate</button>
+        <button type="button" class="ac-tab" data-level="Graduate" aria-pressed="false">Graduate</button>
+      </div>
+      <div class="ac-filters ac-filters--two">
+        <div class="ac-search">
+          <label class="visually-hidden" for="programSearch">Search programs</label>
+          <svg class="ac-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-4.3-4.3"/></svg>
+          <input class="ac-input" id="programSearch" type="search" placeholder="Search programs" autocomplete="off">
+        </div>
+        <label class="visually-hidden" for="programCollege">Filter by college</label>
+        <select class="ac-select" id="programCollege"></select>
+        <label class="visually-hidden" for="programCampus">Filter by campus</label>
+        <select class="ac-select" id="programCampus"></select>
+      </div>
+      <p class="visually-hidden" id="programStatus" role="status" aria-live="polite"></p>
+      <div class="ac-table-card" id="programTableCard">
+        <table class="ac-table">
+          <caption class="visually-hidden">Academic programs</caption>
+          <thead>
+            <tr>
+              <th scope="col">Program</th>
+              <th scope="col">College</th>
+              <th scope="col">Level</th>
+              <th scope="col"><span class="visually-hidden">View program</span></th>
+            </tr>
+          </thead>
+          <tbody id="programBody"></tbody>
+        </table>
+      </div>
+      <div class="ac-empty" id="programEmpty" hidden>
+        <p class="ac-empty__title">No programs found</p>
+        <p class="ac-empty__text">Try a different search, level, college or campus.</p>
+        <button type="button" class="btn btn--outline" id="programReset">Clear filters</button>
+      </div>
+      <nav class="ac-pager" id="programPager" aria-label="Pagination" hidden></nav>
+    </div>
+  </main>
+
+  <!-- Shared footer (client-ui/includes/footer.html). PHP: include 'client-ui/includes/footer.php' -->
+  <div data-include="footer"></div>
+</body>
+</html>
