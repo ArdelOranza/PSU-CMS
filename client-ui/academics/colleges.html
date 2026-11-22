@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Colleges | Pangasinan State University</title>
+  <meta name="description" content="Explore the colleges of Pangasinan State University and the programs they offer.">
+  <link rel="icon" href="../assets/images/psu-logo.png" type="image/png">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/header.css">
+  <link rel="stylesheet" href="../css/footer.css">
+  <link rel="stylesheet" href="../css/academics.css">
+  <script src="../js/header.js" defer></script>
+  <script src="../js/includes.js" defer></script>
+  <script src="../js/academics-data.js" defer></script>
+  <script src="../js/academics-common.js" defer></script>
+  <script src="../js/colleges.js" defer></script>
+</head>
+<body class="ac-page" data-root="../../" data-nav="academics">
+  <!-- Shared header (client-ui/includes/header.html). PHP: include 'client-ui/includes/header.php' -->
+  <div data-include="header"></div>
+
+  <main id="main">
+    <section class="page-head">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href="../../index.php">Home</a></li><li>Academics</li><li aria-current="page">Colleges</li></ol></nav>
+        <h1 class="page-title">Colleges</h1>
+        <p class="page-lead">Explore the colleges of the university and the programs they offer.</p>
+      </div>
+    </section>
+    <div class="container ac-directory">
+      <div class="ac-filters">
+        <div class="ac-search">
+          <label class="visually-hidden" for="collegeSearch">Search colleges</label>
+          <svg class="ac-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-4.3-4.3"/></svg>
+          <input class="ac-input" id="collegeSearch" type="search" placeholder="Search colleges" autocomplete="off">
+        </div>
+        <label class="visually-hidden" for="collegeCampus">Filter by campus</label>
+        <select class="ac-select" id="collegeCampus"></select>
+      </div>
+      <p class="visually-hidden" id="collegeStatus" role="status" aria-live="polite"></p>
+      <div class="ac-grid" id="collegeGrid"></div>
+      <div class="ac-empty" id="collegeEmpty" hidden>
+        <p class="ac-empty__title">No colleges found</p>
+        <p class="ac-empty__text">Try a different search or campus.</p>
+        <button type="button" class="btn btn--outline" id="collegeReset">Clear filters</button>
+      </div>
+      <nav class="ac-pager" id="collegePager" aria-label="Pagination" hidden></nav>
+    </div>
+  </main>
+
+  <!-- Shared footer (client-ui/includes/footer.html). PHP: include 'client-ui/includes/footer.php' -->
+  <div data-include="footer"></div>
+</body>
+</html>
