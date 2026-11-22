@@ -37,7 +37,7 @@
     ui.setOptions(dateSel, [
       { value: '', label: 'Any Date' }, { value: '7', label: 'Last 7 Days' }, { value: '30', label: 'Last 30 Days' },
       { value: '90', label: 'Last 90 Days' }, { value: 'year', label: 'This Year' }], '');
-    if (campusSel) ui.setOptions(campusSel, [{ value: '', label: 'All Campuses' }].concat(ui.campusChoices().map(function (c) { return { value: c, label: c }; })), '');
+    if (campusSel) ui.setOptions(campusSel, [{ value: '', label: 'All Campuses' }].concat(ui.campusChoices().filter(function (c) { return c !== cfg.allCampuses; }).map(function (c) { return { value: c, label: c }; })), '');
     if (prioritySel) ui.setOptions(prioritySel, [{ value: '', label: 'All Priorities' }, { value: 'normal', label: 'Normal' }, { value: 'urgent', label: 'Urgent' }], '');
 
     function matches(a) {
