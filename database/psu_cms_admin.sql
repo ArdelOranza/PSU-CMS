@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2026 at 04:47 AM
+-- Generation Time: Nov 22, 2026 at 02:05 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -35,7 +35,7 @@ CREATE TABLE `activity_logs` (
   `entity_id` int(11) DEFAULT NULL,
   `entity_title` varchar(255) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -58,7 +58,7 @@ CREATE TABLE `announcements` (
   `status` varchar(20) NOT NULL DEFAULT 'draft',
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -69,7 +69,7 @@ CREATE TABLE `announcements` (
 CREATE TABLE `announcement_categories` (
   `category_id` int(11) NOT NULL,
   `name` varchar(80) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `announcement_categories`
@@ -94,7 +94,7 @@ CREATE TABLE `campuses` (
   `is_main` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -114,7 +114,7 @@ CREATE TABLE `colleges` (
   `header_media_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -130,12 +130,12 @@ CREATE TABLE `contact_submissions` (
   `full_name` varchar(150) NOT NULL,
   `email` varchar(150) NOT NULL,
   `subject` varchar(255) NOT NULL,
-  `message` text NOT NULL,
+  `message` mediumtext NOT NULL,
   `status` varchar(20) NOT NULL DEFAULT 'unread',
-  `reply_message` text DEFAULT NULL,
+  `reply_message` mediumtext DEFAULT NULL,
   `received_at` datetime NOT NULL DEFAULT current_timestamp(),
   `replied_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -149,7 +149,7 @@ CREATE TABLE `content_attachments` (
   `news_id` int(11) DEFAULT NULL,
   `announcement_id` int(11) DEFAULT NULL,
   `page_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -170,7 +170,7 @@ CREATE TABLE `departments` (
   `status` varchar(20) NOT NULL DEFAULT 'active',
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -184,12 +184,12 @@ CREATE TABLE `documents` (
   `campus_id` int(11) DEFAULT NULL,
   `created_by` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `description` text DEFAULT NULL,
+  `description` mediumtext DEFAULT NULL,
   `access_level` varchar(20) NOT NULL DEFAULT 'public',
   `download_count` int(11) NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -201,7 +201,7 @@ CREATE TABLE `document_categories` (
   `category_id` int(11) NOT NULL,
   `name` varchar(80) NOT NULL,
   `description` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `document_categories`
@@ -224,7 +224,7 @@ CREATE TABLE `document_downloads` (
   `document_id` int(11) NOT NULL,
   `ip_address` varchar(45) DEFAULT NULL,
   `downloaded_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -242,7 +242,7 @@ CREATE TABLE `document_versions` (
   `file_type` varchar(20) DEFAULT NULL,
   `file_size_kb` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -255,10 +255,10 @@ CREATE TABLE `email_logs` (
   `submission_id` int(11) DEFAULT NULL,
   `recipient_email` varchar(150) DEFAULT NULL,
   `subject` varchar(255) DEFAULT NULL,
-  `body` text DEFAULT NULL,
+  `body` mediumtext DEFAULT NULL,
   `status` varchar(20) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -275,7 +275,7 @@ CREATE TABLE `events` (
   `created_by` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `slug` varchar(255) NOT NULL,
-  `description` text DEFAULT NULL,
+  `description` mediumtext DEFAULT NULL,
   `venue` varchar(200) DEFAULT NULL,
   `organizer` varchar(150) DEFAULT NULL,
   `start_at` datetime NOT NULL,
@@ -284,7 +284,7 @@ CREATE TABLE `events` (
   `status` varchar(20) NOT NULL DEFAULT 'draft',
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -296,7 +296,7 @@ CREATE TABLE `event_categories` (
   `category_id` int(11) NOT NULL,
   `name` varchar(80) NOT NULL,
   `description` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `event_categories`
@@ -326,12 +326,12 @@ CREATE TABLE `faculty_staff` (
   `position` varchar(150) DEFAULT NULL,
   `email` varchar(150) DEFAULT NULL,
   `contact_number` varchar(30) DEFAULT NULL,
-  `educational_background` text DEFAULT NULL,
-  `biography` text DEFAULT NULL,
+  `educational_background` mediumtext DEFAULT NULL,
+  `biography` mediumtext DEFAULT NULL,
   `status` varchar(20) NOT NULL DEFAULT 'active',
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -343,10 +343,10 @@ CREATE TABLE `faqs` (
   `faq_id` int(11) NOT NULL,
   `campus_id` int(11) DEFAULT NULL,
   `question` varchar(255) NOT NULL,
-  `answer` text NOT NULL,
+  `answer` mediumtext NOT NULL,
   `display_order` int(11) NOT NULL DEFAULT 0,
   `status` varchar(20) NOT NULL DEFAULT 'published'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -362,7 +362,7 @@ CREATE TABLE `featured_items` (
   `created_by` int(11) NOT NULL,
   `display_order` int(11) NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -381,7 +381,7 @@ CREATE TABLE `feedback_submissions` (
   `message` text NOT NULL,
   `status` varchar(20) NOT NULL DEFAULT 'new',
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -398,7 +398,7 @@ CREATE TABLE `homepage_sections` (
   `display_order` int(11) NOT NULL DEFAULT 0,
   `is_visible` tinyint(1) NOT NULL DEFAULT 1,
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -414,7 +414,7 @@ CREATE TABLE `homepage_section_items` (
   `subtitle` varchar(255) DEFAULT NULL,
   `url` varchar(500) DEFAULT NULL,
   `display_order` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -426,10 +426,10 @@ CREATE TABLE `login_attempts` (
   `attempt_id` bigint(20) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `email` varchar(150) DEFAULT NULL,
-  `ip_address` varchar(45) DEFAULT NULL,
+  `ip` varchar(45) NOT NULL,
   `is_success` tinyint(1) NOT NULL DEFAULT 0,
   `attempted_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -447,9 +447,9 @@ CREATE TABLE `media` (
   `file_size_kb` int(11) DEFAULT NULL,
   `alt_text` varchar(255) DEFAULT NULL,
   `caption` varchar(255) DEFAULT NULL,
-  `description` text DEFAULT NULL,
+  `description` mediumtext DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -462,7 +462,7 @@ CREATE TABLE `media_usages` (
   `media_id` int(11) NOT NULL,
   `entity_type` varchar(50) NOT NULL,
   `entity_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -480,7 +480,7 @@ CREATE TABLE `navigation_items` (
   `url` varchar(500) DEFAULT NULL,
   `display_order` int(11) NOT NULL DEFAULT 0,
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -504,7 +504,7 @@ CREATE TABLE `news` (
   `status` varchar(20) NOT NULL DEFAULT 'draft',
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -517,7 +517,7 @@ CREATE TABLE `newsletter_subscribers` (
   `email` varchar(150) NOT NULL,
   `status` varchar(20) NOT NULL DEFAULT 'subscribed',
   `subscribed_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -528,7 +528,7 @@ CREATE TABLE `newsletter_subscribers` (
 CREATE TABLE `news_categories` (
   `category_id` int(11) NOT NULL,
   `name` varchar(80) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `news_categories`
@@ -549,7 +549,7 @@ INSERT INTO `news_categories` (`category_id`, `name`) VALUES
 CREATE TABLE `news_category_map` (
   `news_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -566,7 +566,7 @@ CREATE TABLE `notifications` (
   `entity_id` int(11) DEFAULT NULL,
   `is_read` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -586,7 +586,7 @@ CREATE TABLE `pages` (
   `status` varchar(20) NOT NULL DEFAULT 'draft',
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -601,7 +601,7 @@ CREATE TABLE `password_reset_tokens` (
   `expires_at` datetime NOT NULL,
   `used_at` datetime DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -614,7 +614,7 @@ CREATE TABLE `permissions` (
   `code` varchar(100) NOT NULL,
   `name` varchar(150) NOT NULL,
   `module` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -635,7 +635,7 @@ CREATE TABLE `programs` (
   `status` varchar(20) NOT NULL DEFAULT 'active',
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -648,7 +648,7 @@ CREATE TABLE `program_accreditations` (
   `program_id` int(11) NOT NULL,
   `accrediting_body` varchar(150) NOT NULL,
   `level` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -659,7 +659,7 @@ CREATE TABLE `program_accreditations` (
 CREATE TABLE `program_campuses` (
   `program_id` int(11) NOT NULL,
   `campus_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -674,7 +674,7 @@ CREATE TABLE `roles` (
   `summary` varchar(255) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `roles`
@@ -695,7 +695,7 @@ INSERT INTO `roles` (`role_id`, `name`, `description`, `summary`, `created_at`, 
 CREATE TABLE `role_permissions` (
   `role_id` int(11) NOT NULL,
   `permission_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -705,10 +705,10 @@ CREATE TABLE `role_permissions` (
 
 CREATE TABLE `site_settings` (
   `setting_key` varchar(100) NOT NULL,
-  `setting_value` text DEFAULT NULL,
+  `setting_value` mediumtext DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `site_settings`
@@ -745,7 +745,7 @@ CREATE TABLE `themes` (
   `secondary_color` varchar(7) DEFAULT NULL,
   `font_family` varchar(80) DEFAULT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `themes`
@@ -783,7 +783,7 @@ CREATE TABLE `users` (
   `must_change_password` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -802,7 +802,7 @@ CREATE TABLE `user_sessions` (
   `last_activity_at` datetime DEFAULT NULL,
   `expires_at` datetime NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Indexes for dumped tables
