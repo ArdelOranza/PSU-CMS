@@ -18,6 +18,12 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
+-- Create and select the target database so the import never lands in the wrong one
+--
+CREATE DATABASE IF NOT EXISTS `psu_cms_client` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `psu_cms_client`;
+
+--
 -- Database: `psu_cms_client`
 --
 
@@ -465,7 +471,7 @@ CREATE TABLE `login_attempts` (
   `attempt_id` bigint(20) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `email` varchar(150) DEFAULT NULL,
-  `ip_address` varchar(45) DEFAULT NULL,
+  `ip` varchar(45) NOT NULL,
   `is_success` tinyint(1) NOT NULL DEFAULT 0,
   `attempted_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
