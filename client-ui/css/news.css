@@ -1,0 +1,15 @@
+/* news.css — News list cards */
+.news-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-4)}
+.news-card{position:relative;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-sm);transition:box-shadow .15s,border-color .15s}
+.news-card:hover{border-color:var(--primary);box-shadow:var(--shadow-md)}
+.news-card-media{height:204px;background:var(--primary-tint);overflow:hidden}
+.news-card-media img{display:block;width:100%;height:100%;object-fit:cover}
+.news-card-body{display:flex;flex-direction:column;align-items:flex-start;flex:1;padding:var(--space-3)}
+.news-card-meta{margin-top:var(--space-1);font-size:var(--fs-caption);color:var(--text-muted)}
+.news-card-title{margin-top:var(--space-1);font-size:var(--fs-card-title);line-height:1.3;font-weight:600}
+.news-card-title a::after{content:"";position:absolute;inset:0}
+.news-card-excerpt{margin-top:var(--space-1);font-size:var(--fs-body-sm);line-height:1.5;color:var(--text-muted)}
+.news-card .link-more{margin-top:auto;padding-top:var(--space-2)}
+.news-card:focus-within{outline:2px solid var(--primary);outline-offset:2px}
+@media (max-width:1023.98px){.news-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:639.98px){.news-grid{grid-template-columns:minmax(0,1fr)}.news-card-media{height:190px}}

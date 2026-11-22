@@ -26,6 +26,11 @@
     if (cfg.features.campus) put('detailCampus', n.campus || '');
     document.getElementById('detailStatus').appendChild(ui.badge(n.status, statusLabel(n.status)));
 
+    if (n.attachment) {
+      put('detailAttachment', n.attachment.name + (n.attachment.size ? ' (' + ui.formatSize(n.attachment.size) + ')' : ''));
+      document.getElementById('detailAttachmentField').hidden = false;
+    }
+
     /* extras: the summary and the article text, only when there is something to show */
     if (n.shortDescription) { put('detailSummary', n.shortDescription); document.getElementById('detailSummaryField').hidden = false; }
     var content = document.getElementById('detailContent');

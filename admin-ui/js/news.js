@@ -6,6 +6,8 @@
    ========================================================================== */
 (function () {
   var cfg = CMS.config, ui = CMS.ui, el = ui.el, db = CMS.db.news;
+  var INLINE_FILE_LIMIT = 300 * 1024;   // small files are kept so "Download" can be demonstrated
+  var ALLOWED_EXT = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'png', 'jpg', 'jpeg'];
 
   function statusLabel(value) {
     for (var i = 0; i < cfg.newsStatuses.length; i++) if (cfg.newsStatuses[i].value === value) return cfg.newsStatuses[i].label;
@@ -40,7 +42,7 @@
     ui.setOptions(dateSel, [
       { value: '', label: 'Any Date' }, { value: '7', label: 'Last 7 Days' }, { value: '30', label: 'Last 30 Days' },
       { value: '90', label: 'Last 90 Days' }, { value: 'year', label: 'This Year' }], '');
-    if (campusSel) ui.setOptions(campusSel, [{ value: '', label: 'All Campuses' }].concat(ui.campusChoices().map(function (c) { return { value: c, label: c }; })), '');
+    if (campusSel) ui.setOptions(campusSel, [{ value: '', label: 'All Campuses' }].concat(ui.campusChoices().filter(function (c) { return c !== cfg.allCampuses; }).map(function (c) { return { value: c, label: c }; })), '');
 
     function matches(n) {
       if (state.category && n.category !== state.category) return false;
@@ -128,6 +130,9 @@
     var preview = document.getElementById('newsImagePreview');
     var removeBtn = document.getElementById('newsImageRemove');
     var image = '';
+    var attachment = null;
+    var fileList = document.getElementById('newsFileList');
+    var dropzone = document.getElementById('newsDropzone');
 
     /* edit mode: ?id=... */
     var editing = null, editId = ui.getParam('id');
@@ -151,7 +156,7 @@
     f.author.value = editing ? editing.author : cfg.currentUser.name;
     if (editing) {
       f.title.value = editing.title; f.date.value = editing.publishedAt || ''; f.summary.value = editing.shortDescription || '';
-      editor.setHtml(editing.content || ''); image = editing.image || '';
+      editor.setHtml(editing.content || ''); image = editing.image || ''; attachment = editing.attachment || null;
     }
 
     /* featured image preview */
@@ -171,6 +176,36 @@
     });
     removeBtn.addEventListener('click', function () { image = ''; renderPreview(); });
     renderPreview();
+
+    /* optional attachment (shown on the public News Details page) */
+    function renderAttachment() {
+      ui.clear(fileList);
+      if (!attachment) return;
+      var remove = el('button', { type: 'button', 'aria-label': 'Remove attachment' }, [ui.icon('x-lg')]);
+      remove.addEventListener('click', function () { attachment = null; renderAttachment(); });
+      fileList.appendChild(el('span', { class: 'cms-file-chip' }, [ui.icon('paperclip'), el('span', { text: attachment.name + (attachment.size ? ' (' + ui.formatSize(attachment.size) + ')' : '') }), remove]));
+    }
+    function attach(meta) { attachment = meta; renderAttachment(); ui.toast(ui.MSG.uploaded, 'success'); }
+    function takeFile(file) {
+      if (!file) return;
+      var ext = (file.name.split('.').pop() || '').toLowerCase();
+      if (ALLOWED_EXT.indexOf(ext) === -1) { ui.toast('That file type is not allowed. Use PDF, Office documents, TXT, PNG or JPG.', 'error'); return; }
+      if (file.size > cfg.documentMaxFileBytes) { ui.toast('That file is larger than ' + ui.formatSize(cfg.documentMaxFileBytes) + '.', 'error'); return; }
+      var meta = { name: file.name, size: file.size, type: file.type || ext };
+      if (file.size > INLINE_FILE_LIMIT) { attach(meta); return; }
+      var reader = new FileReader();
+      reader.onload = function () { meta.data = reader.result; attach(meta); };
+      reader.onerror = function () { attach(meta); };
+      reader.readAsDataURL(file);
+    }
+    document.getElementById('newsBrowse').addEventListener('click', function () {
+      ui.chooseFile({ hint: 'PDF, Office documents, TXT, PNG or JPG up to ' + ui.formatSize(cfg.documentMaxFileBytes) + '.',
+                      accept: '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.png,.jpg,.jpeg' }).then(takeFile);
+    });
+    ['dragenter', 'dragover'].forEach(function (ev) { dropzone.addEventListener(ev, function (e) { e.preventDefault(); dropzone.classList.add('is-over'); }); });
+    ['dragleave', 'drop'].forEach(function (ev) { dropzone.addEventListener(ev, function (e) { e.preventDefault(); dropzone.classList.remove('is-over'); }); });
+    dropzone.addEventListener('drop', function (e) { takeFile(e.dataTransfer.files[0]); });
+    renderAttachment();
 
     /* clear an error as soon as the user fixes the field */
     [f.title, f.category, f.campus, f.date].forEach(function (input) {
@@ -209,7 +244,7 @@
         title: f.title.value.trim(), category: f.category.value, author: f.author.value.trim() || cfg.currentUser.name,
         campus: f.campus ? f.campus.value : (editing ? editing.campus : cfg.allCampuses),
         publishedAt: f.date.value || (status === 'published' ? ui.todayISO() : ''),
-        shortDescription: f.summary.value.trim(), content: editor.getHtml(), image: image, status: status
+        shortDescription: f.summary.value.trim(), content: editor.getHtml(), image: image, attachment: attachment, status: status
       };
       if (editing) record.id = editing.id;
       var res = db.save(record);

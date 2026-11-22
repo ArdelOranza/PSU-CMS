@@ -60,7 +60,9 @@
     function buildRow(ev) {
       var status = rules.effectiveStatus(ev);
       var tr = el('tr');
-      tr.appendChild(el('td', { class: 'cms-cell-title', text: ev.title }));
+      var titleCell = el('td', { class: 'cms-cell-title' }, [ev.title]);
+      if (ev.campus) titleCell.appendChild(el('span', { class: 'cms-cell-sub', text: ev.campus }));
+      tr.appendChild(titleCell);
       var dateCell = el('td', { text: rules.dateText(ev) });
       if (ev.endDate && ev.endDate !== ev.startDate) dateCell.appendChild(el('span', { class: 'cms-cell-sub', text: 'to ' + ui.formatDate(ev.endDate) }));
       tr.appendChild(dateCell);
@@ -157,7 +159,7 @@
       category: document.getElementById('eventCategory'), venue: document.getElementById('eventVenue'),
       startDate: document.getElementById('eventStartDate'), endDate: document.getElementById('eventEndDate'),
       startTime: document.getElementById('eventStartTime'), endTime: document.getElementById('eventEndTime'),
-      organizer: document.getElementById('eventOrganizer'), status: document.getElementById('eventStatus')
+      organizer: document.getElementById('eventOrganizer'), status: document.getElementById('eventStatus'), campus: document.getElementById('eventCampus')
     };
     var preview = document.getElementById('eventBannerPreview');
     var removeBtn = document.getElementById('eventBannerRemove');
@@ -184,6 +186,11 @@
       document.getElementById('eventCategoryHint').hidden = false;
     }
     ui.setOptions(f.status, cfg.eventStates, editing ? editing.state : 'draft');
+    /* Campus is required: the public site filters events by campus */
+    var campusChoices = ui.campusChoices();
+    var campusOptions = [{ value: '', label: 'Select campus' }].concat(campusChoices.map(function (c) { return { value: c, label: c }; }));
+    if (editing && editing.campus && campusChoices.indexOf(editing.campus) === -1) campusOptions.push({ value: editing.campus, label: editing.campus });
+    ui.setOptions(f.campus, campusOptions, editing ? (editing.campus || '') : (campusChoices.length === 1 ? campusChoices[0] : ''));
 
     if (editing) {
       f.title.value = editing.title; f.description.value = editing.description || ''; f.venue.value = editing.venue || '';
@@ -222,6 +229,7 @@
       function fail(input, msg) { ui.setError(input, msg); if (!first) first = input._cmsButton || input; }
       if (!f.title.value.trim()) fail(f.title, 'Please enter an event title.');
       if (!f.category.value) fail(f.category, hasCategories ? 'Please choose a category.' : 'Add an event category first.');
+      if (!f.campus.value) fail(f.campus, 'Please select a campus.');
       if (state === 'published') {
         if (!f.venue.value.trim()) fail(f.venue, 'Please enter the venue.');
         if (!f.startDate.value) fail(f.startDate, 'Please choose a start date.');
@@ -244,7 +252,7 @@
       var record = {
         title: f.title.value.trim(), description: f.description.value.trim(), categoryId: f.category.value, banner: banner,
         venue: f.venue.value.trim(), startDate: f.startDate.value, endDate: f.endDate.value || f.startDate.value,
-        startTime: f.startTime.value, endTime: f.endTime.value, organizer: f.organizer.value.trim(), state: state
+        startTime: f.startTime.value, endTime: f.endTime.value, organizer: f.organizer.value.trim(), campus: f.campus.value, state: state
       };
       if (editing) record.id = editing.id;
       var res = db.save(record);

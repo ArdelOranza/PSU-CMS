@@ -176,6 +176,16 @@
           </div>
 
           <div class="cms-field">
+            <span class="cms-label" id="newsAttachLabel">Attachment</span>
+            <div class="cms-dropzone" id="newsDropzone" role="group" aria-labelledby="newsAttachLabel">
+              <span>Drag and drop files here</span>
+              <button type="button" class="cms-btn cms-btn-soft" id="newsBrowse">Browse Files</button>
+              <div class="announcement-file-list" id="newsFileList"></div>
+            </div>
+            <p class="cms-field-hint">Optional. PDF, Office documents, TXT, PNG or JPG, up to 12 MB. Only small files are kept in this prototype.</p>
+          </div>
+
+          <div class="cms-field">
             <label class="cms-label" for="newsStatus">Content Status</label>
             <select id="newsStatus" data-cms-select data-block></select>
           </div>
