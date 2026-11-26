@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Staff access only | Pangasinan State University</title>
+  <meta name="description" content="">
+  <link rel="icon" href="../assets/images/psu-logo.png" type="image/png">
+  <link rel="stylesheet" href="../assets/css/client-variables.css">
+  <link rel="stylesheet" href="../assets/css/client-global.css">
+  <link rel="stylesheet" href="../assets/css/client-header.css">
+  <link rel="stylesheet" href="../assets/css/client-footer.css">
+  <link rel="stylesheet" href="../assets/css/client-layout.css">
+  <link rel="stylesheet" href="../assets/css/client-resources.css">
+</head>
+<body data-nav="resources">
+<!-- Header and footer come from assets/js/client-shell.js (copied from the existing PSU public header/footer) -->
+<div id="site-header-slot"></div>
+<main id="main" class="access-main">
+  <div class="access-box" role="dialog" aria-modal="true" aria-labelledby="access-title" aria-describedby="access-text">
+    <span class="access-box__icon"><svg viewBox="0 0 24 24" width="26" height="26" focusable="false" aria-hidden="true"><rect x="5" y="10.5" width="14" height="9.5" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+    <h1 class="access-box__title" id="access-title">Staff access only</h1>
+    <p class="access-box__text" id="access-text">“Faculty Evaluation Guidelines” is available to PSU staff.<br>Log in to download this file.</p>
+    <div class="access-box__actions">
+      <a class="access-btn access-btn--solid" href="staff-login.html">Log in</a>
+      <button class="access-btn access-btn--outline" type="button" id="accessCancel">Cancel</button>
+    </div>
+  </div>
+</main>
+<div id="site-footer-slot"></div>
+<script src="../assets/js/store.js"></script>
+<script src="../assets/js/client-header.js"></script>
+<script src="../assets/js/client-shell.js"></script>
+<script src="../assets/js/client-access.js"></script>
+</body>
+</html>

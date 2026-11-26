@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add / Edit Personnel | PSU CMS</title>
+  <link rel="stylesheet" href="../assets/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../assets/css/cms-base.css">
+  <link rel="stylesheet" href="../assets/css/cms-layout.css">
+  <link rel="stylesheet" href="../assets/css/cms-components.css">
+  <link rel="stylesheet" href="../assets/css/admin-resources.css">
+</head>
+<body class="cms-body" data-page="add-personnel" data-title="Add / Edit Personnel" data-crumb="Website content">
+
+<main class="cms-content" id="main">
+  <div class="cms-page-head">
+    <div>
+      <h1 class="cms-page-title">Add / Edit Personnel</h1>
+      <p class="cms-page-sub">Add or update a faculty or staff member.</p>
+    </div>
+    <a class="cms-btn cms-btn-outline" href="all-personnel.html"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back</a>
+  </div>
+  <form id="personnelForm" novalidate>
+    <section class="cms-card cms-form-card" aria-label="Personnel details">
+      <div class="cms-field">
+        <span class="cms-label">Profile Picture</span>
+        <div class="cms-upload res-photo-upload">
+          <div class="res-photo-preview" id="photoPreview"><i class="bi bi-person" aria-hidden="true"></i></div>
+          <div class="res-photo-actions">
+            <label class="cms-btn cms-btn-soft" for="f_photo">Upload Image</label>
+            <input class="cms-visually-hidden" id="f_photo" type="file" accept="image/jpeg,image/png,image/gif,image/webp">
+          </div>
+        </div>
+        <p class="cms-field-error" id="err_photo"></p>
+      </div>
+      <div class="cms-form-row"><div class="cms-field"><label class="cms-label" for="f_firstName">First Name</label><input class="cms-input" id="f_firstName" type="text" maxlength="100" placeholder="Enter first name"><p class="cms-field-error"></p></div><div class="cms-field"><label class="cms-label" for="f_middleName">Middle Name</label><input class="cms-input" id="f_middleName" type="text" maxlength="100" placeholder="Enter middle name"><p class=cms-field-error></p></div></div>
+      <div class="cms-form-row"><div class="cms-field"><label class="cms-label" for="f_lastName">Last Name</label><input class="cms-input" id="f_lastName" type="text" maxlength="100" placeholder="Enter last name"><p class="cms-field-error"></p></div><div class="cms-field"><label class="cms-label" for="f_position">Position / Designation</label><input class="cms-input" id="f_position" type="text" maxlength="160" placeholder="Enter position / designation"><p class=cms-field-error></p></div></div>
+      <div class="cms-form-row"><div class="cms-field"><label class="cms-label" for="f_college">College</label><select class="cms-input" id="f_college" data-cms-select data-block></select><p class="cms-field-error"></p></div><div class="cms-field"><label class="cms-label" for="f_department">Department</label><select class="cms-input" id="f_department" data-cms-select data-block></select><p class=cms-field-error></p></div></div>
+      <div class="cms-form-row"><div class="cms-field"><label class="cms-label" for="f_email">Email Address</label><input class="cms-input" id="f_email" type="email" maxlength="190" placeholder="Enter email address"><p class="cms-field-error"></p></div><div class="cms-field"><label class="cms-label" for="f_phone">Contact Number</label><input class="cms-input" id="f_phone" type="tel" maxlength="40" placeholder="+63 9"><p class=cms-field-error></p></div></div>
+      <div class="cms-form-row"><div class="cms-field"><label class="cms-label" for="f_education">Educational Background</label><textarea class="cms-textarea" id="f_education" rows="3" maxlength="5000" placeholder="Enter educational background"></textarea><p class="cms-field-error"></p></div></div>
+      <div class="cms-form-row"><div class="cms-field"><label class="cms-label" for="f_biography">Short Biography</label><textarea class="cms-textarea" id="f_biography" rows="3" maxlength="10000" placeholder="Enter short biography"></textarea><p class="cms-field-error"></p></div></div>
+    </section>
+    <div class="cms-form-actions">
+      <a class="cms-btn cms-btn-outline" href="all-personnel.html">Cancel</a>
+      <button class="cms-btn cms-btn-primary" type="submit">Save Personnel</button>
+    </div>
+  </form>
+</main>
+<script src="../assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/ui.js"></script>
+<script src="../assets/js/admin-shell.js"></script>
+<script src="../assets/js/layout.js"></script>
+<script src="../assets/js/store.js"></script>
+<script src="../assets/js/admin-common.js"></script>
+<script src="../assets/js/admin-personnel.js"></script>
+</body>
+</html>

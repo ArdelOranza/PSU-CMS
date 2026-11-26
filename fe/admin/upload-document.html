@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Upload Document | PSU CMS</title>
+  <link rel="stylesheet" href="../assets/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../assets/css/cms-base.css">
+  <link rel="stylesheet" href="../assets/css/cms-layout.css">
+  <link rel="stylesheet" href="../assets/css/cms-components.css">
+  <link rel="stylesheet" href="../assets/css/admin-resources.css">
+</head>
+<body class="cms-body" data-page="upload-document" data-title="Upload Document" data-crumb="Resources">
+
+<main class="cms-content" id="main">
+  <div class="cms-page-head">
+    <div>
+      <h1 class="cms-page-title" id="pageHeading">Upload Document</h1>
+      <p class="cms-page-sub" id="pageSub">Add a file to the document library.</p>
+    </div>
+    <a class="cms-btn cms-btn-outline" href="all-documents.html"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back</a>
+  </div>
+  <form id="documentForm" novalidate>
+    <section class="cms-card cms-form-card" aria-label="Document details">
+      <div class="cms-field">
+        <span class="cms-label" id="fileLabel">Select File</span>
+        <div class="cms-dropzone res-dropzone" id="documentDropzone">
+          <span>Drag and drop files here</span>
+          <label class="cms-btn cms-btn-soft" for="f_file">Browse Files</label>
+          <input class="cms-visually-hidden" id="f_file" type="file" accept=".pdf,.doc,.docx,.txt,.zip">
+        </div>
+        <p class="cms-field-error" id="err_file"></p>
+      </div>
+      <div class="cms-form-row"><div class="cms-field"><label class="cms-label" for="f_title">Document Title</label><input class="cms-input" id="f_title" type="text" maxlength="220" placeholder="Enter document title"><p class="cms-field-error"></p></div><div class="cms-field"><label class="cms-label" for="f_category">Document Category</label><select class="cms-input" id="f_category" data-cms-select data-block></select><p class=cms-field-error></p></div></div>
+      <div class="cms-field"><label class="cms-label" for="f_description">Description</label><textarea class="cms-textarea" id="f_description" rows="3" maxlength="5000" placeholder="Enter description"></textarea></div>
+      <div class="cms-form-row"><div class="cms-field"><label class="cms-label" for="f_file_name">File Name</label><input class="cms-input" id="f_file_name" type="text" readonly tabindex="-1"></div><div class="cms-field"><label class="cms-label" for="f_file_type">File Type</label><input class="cms-input" id="f_file_type" type="text" readonly tabindex="-1"></div></div>
+    </section>
+    <div class="cms-form-actions">
+      <a class="cms-btn cms-btn-outline" href="all-documents.html">Cancel</a>
+      <button class="cms-btn cms-btn-primary" type="submit" id="submitBtn">Upload Document</button>
+    </div>
+  </form>
+</main>
+<script src="../assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/ui.js"></script>
+<script src="../assets/js/admin-shell.js"></script>
+<script src="../assets/js/layout.js"></script>
+<script src="../assets/js/store.js"></script>
+<script src="../assets/js/admin-common.js"></script>
+<script src="../assets/js/admin-documents.js"></script>
+</body>
+</html>

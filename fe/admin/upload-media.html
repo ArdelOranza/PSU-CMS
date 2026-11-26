@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Upload Media | PSU CMS</title>
+  <link rel="stylesheet" href="../assets/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../assets/css/cms-base.css">
+  <link rel="stylesheet" href="../assets/css/cms-layout.css">
+  <link rel="stylesheet" href="../assets/css/cms-components.css">
+  <link rel="stylesheet" href="../assets/css/admin-resources.css">
+</head>
+<body class="cms-body" data-page="upload-media" data-title="Upload Media" data-crumb="Resources">
+
+<main class="cms-content" id="main">
+  <div class="cms-page-head">
+    <div>
+      <h1 class="cms-page-title" id="pageHeading">Upload Media</h1>
+      <p class="cms-page-sub" id="pageSub">Upload an image or media file.</p>
+    </div>
+    <a class="cms-btn cms-btn-outline" href="all-media.html"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back</a>
+  </div>
+  <form id="mediaForm" novalidate>
+    <section class="cms-card cms-form-card" aria-label="Media details">
+      <div class="cms-field">
+        <span class="cms-label" id="fileLabel">Select File</span>
+        <div class="cms-dropzone res-dropzone" id="mediaDropzone">
+          <span>Drag and drop files here</span>
+          <label class="cms-btn cms-btn-soft" for="f_file">Browse Files</label>
+          <input class="cms-visually-hidden" id="f_file" type="file" accept="image/jpeg,image/png,image/gif,image/webp,image/svg+xml">
+        </div>
+        <p class="cms-field-error" id="err_file"></p>
+      </div>
+      <div class="cms-field">
+        <span class="cms-label">Image Preview</span>
+        <div class="cms-upload res-media-upload">
+          <div class="res-media-preview" id="mediaPreview"><span>Image Placeholder</span></div>
+          <label class="cms-btn cms-btn-soft" for="f_file">Upload Image</label>
+        </div>
+      </div>
+      <div class="cms-form-row"><div class="cms-field"><label class="cms-label" for="f_title">Image Name</label><input class="cms-input" id="f_title" type="text" maxlength="190" placeholder="Enter image name"></div><div class="cms-field"><label class="cms-label" for="f_alt">Alternative Text</label><input class="cms-input" id="f_alt" type="text" maxlength="255" placeholder="Enter alternative text"></div></div>
+      <div class="cms-field"><label class="cms-label" for="f_caption">Image Caption</label><input class="cms-input" id="f_caption" type="text" maxlength="255" placeholder="Enter image caption"></div>
+      <div class="cms-field"><label class="cms-label" for="f_description">Image Description</label><textarea class="cms-textarea" id="f_description" rows="3" maxlength="5000" placeholder="Enter image description"></textarea></div>
+    </section>
+    <div class="cms-form-actions">
+      <a class="cms-btn cms-btn-outline" href="all-media.html">Cancel</a>
+      <button class="cms-btn cms-btn-primary" type="submit" id="submitBtn">Upload</button>
+    </div>
+  </form>
+</main>
+<script src="../assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/ui.js"></script>
+<script src="../assets/js/admin-shell.js"></script>
+<script src="../assets/js/layout.js"></script>
+<script src="../assets/js/store.js"></script>
+<script src="../assets/js/admin-common.js"></script>
+<script src="../assets/js/admin-media.js"></script>
+</body>
+</html>

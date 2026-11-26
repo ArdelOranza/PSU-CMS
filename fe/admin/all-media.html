@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>All Media | PSU CMS</title>
+  <link rel="stylesheet" href="../assets/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../assets/css/cms-base.css">
+  <link rel="stylesheet" href="../assets/css/cms-layout.css">
+  <link rel="stylesheet" href="../assets/css/cms-components.css">
+  <link rel="stylesheet" href="../assets/css/admin-resources.css">
+</head>
+<body class="cms-body" data-page="all-media" data-title="All Media" data-crumb="Resources">
+
+<main class="cms-content" id="main">
+  <div class="cms-page-head">
+    <div>
+      <h1 class="cms-page-title">Media Library</h1>
+      <p class="cms-page-sub">Manage images and media files.</p>
+    </div>
+    <a class="cms-btn cms-btn-primary" href="upload-media.html">Upload Media</a>
+  </div>
+  <section class="cms-card res-media-toolbar" aria-label="Media filters">
+    <form class="cms-filters res-filters-flush" id="mediaFilters" role="search">
+      <div class="cms-filter-search"><label class="cms-visually-hidden" for="mediaSearch">Search media</label><input class="cms-input" id="mediaSearch" type="search" placeholder="Search..." autocomplete="off" maxlength="100"></div>
+      <select id="filterType" data-cms-select aria-label="Filter by file type"><option value="">All File Types</option></select>
+      <select id="filterView" data-cms-select aria-label="Change view"><option value="grid">Grid View</option><option value="list">List View</option></select>
+    </form>
+  </section>
+  <div id="mediaHolder"></div>
+  <div id="mediaFooter"></div>
+</main>
+<script src="../assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/ui.js"></script>
+<script src="../assets/js/admin-shell.js"></script>
+<script src="../assets/js/layout.js"></script>
+<script src="../assets/js/store.js"></script>
+<script src="../assets/js/admin-common.js"></script>
+<script src="../assets/js/admin-media.js"></script>
+</body>
+</html>

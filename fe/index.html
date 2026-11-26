@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PSU CMS – Personnel, Resources and Layout (frontend prototype)</title>
+  <link rel="stylesheet" href="assets/css/client-variables.css">
+  <link rel="stylesheet" href="assets/css/client-global.css">
+  <link rel="stylesheet" href="assets/css/hub.css">
+</head>
+<body>
+  <main class="hub">
+    <img class="hub__logo" src="assets/images/psu-logo.png" alt="" width="64" height="64">
+    <h1>PSU CMS – frontend prototype</h1>
+    <p class="hub__lead">Personnel, document library, media library and website layout. HTML, CSS and vanilla JavaScript only; sample data is kept in your browser.</p>
+    <div class="hub__cols">
+      <section><h2>Admin</h2><ul>
+        <li><a href="admin/all-personnel.html">All Personnel</a></li>
+        <li><a href="admin/personnel-form.html">Add / Edit Personnel</a></li>
+        <li><a href="admin/all-documents.html">All Documents</a></li>
+        <li><a href="admin/all-documents-empty.html">All Documents – Empty State</a></li>
+        <li><a href="admin/document-categories.html">Document Categories</a></li>
+        <li><a href="admin/upload-document.html">Upload Document</a></li>
+        <li><a href="admin/all-media.html">All Media</a></li>
+        <li><a href="admin/upload-media.html">Upload Media</a></li>
+        <li><a href="admin/website-layout.html">Website Layout</a></li>
+      </ul></section>
+      <section><h2>Public website</h2><ul>
+        <li><a href="client/directory.html">Faculty &amp; Staff Directory</a></li>
+        <li><a href="client/profile.html?id=1">Faculty &amp; Staff Profile</a></li>
+        <li><a href="client/documents.html">Document Library</a></li>
+        <li><a href="client/staff-login.html">Staff Login</a></li>
+      </ul></section>
+    </div>
+    <p><button type="button" class="hub__reset" id="resetData">Reset sample data</button></p>
+  </main>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/hub.js"></script>
+</body>
+</html>

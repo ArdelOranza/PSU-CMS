@@ -1,0 +1,77 @@
+/* ==========================================================================
+   cms-base.css — fonts, design tokens, and base page styles (shared)
+   Colors/sizes were measured from the UI screenshots (1440px-wide frames).
+   ========================================================================== */
+
+@font-face{font-family:"Inter";font-style:normal;font-weight:400;font-display:swap;src:url("../vendor/fonts/inter-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Inter";font-style:normal;font-weight:500;font-display:swap;src:url("../vendor/fonts/inter-latin-500-normal.woff2") format("woff2")}
+@font-face{font-family:"Inter";font-style:normal;font-weight:600;font-display:swap;src:url("../vendor/fonts/inter-latin-600-normal.woff2") format("woff2")}
+@font-face{font-family:"Inter";font-style:normal;font-weight:700;font-display:swap;src:url("../vendor/fonts/inter-latin-700-normal.woff2") format("woff2")}
+
+:root{
+  /* brand */
+  --cms-primary:#1e4fa3;
+  --cms-primary-dark:#173f84;
+  --cms-primary-soft:#e8eefb;
+  --cms-sidebar-top:#0b2a5b;
+  --cms-sidebar-bottom:#14468e;
+  --cms-sidebar-label:#91a0b7;
+
+  /* neutrals */
+  --cms-bg:#f5f6f8;
+  --cms-surface:#ffffff;
+  --cms-border:#e5e7eb;
+  --cms-border-strong:#d1d5db;
+  --cms-text:#1f2937;
+  --cms-muted:#6b7280;
+  --cms-placeholder:#9ca3af;
+  --cms-thumb:#eef0f3;
+
+  /* status colors */
+  --cms-green-bg:#dcfce7;  --cms-green:#16a34a;
+  --cms-amber-bg:#fef3c7;  --cms-amber:#d97706;
+  --cms-blue-bg:#dbeafe;   --cms-blue:#2563eb;
+  --cms-gray-bg:#f3f4f6;   --cms-gray:#6b7280;
+  --cms-red-bg:#fee2e2;    --cms-red:#dc2626;   --cms-red-border:#fca5a5;
+
+  /* layout */
+  --cms-sidebar-w:230px;
+  --cms-topbar-h:64px;
+  --cms-radius:8px;
+  --cms-radius-lg:12px;
+  --cms-font:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+
+/* Bootstrap variable overrides (scoped to our pages) */
+.cms-body{
+  --bs-body-font-family:var(--cms-font);
+  --bs-body-font-size:14px;
+  --bs-body-color:var(--cms-text);
+  --bs-body-bg:var(--cms-bg);
+  --bs-border-color:var(--cms-border);
+  --bs-primary:#1e4fa3;
+  --bs-primary-rgb:30,79,163;
+  margin:0;
+  font-family:var(--cms-font);
+  font-size:14px;
+  line-height:1.45;
+  color:var(--cms-text);
+  background:var(--cms-bg);
+  -webkit-font-smoothing:antialiased;
+}
+.cms-body *,.cms-body *::before,.cms-body *::after{box-sizing:border-box}
+:where(.cms-body) a{color:inherit;text-decoration:none}
+:where(.cms-body) :is(h1,h2,h3,p){margin:0}
+:where(.cms-body) button{font-family:inherit}
+
+/* keyboard focus must stay visible */
+.cms-body :focus-visible{outline:2px solid #5b8bd9;outline-offset:2px}
+
+.cms-visually-hidden{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+@media (prefers-reduced-motion:reduce){
+  .cms-body *,.cms-body *::before,.cms-body *::after{transition:none!important;animation:none!important}
+}
+
+/* the [hidden] attribute must win over component display rules */
+.cms-body [hidden]{display:none!important}
